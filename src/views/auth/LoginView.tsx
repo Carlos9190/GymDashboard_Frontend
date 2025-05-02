@@ -1,6 +1,10 @@
 
 export default function LoginView() {
   return (
-    <div>LoginView</div>
+    <>
+      <div>LoginView</div>
+
+
+    </>
   )
 }
