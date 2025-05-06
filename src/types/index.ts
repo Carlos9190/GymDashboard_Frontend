@@ -1,5 +1,12 @@
 import { z } from "zod"
 
+// Response
+export type ApiResponse<T = null> = {
+    message: string;
+    success: boolean;
+    data: T;
+}
+
 // Auth 
 const authSchema = z.object({
     name: z.string(),
@@ -10,3 +17,4 @@ const authSchema = z.object({
 
 type Auth = z.infer<typeof authSchema>
 export type UserLoginForm = Pick<Auth, 'email' | 'password'>
+export type UserRegistrationForm = Pick<Auth, 'name' | 'email' | 'password' | 'password_confirmation'>
