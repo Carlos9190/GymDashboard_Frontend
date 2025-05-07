@@ -28,9 +28,15 @@ export default function LoginView() {
 
   return (
     <>
+      <h1 className="text-5xl font-black text-white">Login</h1>
+      <p className="text-2xl font-light text-white mt-5">
+        Start planning your gym routines {''}
+        <span className=" text-red-600 font-bold"> by logging in</span>
+      </p>
+
       <form
         onSubmit={handleSubmit(handleLogin)}
-        className="space-y-8 p-10 bg-white rounded-lg"
+        className="space-y-8 p-10 mt-10 bg-white rounded-lg"
         noValidate
       >
         <div className="flex flex-col gap-5">
