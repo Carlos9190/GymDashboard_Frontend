@@ -37,7 +37,7 @@ export default function RegisterView() {
             <h1 className="text-5xl font-black text-white">Create account</h1>
             <p className="text-2xl font-light text-white mt-5">
                 Fill out the form to {''}
-                <span className=" text-red-500 font-bold"> create your account</span>
+                <span className=" text-red-600 font-bold"> create your account</span>
             </p>
 
             <form
@@ -138,8 +138,14 @@ export default function RegisterView() {
             <nav className="mt-10 flex flex-col space-y-4">
                 <Link
                     to={'/auth/login'}
-                    className="text-center text-gray-300 font-normal"
+                    className="text-center text-gray-300 font-normal hover:text-red-600"
                 >Do you have account? Login</Link>
+                <Link
+                    to={'/auth/forgot-password'}
+                    className="text-center text-gray-300 font-normal hover:text-red-600"
+                >
+                    Forgot your password? Reset
+                </Link>
             </nav>
         </>
     )
