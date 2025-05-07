@@ -71,13 +71,13 @@ export default function RequestNewTokenView() {
 
             <nav className="mt-10 flex flex-col space-y-4">
                 <Link
-                    to='/auth/login'
+                    to={'/auth/login'}
                     className="text-center text-gray-300 font-normal hover:text-red-600"
                 >
                     Do you have account? Login
                 </Link>
                 <Link
-                    to='/auth/forgot-password'
+                    to={'/auth/forgot-password'}
                     className="text-center text-gray-300 font-normal hover:text-red-600"
                 >
                     Forgot your password? Reset
