@@ -1,7 +1,10 @@
 import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
 import { UserLoginForm } from "../../types";
 import ErrorMessage from "../../components/ErrorMessage";
-import { Link } from "react-router-dom";
+import { login } from "../../api/AuthAPI";
+import { toast } from "react-toastify";
 
 export default function LoginView() {
 
@@ -11,7 +14,17 @@ export default function LoginView() {
   }
   const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: initialValues })
 
-  const handleLogin = (formData: UserLoginForm) => { }
+  const { mutate } = useMutation({
+    mutationFn: login,
+    onError: (error) => {
+      toast.error(error.message)
+    },
+    onSuccess: (data) => {
+      toast.success(data?.message)
+    }
+  })
+
+  const handleLogin = (formData: UserLoginForm) => mutate(formData)
 
   return (
     <>
@@ -69,10 +82,16 @@ export default function LoginView() {
       </form>
 
       <nav className="mt-10 flex flex-col space-y-4">
-          <Link
-            to={'/auth/register'}
-            className="text-center text-gray-300 font-normal"
-          >Do not have account yet? Create one</Link>
+        <Link
+          to={'/auth/register'}
+          className="text-center text-gray-300 font-normal hover:text-red-600"
+        >Do not have account yet? Create one</Link>
+        <Link
+          to={'/auth/forgot-password'}
+          className="text-center text-gray-300 font-normal hover:text-red-600"
+        >
+          Forgot your password? Reset
+        </Link>
       </nav>
     </>
   )
