@@ -41,7 +41,8 @@ export async function requestNewToken(formData: RequestConfirmationTokenForm) {
 export async function login(formData: UserLoginForm) {
     try {
         const url = '/auth/login'
-        const { data } = await api.post<ApiResponse>(url, formData)
+        const { data } = await api.post<ApiResponse<string>>(url, formData)
+        localStorage.setItem('AUTH_TOKEN', data.data)
         return data
     } catch (error) {
         if (isAxiosError(error) && error.response) {
