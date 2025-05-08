@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react"
+import { toast } from "react-toastify"
+import { useMutation } from "@tanstack/react-query"
+import { Link, useNavigate } from "react-router-dom"
 import { PinInput, PinInputField } from '@chakra-ui/pin-input'
-import { useMutation } from "@tanstack/react-query";
-import { ConfirmToken } from "../../types";
-import { confirmAccount } from "../../api/AuthAPI";
-import { toast } from "react-toastify";
+import { ConfirmToken } from "@/types/index"
+import { confirmAccount } from "@/api/AuthAPI"
 
 export default function ConfirmAccountView() {
     const navigate = useNavigate()

@@ -1,16 +1,16 @@
-import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { ForgotPasswordForm } from "../../types";
-import ErrorMessage from "../../components/ErrorMessage";
-import { useMutation } from "@tanstack/react-query";
-import { forgotPassword } from "../../api/AuthAPI";
-import { toast } from "react-toastify";
+import { toast } from "react-toastify"
+import { Link } from "react-router-dom"
+import { useForm } from "react-hook-form"
+import { useMutation } from "@tanstack/react-query"
+import ErrorMessage from "@/components/ErrorMessage"
+import { forgotPassword } from "@/api/AuthAPI"
+import { ForgotPasswordForm } from "@/types/index"
 
 export default function ForgotPasswordView() {
     const initialValues: ForgotPasswordForm = {
         email: ''
     }
-    const { register, handleSubmit, reset, formState: { errors } } = useForm({ defaultValues: initialValues });
+    const { register, handleSubmit, reset, formState: { errors } } = useForm({ defaultValues: initialValues })
 
     const { mutate } = useMutation({
         mutationFn: forgotPassword,

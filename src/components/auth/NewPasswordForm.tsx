@@ -1,22 +1,22 @@
-import type { ConfirmToken, NewPasswordForm } from "../../types";
-import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import ErrorMessage from "../ErrorMessage";
-import { useMutation } from "@tanstack/react-query";
-import { updatePasswordWithToken } from "../../api/AuthAPI";
-import { toast } from "react-toastify";
+import { toast } from "react-toastify"
+import { useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
+import { useMutation } from "@tanstack/react-query"
+import ErrorMessage from "@/components/ErrorMessage"
+import { updatePasswordWithToken } from "@/api/AuthAPI"
+import type { ConfirmToken, NewPasswordForm } from "@/types/index"
 
 type NewPasswordFormProps = {
     token: ConfirmToken['token']
 }
 
-export default function NewPasswordForm({token}: NewPasswordFormProps) {
+export default function NewPasswordForm({ token }: NewPasswordFormProps) {
     const navigate = useNavigate()
     const initialValues: NewPasswordForm = {
         password: '',
         password_confirmation: '',
     }
-    const { register, handleSubmit, watch, reset, formState: { errors } } = useForm({ defaultValues: initialValues });
+    const { register, handleSubmit, watch, reset, formState: { errors } } = useForm({ defaultValues: initialValues })
 
     const { mutate } = useMutation({
         mutationFn: updatePasswordWithToken,
@@ -38,7 +38,7 @@ export default function NewPasswordForm({token}: NewPasswordFormProps) {
         mutate(data)
     }
 
-    const password = watch('password');
+    const password = watch('password')
 
     return (
         <>

@@ -1,17 +1,17 @@
-import { Link } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { RequestConfirmationTokenForm } from "../../types";
-import ErrorMessage from "../../components/ErrorMessage";
-import { useMutation } from "@tanstack/react-query";
-import { requestNewToken } from "../../api/AuthAPI";
-import { toast } from "react-toastify";
+import { toast } from "react-toastify"
+import { Link } from "react-router-dom"
+import { useForm } from "react-hook-form"
+import { useMutation } from "@tanstack/react-query"
+import { RequestConfirmationTokenForm } from "@/types/index"
+import ErrorMessage from "@/components/ErrorMessage"
+import { requestNewToken } from "@/api/AuthAPI"
 
 export default function RequestNewTokenView() {
     const initialValues: RequestConfirmationTokenForm = {
         email: ''
     }
 
-    const { register, handleSubmit, reset, formState: { errors } } = useForm({ defaultValues: initialValues });
+    const { register, handleSubmit, reset, formState: { errors } } = useForm({ defaultValues: initialValues })
 
     const { mutate } = useMutation({
         mutationFn: requestNewToken,

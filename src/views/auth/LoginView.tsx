@@ -1,10 +1,10 @@
-import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
-import { UserLoginForm } from "../../types";
-import ErrorMessage from "../../components/ErrorMessage";
-import { login } from "../../api/AuthAPI";
-import { toast } from "react-toastify";
+import { toast } from "react-toastify"
+import { useForm } from "react-hook-form"
+import { useMutation } from "@tanstack/react-query"
+import { Link, useNavigate } from "react-router-dom"
+import ErrorMessage from "@/components/ErrorMessage"
+import { UserLoginForm } from "@/types/index"
+import { login } from "@/api/AuthAPI"
 
 export default function LoginView() {
 
