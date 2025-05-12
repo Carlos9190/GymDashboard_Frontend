@@ -1,16 +1,22 @@
+import { useForm, Controller } from "react-hook-form"
+import { useMutation } from "@tanstack/react-query"
 import { toast } from "react-toastify"
 import { Link } from "react-router-dom"
-import { useForm } from "react-hook-form"
-import { useMutation } from "@tanstack/react-query"
 import ErrorMessage from "@/components/ErrorMessage"
 import { forgotPassword } from "@/api/AuthAPI"
 import { ForgotPasswordForm } from "@/types/index"
 
 export default function ForgotPasswordView() {
     const initialValues: ForgotPasswordForm = {
-        email: ''
+        email: "",
     }
-    const { register, handleSubmit, reset, formState: { errors } } = useForm({ defaultValues: initialValues })
+
+    const {
+        control,
+        handleSubmit,
+        formState: { errors },
+        reset,
+    } = useForm<ForgotPasswordForm>({ defaultValues: initialValues })
 
     const { mutate } = useMutation({
         mutationFn: forgotPassword,
@@ -20,65 +26,70 @@ export default function ForgotPasswordView() {
         onSuccess: (data) => {
             toast.success(data?.message)
             reset()
-        }
+        },
     })
 
     const handleForgotPassword = (formData: ForgotPasswordForm) => mutate(formData)
 
-
     return (
         <>
-            <h1 className="text-5xl font-black text-white">Reset password</h1>
-            <p className="text-2xl font-light text-white mt-5">
-                Forgot your password? enter your email {''}
-                <span className=" text-red-600 font-bold"> and reset your password</span>
+            <h1 className="text-2xl uppercase font-bold text-white text-center mb-4">Forgot your password?</h1>
+            <p className="text-xl font-light text-white text-center mb-6">
+                No problem. Enter your account email address and we will send you instructions so{" "}
+                <span className="text-red-600 font-bold">you can reset your password</span>
             </p>
 
             <form
                 onSubmit={handleSubmit(handleForgotPassword)}
-                className="space-y-8 p-10 bg-white mt-10 rounded-lg"
+                className="space-y-3 bg-transparent rounded-lg flex flex-col w-full px-5"
                 noValidate
             >
-                <div className="flex flex-col gap-5">
-                    <label
-                        className="font-normal text-2xl"
-                        htmlFor="email"
-                    >Email</label>
-                    <input
-                        id="email"
-                        type="email"
-                        placeholder="Registration email address"
-                        className="w-full p-3 border-gray-300 border rounded-lg"
-                        {...register("email", {
-                            required: "Email is required",
-                            pattern: {
-                                value: /\S+@\S+\.\S+/,
-                                message: "Invalid email address",
-                            },
-                        })}
-                    />
-                    {errors.email && (
-                        <ErrorMessage>{errors.email.message}</ErrorMessage>
+                <Controller
+                    name="email"
+                    control={control}
+                    rules={{
+                        required: "Email is required",
+                        pattern: {
+                            value: /\S+@\S+\.\S+/,
+                            message: "Invalid email address",
+                        },
+                    }}
+                    render={({ field }) => (
+                        <div className="relative w-full">
+                            <input
+                                id="email"
+                                type="email"
+                                placeholder=" "
+                                className={`peer w-full px-3 pt-6 pb-2 border rounded-lg bg-transparent text-white placeholder-transparent transition-all
+                  ${errors.email ? "border-red-500" : "border-gray-300"} focus:outline-none focus:border-red-500`}
+                                {...field}
+                            />
+                            <label
+                                htmlFor="email"
+                                className={`absolute left-3 transition-all 
+                  ${field.value ? "top-1 text-sm text-red-600" : "top-3.5 text-gray-500"} 
+                  peer-focus:top-1 peer-focus:text-sm peer-focus:text-red-600`}
+                            >
+                                Email address
+                            </label>
+                            {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
+                        </div>
                     )}
-                </div>
+                />
 
                 <input
                     type="submit"
-                    value='Send instructions'
-                    className="bg-red-600 hover:bg-red-700 w-full p-3 text-white font-black text-xl cursor-pointer rounded-lg"
+                    value="Send instructions"
+                    className="bg-red-600 hover:bg-red-700 w-full p-3 text-white font-black text-xl cursor-pointer rounded-4xl mt-2"
                 />
-            </form>
 
-            <nav className="mt-10 flex flex-col space-y-4">
                 <Link
-                    to={'/auth/login'}
-                    className="text-center text-gray-300 font-normal hover:text-red-600"
-                >Do you have account? Login</Link>
-                <Link
-                    to={'/auth/register'}
-                    className="text-center text-gray-300 font-normal hover:text-red-600"
-                >Do not have account yet? Create one</Link>
-            </nav>
+                    to={"/auth/login"}
+                    className="text-gray-300 font-normal hover:text-red-600 underline text-center"
+                >
+                    Back to login
+                </Link>
+            </form>
         </>
     )
 }

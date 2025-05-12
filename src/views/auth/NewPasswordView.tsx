@@ -9,10 +9,10 @@ export default function NewPasswordView() {
 
   return (
     <>
-      <h1 className="text-5xl font-black text-white">Reset password</h1>
-      <p className="text-2xl font-light text-white mt-5">
-        Enter the token you received {''}
-        <span className=" text-red-600 font-bold"> via email</span>
+      <h1 className="text-2xl uppercase font-bold text-white text-center mb-4">Reset password</h1>
+      <p className="text-xl font-light text-white text-center mb-6">
+        Enter the 6-digit token you received{" "}
+        <span className="text-red-600 font-bold">via email</span>
       </p>
 
       {!isValidToken ?

@@ -31,31 +31,33 @@ export default function NewPasswordToken({ token, setToken, setIsValidToken }: N
     return (
         <>
             <form
-                className="space-y-8 p-10 bg-white mt-10 rounded-lg"
+                className="space-y-6 bg-transparent rounded-lg flex flex-col items-center w-full px-5 mt-6"
+                onSubmit={(e) => e.preventDefault()}
             >
-                <label
-                    className="font-normal text-2xl text-center block"
-                >6 digits token</label>
-                <div className="flex justify-center gap-5">
-                    <PinInput value={token} onChange={handleChange} onComplete={handleComplete}>
-                        <PinInputField className="w-10 h-10 rounded-lg border-gray-300 border placeholder-white text-center" />
-                        <PinInputField className="w-10 h-10 rounded-lg border-gray-300 border placeholder-white text-center" />
-                        <PinInputField className="w-10 h-10 rounded-lg border-gray-300 border placeholder-white text-center" />
-                        <PinInputField className="w-10 h-10 rounded-lg border-gray-300 border placeholder-white text-center" />
-                        <PinInputField className="w-10 h-10 rounded-lg border-gray-300 border placeholder-white text-center" />
-                        <PinInputField className="w-10 h-10 rounded-lg border-gray-300 border placeholder-white text-center" />
+                <label className="text-white text-lg font-medium text-center">Confirmation token</label>
+
+                <div className="flex space-x-3">
+                    <PinInput
+                        value={token}
+                        onChange={handleChange}
+                        onComplete={handleComplete}
+                    >
+                        {[...Array(6)].map((_, index) => (
+                            <PinInputField
+                                key={index}
+                                className="w-10 h-12 text-xl text-white text-center bg-transparent border rounded-md border-gray-300 focus:border-red-500 focus:outline-none"
+                            />
+                        ))}
                     </PinInput>
                 </div>
-            </form>
 
-            <nav className="mt-10 flex flex-col space-y-4">
                 <Link
                     to={'/auth/forgot-password'}
-                    className="text-center text-gray-300 font-normal hover:text-red-600"
+                    className="text-center text-gray-300 font-normal hover:text-red-600 underline mt-4"
                 >
                     Request new token
                 </Link>
-            </nav>
+            </form>
         </>
     )
 }
