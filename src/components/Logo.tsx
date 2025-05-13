@@ -1,5 +1,5 @@
 export default function Logo() {
     return (
-        <img src="/logo.svg" alt="Logotipo GymDashboard" width="150" height="50" className="pt-10 lg:pt-20 pb-5 lg:pb-10" />
+        <img src="/logo.svg" alt="Logotipo GymDashboard" width="140" height="50" className="py-5 md:py-10" />
     )
 }

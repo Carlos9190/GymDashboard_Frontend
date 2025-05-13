@@ -1,17 +1,21 @@
-import { Link } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { RequestConfirmationTokenForm } from "../../types";
-import ErrorMessage from "../../components/ErrorMessage";
-import { useMutation } from "@tanstack/react-query";
-import { requestNewToken } from "../../api/AuthAPI";
-import { toast } from "react-toastify";
+import { toast } from "react-toastify"
+import { useForm } from "react-hook-form"
+import { useMutation } from "@tanstack/react-query"
+import { RequestConfirmationTokenForm } from "@/types/index"
+import ErrorMessage from "@/components/ErrorMessage"
+import { requestNewToken } from "@/api/AuthAPI"
 
 export default function RequestNewTokenView() {
     const initialValues: RequestConfirmationTokenForm = {
         email: ''
     }
 
-    const { register, handleSubmit, reset, formState: { errors } } = useForm({ defaultValues: initialValues });
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors }
+    } = useForm({ defaultValues: initialValues })
 
     const { mutate } = useMutation({
         mutationFn: requestNewToken,
@@ -28,27 +32,24 @@ export default function RequestNewTokenView() {
 
     return (
         <>
-            <h1 className="text-5xl font-black text-white">Request new confirmation token</h1>
-            <p className="text-2xl font-light text-white mt-5">
-                Enter your email to receive {''}
-                <span className=" text-red-600 font-bold"> a new token</span>
+            <h1 className="text-2xl uppercase font-bold text-white text-center mb-4">Request Token</h1>
+            <p className="text-xl font-light text-white text-center mb-6">
+                Enter your email to receive{" "}
+                <span className="text-red-600 font-bold">a new confirmation token</span>
             </p>
 
             <form
                 onSubmit={handleSubmit(handleRequestCode)}
-                className="space-y-8 p-10 rounded-lg bg-white mt-10"
+                className="space-y-4 bg-transparent rounded-lg flex flex-col w-full px-5"
                 noValidate
             >
-                <div className="flex flex-col gap-5">
-                    <label
-                        className="font-normal text-2xl"
-                        htmlFor="email"
-                    >Email</label>
+                <div className="relative w-full">
                     <input
                         id="email"
                         type="email"
-                        placeholder="Registration email address"
-                        className="w-full p-3 rounded-lg border-gray-300 border"
+                        placeholder=" "
+                        className={`peer w-full px-3 pt-6 pb-2 border rounded-lg bg-transparent text-white placeholder-transparent transition-all
+              ${errors.email ? "border-red-500" : "border-gray-300"} focus:outline-none focus:border-red-500`}
                         {...register("email", {
                             required: "Email is required",
                             pattern: {
@@ -57,6 +58,15 @@ export default function RequestNewTokenView() {
                             },
                         })}
                     />
+                    <label
+                        htmlFor="email"
+                        className={`absolute left-3 transition-all 
+              peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base text-sm
+              peer-focus:top-1 peer-focus:text-sm 
+              ${errors.email ? "text-red-600" : "text-gray-500"}`}
+                    >
+                        Email address
+                    </label>
                     {errors.email && (
                         <ErrorMessage>{errors.email.message}</ErrorMessage>
                     )}
@@ -65,24 +75,9 @@ export default function RequestNewTokenView() {
                 <input
                     type="submit"
                     value='Send token'
-                    className="bg-red-600 hover:bg-red-700 w-full p-3 rounded-lg text-white font-black  text-xl cursor-pointer"
+                    className="bg-red-600 hover:bg-red-700 w-full p-3 rounded-4xl text-white font-black text-xl cursor-pointer"
                 />
             </form>
-
-            <nav className="mt-10 flex flex-col space-y-4">
-                <Link
-                    to={'/auth/login'}
-                    className="text-center text-gray-300 font-normal hover:text-red-600"
-                >
-                    Do you have account? Login
-                </Link>
-                <Link
-                    to={'/auth/forgot-password'}
-                    className="text-center text-gray-300 font-normal hover:text-red-600"
-                >
-                    Forgot your password? Reset
-                </Link>
-            </nav>
         </>
     )
 }

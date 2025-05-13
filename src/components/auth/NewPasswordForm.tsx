@@ -1,22 +1,29 @@
-import type { ConfirmToken, NewPasswordForm } from "../../types";
-import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import ErrorMessage from "../ErrorMessage";
-import { useMutation } from "@tanstack/react-query";
-import { updatePasswordWithToken } from "../../api/AuthAPI";
-import { toast } from "react-toastify";
+import { toast } from "react-toastify"
+import { useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
+import { useMutation } from "@tanstack/react-query"
+import ErrorMessage from "@/components/ErrorMessage"
+import { updatePasswordWithToken } from "@/api/AuthAPI"
+import type { ConfirmToken, NewPasswordForm } from "@/types/index"
 
 type NewPasswordFormProps = {
     token: ConfirmToken['token']
 }
 
-export default function NewPasswordForm({token}: NewPasswordFormProps) {
+export default function NewPasswordForm({ token }: NewPasswordFormProps) {
     const navigate = useNavigate()
     const initialValues: NewPasswordForm = {
         password: '',
         password_confirmation: '',
     }
-    const { register, handleSubmit, watch, reset, formState: { errors } } = useForm({ defaultValues: initialValues });
+
+    const {
+        register,
+        handleSubmit,
+        watch,
+        reset,
+        formState: { errors }
+    } = useForm({ defaultValues: initialValues })
 
     const { mutate } = useMutation({
         mutationFn: updatePasswordWithToken,
@@ -38,65 +45,74 @@ export default function NewPasswordForm({token}: NewPasswordFormProps) {
         mutate(data)
     }
 
-    const password = watch('password');
+    const password = watch('password')
 
     return (
-        <>
-            <form
-                onSubmit={handleSubmit(handleNewPassword)}
-                className="space-y-8 p-10 bg-white mt-10 rounded-lg"
-                noValidate
-            >
-
-                <div className="flex flex-col gap-5">
-                    <label
-                        className="font-normal text-2xl"
-                    >Password</label>
-
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        className="w-full p-3 border-gray-300 border rounded-lg"
-                        {...register("password", {
-                            required: "Password is required",
-                            minLength: {
-                                value: 8,
-                                message: 'Password should be 8 characters length minimum'
-                            }
-                        })}
-                    />
-                    {errors.password && (
-                        <ErrorMessage>{errors.password.message}</ErrorMessage>
-                    )}
-                </div>
-
-                <div className="flex flex-col gap-5">
-                    <label
-                        className="font-normal text-2xl"
-                    >Password confirmation</label>
-
-                    <input
-                        id="password_confirmation"
-                        type="password"
-                        placeholder="Password confirmation"
-                        className="w-full p-3 border-gray-300 border rounded-lg"
-                        {...register("password_confirmation", {
-                            required: "Password confirmation is required",
-                            validate: value => value === password || 'Password confirmation does not match'
-                        })}
-                    />
-
-                    {errors.password_confirmation && (
-                        <ErrorMessage>{errors.password_confirmation.message}</ErrorMessage>
-                    )}
-                </div>
-
+        <form
+            onSubmit={handleSubmit(handleNewPassword)}
+            className="space-y-4 bg-transparent rounded-lg flex flex-col w-full px-5"
+            noValidate
+        >
+            <div className="relative w-full">
                 <input
-                    type="submit"
-                    value='Set new password'
-                    className="bg-red-600 hover:bg-red-700 w-full p-3 text-white font-black text-xl cursor-pointer"
+                    id="password"
+                    type="password"
+                    placeholder=" "
+                    className={`peer w-full px-3 pt-6 pb-2 border rounded-lg bg-transparent text-white placeholder-transparent transition-all
+              ${errors.password ? "border-red-500" : "border-gray-300"} focus:outline-none focus:border-red-500`}
+                    {...register("password", {
+                        required: "Password is required",
+                        minLength: {
+                            value: 8,
+                            message: 'Password should be 8 characters length minimum'
+                        }
+                    })}
                 />
-            </form>
-        </>
+                <label
+                    htmlFor="password"
+                    className={`absolute left-3 transition-all
+              ${errors.password ? "text-red-600" : "text-gray-500"} 
+              peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base 
+              peer-focus:top-1 peer-focus:text-sm peer-focus:text-red-600`}
+                >
+                    Password
+                </label>
+                {errors.password && (
+                    <ErrorMessage>{errors.password.message}</ErrorMessage>
+                )}
+            </div>
+
+            <div className="relative w-full">
+                <input
+                    id="password_confirmation"
+                    type="password"
+                    placeholder=" "
+                    className={`peer w-full px-3 pt-6 pb-2 border rounded-lg bg-transparent text-white placeholder-transparent transition-all
+              ${errors.password_confirmation ? "border-red-500" : "border-gray-300"} focus:outline-none focus:border-red-500`}
+                    {...register("password_confirmation", {
+                        required: "Password confirmation is required",
+                        validate: value => value === password || 'Password confirmation does not match'
+                    })}
+                />
+                <label
+                    htmlFor="password_confirmation"
+                    className={`absolute left-3 transition-all
+              ${errors.password_confirmation ? "text-red-600" : "text-gray-500"} 
+              peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base 
+              peer-focus:top-1 peer-focus:text-sm peer-focus:text-red-600`}
+                >
+                    Confirm Password
+                </label>
+                {errors.password_confirmation && (
+                    <ErrorMessage>{errors.password_confirmation.message}</ErrorMessage>
+                )}
+            </div>
+
+            <input
+                type="submit"
+                value="Set new password"
+                className="bg-red-600 hover:bg-red-700 w-full p-3 rounded-4xl text-white font-black text-xl cursor-pointer"
+            />
+        </form>
     )
 }
