@@ -42,3 +42,14 @@ export const dashboardExerciseSchema = z.array(
 )
 export type Exercise = z.infer<typeof exerciseSchema>
 export type ExerciseFormData = Pick<Exercise, 'exerciseName' | 'file' >
+
+
+export const exerciseByIdResponseSchema = z.object({
+    _id: z.string(),
+    exerciseName: z.string(),
+    exerciseImage: z.string(),
+    userId: z.string(),
+    __v: z.number()
+})
+
+export type ExerciseByIdResponse = z.infer<typeof exerciseByIdResponseSchema>

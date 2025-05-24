@@ -1,13 +1,13 @@
 import { Link, useNavigate } from "react-router-dom"
 import ExerciseForm from "./ExerciseForm"
-import { Exercise, ExerciseFormData } from "@/types/index"
+import { Exercise, ExerciseByIdResponse, ExerciseFormData } from "@/types/index"
 import { useForm } from "react-hook-form"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { updateExercise } from "@/api/ExerciseAPI"
 import { toast } from "react-toastify"
 
 type EditProjectFormProps = {
-    data: ExerciseFormData
+    data: ExerciseByIdResponse
     exerciseId: Exercise['_id']
 }
 
@@ -52,6 +52,7 @@ export default function EditProjectForm({ data, exerciseId }: EditProjectFormPro
             >
 
                 <ExerciseForm
+                    exercise={data}
                     control={control}
                     errors={errors}
                 />

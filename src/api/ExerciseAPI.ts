@@ -1,5 +1,5 @@
 import { isAxiosError } from "axios"
-import { ApiResponse, dashboardExerciseSchema, Exercise, ExerciseFormData } from "../types"
+import { ApiResponse, dashboardExerciseSchema, Exercise, exerciseByIdResponseSchema, ExerciseFormData } from "../types"
 import api from "@/lib/axios"
 
 export async function createExercise(formData: ExerciseFormData) {
@@ -37,7 +37,14 @@ export async function getExerciseById(exerciseId: Exercise['_id']) {
     try {
         const url = `/exercises/${exerciseId}`
         const { data } = await api<ApiResponse>(url)
-        return data.data
+
+        const response = exerciseByIdResponseSchema.safeParse(data.data)
+
+        if(response.error) {
+            throw new Error("Validation error")
+        }
+
+        return response.data
     } catch (error) {
         if (isAxiosError(error) && error.response) {
             throw new Error(error.response.data.message)
