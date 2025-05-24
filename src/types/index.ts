@@ -24,3 +24,21 @@ export type ForgotPasswordForm = Pick<Auth, 'email'>
 export type NewPasswordForm = Pick<Auth, 'password' | 'password_confirmation'>
 
 export type ConfirmToken = Pick<Auth, 'token'>
+
+// Exercise
+export const exerciseSchema = z.object({
+    _id: z.string(),
+    exerciseName: z.string(),
+    exerciseImage: z.string(),
+    file: z.instanceof(File).nullable()
+})
+
+export const dashboardExerciseSchema = z.array(
+    exerciseSchema.pick({
+        _id: true,
+        exerciseName: true,
+        exerciseImage: true
+    })
+)
+export type Exercise = z.infer<typeof exerciseSchema>
+export type ExerciseFormData = Pick<Exercise, 'exerciseName' | 'file' >
