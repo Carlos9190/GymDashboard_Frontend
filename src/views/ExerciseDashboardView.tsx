@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { deleteExercise, getExercises } from "@/api/ExerciseAPI"
+import { deleteExercise, getExercises } from "@/services/ExerciseService"
 import Spinner from "@/components/LoadingSpinner"
 import { toast } from "react-toastify"
 
@@ -17,7 +17,7 @@ export default function ExercisesDashboardView() {
     onError: (error) => toast.error(error.message),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['exercises'] })
-      toast.success(data)
+      toast.success(data?.message)
     }
   })
 

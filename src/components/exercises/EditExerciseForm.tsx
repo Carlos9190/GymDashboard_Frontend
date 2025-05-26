@@ -1,10 +1,10 @@
 import { Link, useNavigate } from "react-router-dom"
 import ExerciseForm from "./ExerciseForm"
-import { Exercise, ExerciseByIdResponse, ExerciseFormData } from "@/types/index"
 import { useForm } from "react-hook-form"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { updateExercise } from "@/api/ExerciseAPI"
+import { updateExercise } from "@/services/ExerciseService"
 import { toast } from "react-toastify"
+import type { Exercise, ExerciseByIdResponse, ExerciseFormData } from "@/types/index"
 
 type EditProjectFormProps = {
     data: ExerciseByIdResponse
@@ -27,7 +27,7 @@ export default function EditProjectForm({ data, exerciseId }: EditProjectFormPro
         onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ['exercises'] })
             queryClient.invalidateQueries({ queryKey: ['editExercise', exerciseId] })
-            toast.success(data)
+            toast.success(data?.message)
             navigate('/exercises')
         }
     })

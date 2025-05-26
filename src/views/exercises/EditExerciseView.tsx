@@ -1,6 +1,6 @@
 import { Navigate, useParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { getExerciseById } from "@/api/ExerciseAPI"
+import { getExerciseById } from "@/services/ExerciseService"
 import Spinner from "@/components/LoadingSpinner"
 import EditProjectForm from "@/components/exercises/EditExerciseForm"
 

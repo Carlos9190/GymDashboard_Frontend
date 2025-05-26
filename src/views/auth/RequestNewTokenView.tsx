@@ -1,9 +1,9 @@
 import { toast } from "react-toastify"
 import { useForm } from "react-hook-form"
 import { useMutation } from "@tanstack/react-query"
-import { RequestConfirmationTokenForm } from "@/types/index"
 import ErrorMessage from "@/components/ErrorMessage"
-import { requestNewToken } from "@/api/AuthAPI"
+import { requestNewToken } from "@/services/AuthService"
+import type { RequestConfirmationTokenForm } from "@/types/index"
 
 export default function RequestNewTokenView() {
     const initialValues: RequestConfirmationTokenForm = {

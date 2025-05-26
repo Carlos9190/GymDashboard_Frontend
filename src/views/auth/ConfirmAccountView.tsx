@@ -3,8 +3,8 @@ import { toast } from "react-toastify"
 import { useMutation } from "@tanstack/react-query"
 import { Link, useNavigate } from "react-router-dom"
 import { PinInput, PinInputField } from "@chakra-ui/pin-input"
-import { ConfirmToken } from "@/types/index"
-import { confirmAccount } from "@/api/AuthAPI"
+import { confirmAccount } from "@/services/AuthService"
+import type { ConfirmToken } from "@/types/index"
 
 export default function ConfirmAccountView() {
     const navigate = useNavigate()

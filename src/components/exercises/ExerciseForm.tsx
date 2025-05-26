@@ -1,7 +1,7 @@
 import { Control, Controller, FieldErrors } from "react-hook-form"
-import ErrorMessage from "../ErrorMessage";
-import { ExerciseByIdResponse, ExerciseFormData } from "@/types/index";
-import ImageUpload from "../ImageUploadButton";
+import ErrorMessage from "../ErrorMessage"
+import { ExerciseByIdResponse, ExerciseFormData } from "@/types/index"
+import ImageUpload from "../ImageUploadButton"
 
 type ExerciseFormProps = {
     exercise?: ExerciseByIdResponse
@@ -50,12 +50,12 @@ export default function ExerciseForm({ exercise, errors, control }: ExerciseForm
             />
 
             {exercise?.exerciseImage && (
-                <div>
-                    <h2 className="text-2xl font-black mt-8">Current image</h2>	
+                <div className="max-w-xl mx-auto mt-1 p-2 bg-transparent rounded-2xl shadow-md border border-gray-300">
+                    <p className="text-sm text-red-500 mb-2 ml-1">Current image</p>
                     <img
                         src={exercise.exerciseImage}
                         alt={exercise.exerciseName}
-                        className="w-1/2 h-1/2 object-cover rounded-lg mt-5"
+                        className="w-full rounded-xl object-cover"
                     />
                 </div>
             )}

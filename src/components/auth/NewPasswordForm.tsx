@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import { useMutation } from "@tanstack/react-query"
 import ErrorMessage from "@/components/ErrorMessage"
-import { updatePasswordWithToken } from "@/api/AuthAPI"
+import { updatePasswordWithToken } from "@/services/AuthService"
 import type { ConfirmToken, NewPasswordForm } from "@/types/index"
 
 type NewPasswordFormProps = {

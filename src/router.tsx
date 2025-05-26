@@ -6,12 +6,12 @@ import ConfirmAccountView from "@/views/auth/ConfirmAccountView"
 import RequestNewTokenView from "@/views/auth/RequestNewTokenView"
 import ForgotPasswordView from "@/views/auth/ForgotPasswordView"
 import NewPasswordView from "@/views/auth/NewPasswordView"
-import AppLayout from "./layouts/AppLayout"
+import AppLayout from "@/layouts/AppLayout"
 // import CreateRoutineView from "./views/routines/CreateRoutineView"
 // import RoutinesDashboardView from "./views/RoutineDashboardView"
-import ExercisesDashboardView from "./views/ExerciseDashboardView"
-import CreateExerciseView from "./views/exercises/NewExerciseView"
-import UpdateExerciseView from "./views/exercises/EditExerciseView"
+import ExercisesDashboardView from "@/views/ExerciseDashboardView"
+import CreateExerciseView from "@/views/exercises/NewExerciseView"
+import UpdateExerciseView from "@/views/exercises/EditExerciseView"
 
 export default function Router() {
 
