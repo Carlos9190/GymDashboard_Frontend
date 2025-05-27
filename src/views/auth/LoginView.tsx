@@ -3,8 +3,8 @@ import { useMutation } from "@tanstack/react-query"
 import { toast } from "react-toastify"
 import { Link, useNavigate } from "react-router-dom"
 import ErrorMessage from "@/components/ErrorMessage"
-import { UserLoginForm } from "@/types/index"
-import { login } from "@/api/AuthAPI"
+import { login } from "@/services/AuthService"
+import type { UserLoginForm } from "@/types/index"
 
 export default function LoginView() {
   const initialValues: UserLoginForm = {

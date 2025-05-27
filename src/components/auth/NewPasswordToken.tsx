@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import { Dispatch, SetStateAction } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { PinInput, PinInputField } from '@chakra-ui/pin-input'
-import { ConfirmToken } from '@/types/index'
-import { validateToken } from '@/api/AuthAPI'
+import { validateToken } from '@/services/AuthService'
+import type { ConfirmToken } from '@/types/index'
 
 type NewPasswordTokenProps = {
     token: ConfirmToken['token']

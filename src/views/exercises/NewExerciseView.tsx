@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { useMutation } from "@tanstack/react-query"
 import ExerciseForm from "@/components/exercises/ExerciseForm"
-import { ExerciseFormData } from "@/types/index"
-import { createExercise } from "@/api/ExerciseAPI"
+import { createExercise } from "@/services/ExerciseService"
+import type { ExerciseFormData } from "@/types/index"
 
 export default function CreateExerciseView() {
 
@@ -18,7 +18,7 @@ export default function CreateExerciseView() {
     mutationFn: createExercise,
     onError: (error) => toast.error(error.message),
     onSuccess: (data) => {
-      toast.success(data)
+      toast.success(data?.message)
       reset()
     }
   })
