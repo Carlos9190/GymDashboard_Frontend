@@ -7,11 +7,12 @@ import RequestNewTokenView from "@/views/auth/RequestNewTokenView"
 import ForgotPasswordView from "@/views/auth/ForgotPasswordView"
 import NewPasswordView from "@/views/auth/NewPasswordView"
 import AppLayout from "@/layouts/AppLayout"
-// import CreateRoutineView from "./views/routines/CreateRoutineView"
 // import RoutinesDashboardView from "./views/RoutineDashboardView"
+// import NewRoutineView from "./views/routines/NewRoutineView"
 import ExercisesDashboardView from "@/views/ExerciseDashboardView"
-import CreateExerciseView from "@/views/exercises/NewExerciseView"
-import UpdateExerciseView from "@/views/exercises/EditExerciseView"
+import EditExerciseView from "@/views/exercises/EditExerciseView"
+import NewExerciseView from "@/views/exercises/NewExerciseView"
+import ExerciseDetailsView from "./views/exercises/ExerciseDetailsView"
 
 export default function Router() {
 
@@ -29,11 +30,12 @@ export default function Router() {
 
                 <Route element={<AppLayout />}>
                     {/* <Route path="/" element={<RoutinesDashboardView />} index />
-                    <Route path="/routines/new" element={<CreateRoutineView />} /> */}
+                    <Route path="/routines/new" element={<NewRoutineView />} /> */}
 
                     <Route path="/exercises" element={<ExercisesDashboardView />} />
-                    <Route path="/exercises/new" element={<CreateExerciseView />} />
-                    <Route path="/exercises/:exerciseId/edit" element={<UpdateExerciseView />} />
+                    <Route path="/exercises/new" element={<NewExerciseView />} />
+                    <Route path="/exercises/:exerciseId" element={<ExerciseDetailsView />} />
+                    <Route path="/exercises/:exerciseId/edit" element={<EditExerciseView />} />
                 </Route>
             </Routes>
         </BrowserRouter>
