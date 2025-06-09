@@ -102,11 +102,6 @@ export default function ExerciseForm({ exercise, register, watch, errors, setVal
                                     <div className={`${isChecked ? 'text-white' : 'text-gray-700'}`}>
                                         {routine.routineName}
                                     </div>
-                                    {routine.routineDays.length > 0 && (
-                                        <div className={`mt-1 text-xs select-none ${isChecked ? 'text-white' : 'text-gray-700'}`}>
-                                            {routine.routineDays.join(", ")}
-                                        </div>
-                                    )}
                                 </label>
                             )
                         })}
