@@ -7,6 +7,7 @@ export async function createExercise(formData: ExerciseFormData) {
     const formDataToSend = new FormData()
     formDataToSend.append('exerciseName', formData.exerciseName)
     formDataToSend.append('file', formData.file as File)
+    formDataToSend.append('routineId', formData.routineId as string)
     try {
         const url = '/exercises'
         const { data } = await api.post<ApiResponse>(url, formDataToSend)
@@ -57,6 +58,7 @@ export async function updateExercise({ formData, exerciseId }: ExerciseAPIType) 
     let formDataToSend = new FormData()
     formDataToSend.append('exerciseName', formData.exerciseName)
     formDataToSend.append('file', formData.file as File)
+    formDataToSend.append('routineId', formData.routineId as string)
     try {
         const url = `/exercises/${exerciseId}`
         const { data } = await api.put<ApiResponse>(url, formDataToSend)

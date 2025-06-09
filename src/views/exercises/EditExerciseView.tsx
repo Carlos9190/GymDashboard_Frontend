@@ -4,7 +4,7 @@ import { getExerciseById } from "@/services/ExerciseService"
 import Spinner from "@/components/LoadingSpinner"
 import EditProjectForm from "@/components/exercises/EditExerciseForm"
 
-export default function UpdateExerciseView() {
+export default function EditExerciseView() {
     const params = useParams()
     const exerciseId = params.exerciseId!
 

@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { authSchema, userSchema } from "schemas/authSchema"
+import { authSchema, userSchema } from "../schemas"
 
 export type Auth = z.infer<typeof authSchema>
 export type UserLoginForm = Pick<Auth, 'email' | 'password'>

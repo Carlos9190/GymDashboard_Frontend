@@ -12,20 +12,23 @@ type EditProjectFormProps = {
 }
 
 export default function EditProjectForm({ data, exerciseId }: EditProjectFormProps) {
-
     const initialValues: ExerciseFormData = {
         exerciseName: data.exerciseName,
-        file: null
+        file: null,
+        routineId: null
     }
-    const { control, handleSubmit, formState: { errors } } = useForm({ defaultValues: initialValues })
+
+    const { register, watch, handleSubmit, formState: { errors }, setValue } = useForm<ExerciseFormData>({ defaultValues: initialValues })
 
     const navigate = useNavigate()
     const queryClient = useQueryClient()
+
     const { mutate } = useMutation({
         mutationFn: updateExercise,
         onError: (error) => toast.error(error.message),
         onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ['exercises'] })
+            queryClient.invalidateQueries({ queryKey: ['formRoutines'] })
             queryClient.invalidateQueries({ queryKey: ['editExercise', exerciseId] })
             toast.success(data?.message)
             navigate('/exercises')
@@ -33,27 +36,30 @@ export default function EditProjectForm({ data, exerciseId }: EditProjectFormPro
     })
 
     const handleForm = (formData: ExerciseFormData) => {
-        const data = {
+        const payload = {
             formData,
             exerciseId
         }
-        mutate(data)
+        mutate(payload)
     }
 
     return (
         <div className="max-w-3xl mx-auto">
             <h1 className="text-5xl font-black text-center">Edit exercise</h1>
-            <p className="text-2xl font-light mt-5 text-center">Fill out the following form to <span className="text-red-600">edit the exercise</span></p>
+            <p className="text-2xl font-light mt-5 text-center">
+                Fill out the following form to <span className="text-red-600">edit the exercise</span>
+            </p>
 
             <form
-                className="space-y-3 bg-transparent rounded-lg flex flex-col mx-auto w-lg py-10 "
+                className="space-y-3 bg-transparent rounded-lg flex flex-col mx-auto w-lg py-10"
                 onSubmit={handleSubmit(handleForm)}
                 noValidate
             >
-
                 <ExerciseForm
                     exercise={data}
-                    control={control}
+                    register={register}
+                    watch={watch}
+                    setValue={setValue}
                     errors={errors}
                 />
 
@@ -64,12 +70,11 @@ export default function EditProjectForm({ data, exerciseId }: EditProjectFormPro
                 />
 
                 <Link
-                    to={"/exercises"}
+                    to="/exercises"
                     className="text-gray-300 font-normal hover:text-red-600 underline text-center"
                 >
                     Back to exercises
                 </Link>
-
             </form>
         </div>
     )
