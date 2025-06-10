@@ -6,18 +6,21 @@ import ExerciseForm from "@/components/exercises/ExerciseForm"
 import { createExercise } from "@/services/ExerciseService"
 import type { ExerciseFormData } from "@/types/index"
 
-export default function CreateExerciseView() {
-
+export default function NewExerciseView() {
   const initialValues: ExerciseFormData = {
     exerciseName: "",
-    file: null
+    file: null,
+    routineId: "",
   }
-  const { control, reset, handleSubmit, formState: { errors } } = useForm({ defaultValues: initialValues })
+
+  const { register, watch, reset, handleSubmit, formState: { errors }, setValue } = useForm<ExerciseFormData>({
+    defaultValues: initialValues,
+  })
 
   const { mutate } = useMutation({
     mutationFn: createExercise,
-    onError: (error) => toast.error(error.message),
-    onSuccess: (data) => {
+    onError: (error: any) => toast.error(error.message),
+    onSuccess: (data: any) => {
       toast.success(data?.message)
       reset()
     }
@@ -28,16 +31,19 @@ export default function CreateExerciseView() {
   return (
     <div className="max-w-3xl mx-auto">
       <h1 className="text-5xl font-black text-center">Register exercise</h1>
-      <p className="text-2xl font-light mt-5 text-center">Fill out the following form to <span className="text-red-600">register a new exercise</span></p>
+      <p className="text-2xl font-light mt-5 text-center">
+        Fill out the following form to <span className="text-red-600">register a new exercise</span>
+      </p>
 
       <form
-        className="space-y-3 bg-transparent rounded-lg flex flex-col mx-auto w-lg py-10 "
+        className="space-y-3 bg-transparent rounded-lg flex flex-col mx-auto w-lg py-10"
         onSubmit={handleSubmit(handleForm)}
         noValidate
       >
-
         <ExerciseForm
-          control={control}
+          register={register}
+          watch={watch}
+          setValue={setValue}
           errors={errors}
         />
 
@@ -53,7 +59,6 @@ export default function CreateExerciseView() {
         >
           Back to exercises
         </Link>
-
       </form>
     </div>
   )

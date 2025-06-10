@@ -2,9 +2,9 @@ import { Navigate, useParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { getExerciseById } from "@/services/ExerciseService"
 import Spinner from "@/components/LoadingSpinner"
-import EditProjectForm from "@/components/exercises/EditExerciseForm"
+import EditExerciseForm from "@/components/exercises/EditExerciseForm"
 
-export default function UpdateExerciseView() {
+export default function EditExerciseView() {
     const params = useParams()
     const exerciseId = params.exerciseId!
 
@@ -16,5 +16,5 @@ export default function UpdateExerciseView() {
 
     if (isLoading) return <Spinner />
     if (isError) return <Navigate to='/404' />
-    if (data) return <EditProjectForm data={data} exerciseId={exerciseId} />
+    if (data) return <EditExerciseForm data={data} exerciseId={exerciseId} />
 }
