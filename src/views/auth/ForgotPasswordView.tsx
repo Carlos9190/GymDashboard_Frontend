@@ -1,4 +1,4 @@
-import { useForm, Controller } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "react-toastify"
 import { Link } from "react-router-dom"
@@ -8,25 +8,24 @@ import type { ForgotPasswordForm } from "@/types/index"
 
 export default function ForgotPasswordView() {
     const initialValues: ForgotPasswordForm = {
-        email: "",
+        email: ""
     }
 
     const {
-        control,
+        register,
         handleSubmit,
         formState: { errors },
         reset,
+        watch
     } = useForm<ForgotPasswordForm>({ defaultValues: initialValues })
 
     const { mutate } = useMutation({
         mutationFn: forgotPassword,
-        onError: (error) => {
-            toast.error(error.message)
-        },
+        onError: (error) => toast.error(error.message),
         onSuccess: (data) => {
             toast.success(data?.message)
             reset()
-        },
+        }
     })
 
     const handleForgotPassword = (formData: ForgotPasswordForm) => mutate(formData)
@@ -44,38 +43,31 @@ export default function ForgotPasswordView() {
                 className="space-y-3 bg-transparent rounded-lg flex flex-col w-full px-5"
                 noValidate
             >
-                <Controller
-                    name="email"
-                    control={control}
-                    rules={{
-                        required: "Email is required",
-                        pattern: {
-                            value: /\S+@\S+\.\S+/,
-                            message: "Invalid email address",
-                        },
-                    }}
-                    render={({ field }) => (
-                        <div className="relative w-full">
-                            <input
-                                id="email"
-                                type="email"
-                                placeholder=" "
-                                className={`peer w-full px-3 pt-6 pb-2 border rounded-lg bg-transparent text-white placeholder-transparent transition-all
-                  ${errors.email ? "border-red-500" : "border-gray-300"} focus:outline-none focus:border-red-500`}
-                                {...field}
-                            />
-                            <label
-                                htmlFor="email"
-                                className={`absolute left-3 transition-all 
-                  ${field.value ? "top-1 text-sm text-red-600" : "top-3.5 text-gray-500"} 
-                  peer-focus:top-1 peer-focus:text-sm peer-focus:text-red-600`}
-                            >
-                                Email address
-                            </label>
-                            {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
-                        </div>
-                    )}
-                />
+                <div className="relative w-full">
+                    <input
+                        id="email"
+                        type="email"
+                        placeholder=" "
+                        className={`peer w-full px-3 pt-6 pb-2 border rounded-lg bg-transparent text-white placeholder-transparent transition-all
+              ${errors.email ? "border-red-500" : "border-gray-300"} focus:outline-none focus:border-red-500`}
+                        {...register("email", {
+                            required: "Email is required",
+                            pattern: {
+                                value: /\S+@\S+\.\S+/,
+                                message: "Invalid email address",
+                            }
+                        })}
+                    />
+                    <label
+                        htmlFor="email"
+                        className={`absolute left-3 transition-all 
+              ${watch("email") ? "top-1 text-sm text-red-600" : "top-3.5 text-gray-500"} 
+              peer-focus:top-1 peer-focus:text-sm peer-focus:text-red-600`}
+                    >
+                        Email address
+                    </label>
+                    {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
+                </div>
 
                 <input
                     type="submit"
