@@ -1,0 +1,68 @@
+import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react'
+import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
+import { formatDays } from "@/utils/formatDays"
+import { Fragment } from 'react/jsx-runtime'
+import { Link } from 'react-router-dom'
+import { Routine } from '@/types/routineTypes'
+import { ApiResponse } from '@/types/responseType'
+import { UseMutateFunction } from '@tanstack/react-query'
+
+type RoutineCardProps = {
+    routine: Routine
+    mutate: UseMutateFunction<ApiResponse | undefined, Error, string, unknown>
+}
+
+export default function RoutineCard({ routine, mutate }: RoutineCardProps) {
+    return (
+        <div className="border border-gray-100 bg-white shadow-lg p-6 rounded-lg flex justify-between">
+            <div className="space-y-2">
+                <Link to={``}
+                    className="text-gray-600 cursor-pointer hover:underline text-2xl font-bold"
+                >
+                    {routine.routineName}
+                </Link>
+                <p className="text-sm text-gray-400">
+                    Day{"(s)"}: {formatDays(routine.routineDays)}
+                </p>
+            </div>
+            <div className="flex justify-end mt-4">
+                <Menu as="div" className="relative">
+                    <MenuButton className="-m-2.5 block p-2.5 text-gray-500 hover:text-gray-900">
+                        <span className="sr-only">options</span>
+                        <EllipsisVerticalIcon className="h-6 w-6" aria-hidden="true" />
+                    </MenuButton>
+                    <Transition as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                    >
+                        <MenuItems className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+                            <MenuItem>
+                                <Link to={``} className="block px-3 py-1 text-sm leading-6 text-gray-900">
+                                    View routine
+                                </Link>
+                            </MenuItem>
+                            <MenuItem>
+                                <Link to={``} className="block px-3 py-1 text-sm leading-6 text-gray-900">
+                                    Edit routine
+                                </Link>
+                            </MenuItem>
+                            <MenuItem>
+                                <button
+                                    type="button"
+                                    className="block px-3 py-1 text-sm leading-6 text-red-500"
+                                    onClick={() => mutate(routine._id)}
+                                >
+                                    Delete routine
+                                </button>
+                            </MenuItem>
+                        </MenuItems>
+                    </Transition>
+                </Menu>
+            </div>
+        </div>
+    )
+}
