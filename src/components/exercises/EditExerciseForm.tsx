@@ -6,12 +6,12 @@ import { updateExercise } from "@/services/ExerciseService"
 import { toast } from "react-toastify"
 import type { Exercise, ExerciseByIdResponse, ExerciseFormData } from "@/types/index"
 
-type EditProjectFormProps = {
+type EditExerciseFormProps = {
     data: ExerciseByIdResponse
     exerciseId: Exercise['_id']
 }
 
-export default function EditProjectForm({ data, exerciseId }: EditProjectFormProps) {
+export default function EditExerciseForm({ data, exerciseId }: EditExerciseFormProps) {
 
     const initialValues: ExerciseFormData = {
         exerciseName: data.exerciseName,

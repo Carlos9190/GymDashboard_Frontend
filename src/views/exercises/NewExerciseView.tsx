@@ -6,7 +6,7 @@ import ExerciseForm from "@/components/exercises/ExerciseForm"
 import { createExercise } from "@/services/ExerciseService"
 import type { ExerciseFormData } from "@/types/index"
 
-export default function CreateExerciseView() {
+export default function NewExerciseView() {
 
   const initialValues: ExerciseFormData = {
     exerciseName: "",
