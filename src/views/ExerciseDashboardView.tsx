@@ -17,6 +17,7 @@ export default function ExercisesDashboardView() {
     onError: (error) => toast.error(error.message),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['exercises'] })
+      queryClient.invalidateQueries({ queryKey: ['formRoutines'] })
       toast.success(data?.message)
     }
   })

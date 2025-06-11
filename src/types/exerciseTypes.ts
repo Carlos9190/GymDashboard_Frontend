@@ -3,4 +3,4 @@ import { exerciseByIdResponseSchema, exerciseSchema } from "@/schemas/exerciseSc
 
 export type Exercise = z.infer<typeof exerciseSchema>
 export type ExerciseByIdResponse = z.infer<typeof exerciseByIdResponseSchema>
-export type ExerciseFormData = Pick<Exercise, 'exerciseName' | 'file'>
+export type ExerciseFormData = Pick<Exercise, 'exerciseName' | 'file' | 'routineId'>
