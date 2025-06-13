@@ -123,7 +123,7 @@ export default function ExerciseForm({ exercise, register, watch, errors, setVal
                 </div>
             )}
 
-            <div className="flex items-center justify-between mt-6">
+            <div className="flex items-center justify-between mt-4">
                 <input
                     id="file"
                     type="file"

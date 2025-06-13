@@ -4,7 +4,7 @@ import { toast } from "react-toastify"
 import { Link } from "react-router-dom"
 import ErrorMessage from "@/components/ErrorMessage"
 import { createAccount } from "@/services/AuthService"
-import type { UserRegistrationForm } from "@/types/index"
+import type { UserRegistrationForm } from "@/types/index" 
 
 export default function RegisterView() {
     const initialValues: UserRegistrationForm = {

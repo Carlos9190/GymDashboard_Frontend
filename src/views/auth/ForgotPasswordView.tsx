@@ -4,7 +4,7 @@ import { toast } from "react-toastify"
 import { Link } from "react-router-dom"
 import ErrorMessage from "@/components/ErrorMessage"
 import { forgotPassword } from "@/services/AuthService"
-import type { ForgotPasswordForm } from "@/types/index"
+import type { ForgotPasswordForm } from "@/types/index" 
 
 export default function ForgotPasswordView() {
     const initialValues: ForgotPasswordForm = {

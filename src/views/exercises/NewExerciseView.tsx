@@ -17,8 +17,8 @@ export default function NewExerciseView() {
 
   const { mutate } = useMutation({
     mutationFn: createExercise,
-    onError: (error) => toast.error(error.message),
-    onSuccess: (data) => {
+    onError: (error: any) => toast.error(error.message),
+    onSuccess: (data: any) => {
       toast.success(data?.message)
       reset()
     }
@@ -41,8 +41,8 @@ export default function NewExerciseView() {
         <ExerciseForm
           register={register}
           watch={watch}
-          errors={errors}
           setValue={setValue}
+          errors={errors}
         />
 
         <input
