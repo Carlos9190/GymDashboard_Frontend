@@ -7,7 +7,6 @@ import EditExerciseForm from "@/components/exercises/EditExerciseForm"
 export default function EditExerciseView() {
     const params = useParams()
     const exerciseId = params.exerciseId!
-
     const { data, isLoading, isError } = useQuery({
         queryKey: ['editExercise', exerciseId],
         queryFn: () => getExerciseById(exerciseId),

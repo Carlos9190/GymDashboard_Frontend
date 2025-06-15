@@ -7,3 +7,13 @@ export function formatDays(days: string[]): string {
     const rest = days.slice(0, -1).join(', ')
     return `${rest} and ${last}`
 }
+
+export function formatDate(isoString: string): string {
+    const date = new Date(isoString)
+    const formatter = new Intl.DateTimeFormat('en-US', {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric'
+    })
+    return formatter.format(date)
+}

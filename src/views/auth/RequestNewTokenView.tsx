@@ -19,9 +19,7 @@ export default function RequestNewTokenView() {
 
     const { mutate } = useMutation({
         mutationFn: requestNewToken,
-        onError: (error) => {
-            toast.error(error.message)
-        },
+        onError: (error) => toast.error(error.message),
         onSuccess: (data) => {
             toast.success(data?.message)
             reset()
@@ -48,8 +46,7 @@ export default function RequestNewTokenView() {
                         id="email"
                         type="email"
                         placeholder=" "
-                        className={`peer w-full px-3 pt-6 pb-2 border rounded-lg bg-transparent text-white placeholder-transparent transition-all
-              ${errors.email ? "border-red-500" : "border-gray-300"} focus:outline-none focus:border-red-500`}
+                        className={`peer w-full px-3 pt-6 pb-2 border rounded-lg bg-transparent text-white placeholder-transparent transition-all ${errors.email ? "border-red-500" : "border-gray-300"} focus:outline-none focus:border-red-500`}
                         {...register("email", {
                             required: "Email is required",
                             pattern: {
@@ -60,10 +57,7 @@ export default function RequestNewTokenView() {
                     />
                     <label
                         htmlFor="email"
-                        className={`absolute left-3 transition-all 
-              peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base text-sm
-              peer-focus:top-1 peer-focus:text-sm 
-              ${errors.email ? "text-red-600" : "text-gray-500"}`}
+                        className={`absolute left-3 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base text-sm peer-focus:top-1 peer-focus:text-sm ${errors.email ? "text-red-600" : "text-gray-500"}`}
                     >
                         Email address
                     </label>

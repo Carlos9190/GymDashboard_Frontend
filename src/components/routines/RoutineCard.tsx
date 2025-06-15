@@ -1,6 +1,6 @@
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react'
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
-import { formatDays } from "@/utils/formatDays"
+import { formatDays } from '@/utils/datesUtils'
 import { Fragment } from 'react/jsx-runtime'
 import { Link } from 'react-router-dom'
 import { Routine } from '@/types/routineTypes'

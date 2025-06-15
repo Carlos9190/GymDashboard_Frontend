@@ -48,8 +48,7 @@ export default function ForgotPasswordView() {
                         id="email"
                         type="email"
                         placeholder=" "
-                        className={`peer w-full px-3 pt-6 pb-2 border rounded-lg bg-transparent text-white placeholder-transparent transition-all
-              ${errors.email ? "border-red-500" : "border-gray-300"} focus:outline-none focus:border-red-500`}
+                        className={`peer w-full px-3 pt-6 pb-2 border rounded-lg bg-transparent text-white placeholder-transparent transition-all ${errors.email ? "border-red-500" : "border-gray-300"} focus:outline-none focus:border-red-500`}
                         {...register("email", {
                             required: "Email is required",
                             pattern: {
@@ -60,9 +59,7 @@ export default function ForgotPasswordView() {
                     />
                     <label
                         htmlFor="email"
-                        className={`absolute left-3 transition-all 
-              ${watch("email") ? "top-1 text-sm text-red-600" : "top-3.5 text-gray-500"} 
-              peer-focus:top-1 peer-focus:text-sm peer-focus:text-red-600`}
+                        className={`absolute left-3 transition-all ${watch("email") ? "top-1 text-sm text-red-600" : "top-3.5 text-gray-500"} peer-focus:top-1 peer-focus:text-sm peer-focus:text-red-600`}
                     >
                         Email address
                     </label>

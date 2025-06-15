@@ -12,6 +12,7 @@ import RoutinesDashboardView from "./views/RoutineDashboardView"
 import ExercisesDashboardView from "@/views/ExerciseDashboardView"
 import NewExerciseView from "./views/exercises/NewExerciseView"
 import EditExerciseView from "./views/exercises/EditExerciseView"
+import ExerciseDetailsView from "./views/exercises/ExerciseDetailsView"
 
 export default function Router() {
 
@@ -33,6 +34,7 @@ export default function Router() {
 
                     <Route path="/exercises" element={<ExercisesDashboardView />} />
                     <Route path="/exercises/new" element={<NewExerciseView />} />
+                    <Route path="/exercises/:exerciseId" element={<ExerciseDetailsView />} />
                     <Route path="/exercises/:exerciseId/edit" element={<EditExerciseView />} />
                 </Route>
             </Routes>

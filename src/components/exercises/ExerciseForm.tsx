@@ -28,8 +28,8 @@ export default function ExerciseForm({ exercise, register, watch, errors, setVal
     useEffect(() => {
         if (exercise?._id && data?.length) {
             const defaultRoutineIds = data
-                .filter(r => r.exercises.includes(exercise._id))
-                .map(r => r._id)
+                .filter(routine => routine.exercises.includes(exercise._id))
+                .map(routine => routine._id)
 
             const currentIds = watch("routineId")
             if (!currentIds || currentIds.trim() === "") {
@@ -49,23 +49,20 @@ export default function ExerciseForm({ exercise, register, watch, errors, setVal
                     id="exerciseName"
                     type="text"
                     placeholder=" "
-                    className={`peer w-full px-3 pt-6 pb-2 border rounded-lg bg-transparent text-white placeholder-transparent transition-all
-                        ${errors.exerciseName ? "border-red-500" : "border-gray-300"} focus:outline-none focus:border-red-500`}
+                    className={`peer w-full px-3 pt-6 pb-2 border rounded-lg bg-transparent text-white placeholder-transparent transition-all ${errors.exerciseName ? "border-red-500" : "border-gray-300"} focus:outline-none focus:border-red-500`}
                     {...register("exerciseName", { required: "Exercise name is required" })}
                 />
                 <label
                     htmlFor="exerciseName"
-                    className={`absolute left-3 transition-all
-                        ${watch("exerciseName") ? "top-1 text-sm text-red-600" : "top-3.5 text-gray-500"}
-                        peer-focus:top-1 peer-focus:text-sm peer-focus:text-red-600`}
+                    className={`absolute left-3 transition-all ${watch("exerciseName") ? "top-1 text-sm text-red-600" : "top-3.5 text-gray-500"} peer-focus:top-1 peer-focus:text-sm peer-focus:text-red-600`}
                 >
                     Exercise name
                 </label>
                 {errors.exerciseName && <ErrorMessage>{errors.exerciseName.message}</ErrorMessage>}
             </div>
 
-            <div className="w-full mx-auto mt-4 p-4 bg-transparent rounded-lg shadow-md border border-gray-300">
-                <label className="text-sm text-red-500 mb-3 block font-semibold">
+            <div className="w-full mx-auto mt-2 p-4 bg-transparent rounded-lg shadow-md border border-gray-300">
+                <label className="text-sm text-red-600 mb-2 block">
                     Assign to routine(s)
                 </label>
 
@@ -87,8 +84,7 @@ export default function ExerciseForm({ exercise, register, watch, errors, setVal
                                 <label
                                     key={routine._id}
                                     htmlFor={`routine-${routine._id}`}
-                                    className={`w-full cursor-pointer rounded-full px-4 py-2 text-center text-sm font-medium transition-colors
-            ${isChecked ? 'bg-red-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                                    className={`w-full cursor-pointer rounded-full px-4 py-2 text-center text-sm font-medium transition-colors ${isChecked ? 'bg-red-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
                                 >
                                     <input
                                         type="checkbox"
@@ -113,8 +109,8 @@ export default function ExerciseForm({ exercise, register, watch, errors, setVal
             </div>
 
             {exercise?.exerciseImage && (
-                <div className="max-w-xl mx-auto mt-6 p-2 bg-transparent rounded-lg shadow-md border border-gray-300">
-                    <p className="text-sm text-red-500 mb-2 ml-1">Current image</p>
+                <div className="max-w-xl mx-auto mt-2 p-2 bg-transparent rounded-lg shadow-md border border-gray-300">
+                    <p className="text-sm text-red-500 mb-2 ml-2">Current image</p>
                     <img
                         src={exercise.exerciseImage}
                         alt={exercise.exerciseName}
@@ -123,7 +119,7 @@ export default function ExerciseForm({ exercise, register, watch, errors, setVal
                 </div>
             )}
 
-            <div className="flex items-center justify-between mt-4">
+            <div className="flex items-center justify-between mt-2">
                 <input
                     id="file"
                     type="file"

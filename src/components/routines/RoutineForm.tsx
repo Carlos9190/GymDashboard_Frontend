@@ -19,25 +19,22 @@ export default function RoutineForm({ errors, watch, register }: RoutineFormProp
                     id="routineName"
                     type="text"
                     placeholder=" "
-                    className={`peer w-full px-3 pt-6 pb-2 border rounded-lg bg-transparent text-white placeholder-transparent transition-all
-            ${errors.routineName ? "border-red-500" : "border-gray-300"} focus:outline-none focus:border-red-500`}
+                    className={`peer w-full px-3 pt-6 pb-2 border rounded-lg bg-transparent text-white placeholder-transparent transition-all ${errors.routineName ? "border-red-500" : "border-gray-300"} focus:outline-none focus:border-red-500`}
                     {...register("routineName", {
                         required: "Routine name is required",
                     })}
                 />
                 <label
                     htmlFor="routineName"
-                    className={`absolute left-3 transition-all 
-            ${watch("routineName") ? "top-1 text-sm text-red-600" : "top-3.5 text-gray-500"} 
-            peer-focus:top-1 peer-focus:text-sm peer-focus:text-red-600`}
+                    className={`absolute left-3 transition-all ${watch("routineName") ? "top-1 text-sm text-red-600" : "top-3.5 text-gray-500"} peer-focus:top-1 peer-focus:text-sm peer-focus:text-red-600`}
                 >
                     Routine name
                 </label>
                 {errors.routineName && <ErrorMessage>{errors.routineName.message}</ErrorMessage>}
             </div>
 
-            <div className="w-full mt-6">
-                <label className="block mb-4 text-lg font-semibold text-red-500 select-none">
+            <div className="w-full mt-2">
+                <label className="block mb-2 text-sm text-red-600 select-none">
                     Routine days
                 </label>
                 <div className="grid grid-cols-2 gap-4">
