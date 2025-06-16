@@ -9,7 +9,7 @@ export default function EditExerciseView() {
     const exerciseId = params.exerciseId!
     const { data, isLoading, isError } = useQuery({
         queryKey: ['editExercise', exerciseId],
-        queryFn: () => getExerciseById(exerciseId),
+        queryFn: () => getExerciseById({ exerciseId }),
         retry: false
     })
 

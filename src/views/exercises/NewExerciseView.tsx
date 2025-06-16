@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import ExerciseForm from "@/components/exercises/ExerciseForm"
 import { createExercise } from "@/services/ExerciseService"
 import type { ExerciseFormData } from "@/types/index"
@@ -13,18 +13,22 @@ export default function NewExerciseView() {
     routineId: ""
   }
 
-  const { register, watch, reset, handleSubmit, formState: { errors }, setValue } = useForm<ExerciseFormData>({defaultValues: initialValues})
+  const { register, watch, reset, handleSubmit, formState: { errors }, setValue } = useForm<ExerciseFormData>({ defaultValues: initialValues })
 
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const { mutate } = useMutation({
     mutationFn: createExercise,
     onError: (error) => toast.error(error.message),
     onSuccess: (data) => {
-      toast.success(data?.message)
+      queryClient.invalidateQueries({ queryKey: ['exercises'] })
+        toast.success(data?.message)
       reset()
+      navigate('/exercises')
     }
   })
 
-  const handleForm = (formData: ExerciseFormData) => mutate(formData)
+  const handleForm = (formData: ExerciseFormData) => mutate({ formData })
 
   return (
     <div className="max-w-3xl mx-auto">

@@ -1,9 +1,14 @@
 import { isAxiosError } from "axios"
 import api from "@/lib/axios"
 import type { ApiResponse, ExerciseFormData, Exercise } from "@/types/index"
-import { dashboardExerciseSchema, exerciseByIdResponseSchema } from "@/schemas/index"
+import { exerciseDashboardSchema, exerciseByIdSchema } from "@/schemas/index"
 
-export async function createExercise(formData: ExerciseFormData) {
+type ExerciseService = {
+    formData: ExerciseFormData
+    exerciseId: Exercise['_id']
+}
+
+export async function createExercise({ formData }: Pick<ExerciseService, 'formData'>) {
     const formDataToSend = new FormData()
     formDataToSend.append('exerciseName', formData.exerciseName)
     formDataToSend.append('file', formData.file as File)
@@ -23,7 +28,7 @@ export async function getExercises() {
     try {
         const url = '/exercises'
         const { data } = await api<ApiResponse>(url)
-        const response = dashboardExerciseSchema.safeParse(data.data)
+        const response = exerciseDashboardSchema.safeParse(data.data)
         if (response.success) {
             return response.data
         }
@@ -34,11 +39,11 @@ export async function getExercises() {
     }
 }
 
-export async function getExerciseById(exerciseId: Exercise['_id']) {
+export async function getExerciseById({ exerciseId }: Pick<ExerciseService, 'exerciseId'>) {
     try {
         const url = `/exercises/${exerciseId}`
         const { data } = await api<ApiResponse>(url)
-        const response = exerciseByIdResponseSchema.safeParse(data.data)
+        const response = exerciseByIdSchema.safeParse(data.data)
         if (response.success) {
             return response.data
         }
@@ -49,12 +54,7 @@ export async function getExerciseById(exerciseId: Exercise['_id']) {
     }
 }
 
-type ExerciseAPIType = {
-    formData: ExerciseFormData,
-    exerciseId: Exercise['_id']
-}
-
-export async function updateExercise({ formData, exerciseId }: ExerciseAPIType) {
+export async function updateExercise({ formData, exerciseId }: Pick<ExerciseService, 'formData' | 'exerciseId'>) {
     let formDataToSend = new FormData()
     formDataToSend.append('exerciseName', formData.exerciseName)
     formDataToSend.append('file', formData.file as File)
@@ -70,7 +70,7 @@ export async function updateExercise({ formData, exerciseId }: ExerciseAPIType) 
     }
 }
 
-export async function deleteExercise(exerciseId: Exercise['_id']) {
+export async function deleteExercise({ exerciseId }: Pick<ExerciseService, 'exerciseId'>) {
     try {
         const url = `/exercises/${exerciseId}`
         const { data } = await api.delete<ApiResponse>(url)
