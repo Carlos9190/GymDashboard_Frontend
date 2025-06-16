@@ -14,7 +14,17 @@ import {
     ExerciseFormData,
     ExerciseByIdResponse
 } from "./exerciseTypes"
+import {
+    Routine,
+    RoutineFormData
+} from "./routineTypes"
+import {
+    Record,
+    RecordFormData
+} from "./recordTypes"
 
 export type { ApiResponse }
 export type { Auth, UserLoginForm, UserRegistrationForm, RequestConfirmationTokenForm, ForgotPasswordForm, NewPasswordForm, ConfirmToken, User }
 export type { Exercise, ExerciseFormData, ExerciseByIdResponse }
+export type { Routine, RoutineFormData }
+export type { Record, RecordFormData }

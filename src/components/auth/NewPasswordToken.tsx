@@ -16,10 +16,8 @@ export default function NewPasswordToken({ token, setToken, setIsValidToken }: N
 
     const { mutate } = useMutation({
         mutationFn: validateToken,
-        onError(error) {
-            toast.error(error.message)
-        },
-        onSuccess(data) {
+        onError: (error) => toast.error(error.message),
+        onSuccess: (data) => {
             toast.success(data?.message)
             setIsValidToken(true)
         }

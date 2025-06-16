@@ -1,4 +1,5 @@
 import { z } from "zod"
+import {  recordSchema } from "./recordSchema"
 
 export const exerciseSchema = z.object({
     _id: z.string(),
@@ -20,5 +21,6 @@ export const exerciseByIdResponseSchema = z.object({
     _id: z.string(),
     exerciseName: z.string(),
     exerciseImage: z.string(),
-    userId: z.string()
+    userId: z.string(),
+    records: z.array(recordSchema)
 })

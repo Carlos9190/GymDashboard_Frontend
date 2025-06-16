@@ -10,17 +10,15 @@ export default function NewExerciseView() {
   const initialValues: ExerciseFormData = {
     exerciseName: "",
     file: null,
-    routineId: "",
+    routineId: ""
   }
 
-  const { register, watch, reset, handleSubmit, formState: { errors }, setValue } = useForm<ExerciseFormData>({
-    defaultValues: initialValues,
-  })
+  const { register, watch, reset, handleSubmit, formState: { errors }, setValue } = useForm<ExerciseFormData>({defaultValues: initialValues})
 
   const { mutate } = useMutation({
     mutationFn: createExercise,
-    onError: (error: any) => toast.error(error.message),
-    onSuccess: (data: any) => {
+    onError: (error) => toast.error(error.message),
+    onSuccess: (data) => {
       toast.success(data?.message)
       reset()
     }
