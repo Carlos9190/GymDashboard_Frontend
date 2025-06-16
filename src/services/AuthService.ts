@@ -97,8 +97,8 @@ export async function getUser() {
             return response.data
         }
     } catch (error) {
-        if (isAxiosError(error) && error.message) {
-            throw new Error(error.response?.data.error)
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.message)
         }
     }
 }

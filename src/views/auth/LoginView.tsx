@@ -4,7 +4,7 @@ import { toast } from "react-toastify"
 import { Link, useNavigate } from "react-router-dom"
 import ErrorMessage from "@/components/ErrorMessage"
 import { login } from "@/services/AuthService"
-import type { UserLoginForm } from "@/types/index" 
+import type { UserLoginForm } from "@/types/index"
 
 export default function LoginView() {
   const initialValues: UserLoginForm = {
@@ -12,12 +12,7 @@ export default function LoginView() {
     password: ""
   }
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch
-  } = useForm<UserLoginForm>({ defaultValues: initialValues })
+  const { register, handleSubmit, formState: { errors }, watch } = useForm<UserLoginForm>({ defaultValues: initialValues })
 
   const navigate = useNavigate()
 
