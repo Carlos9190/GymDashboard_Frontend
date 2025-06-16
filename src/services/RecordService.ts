@@ -20,10 +20,10 @@ export async function createRecord({ formData, exerciseId }: Pick<RecordService,
     }
 }
 
-export async function getRecordById({exerciseId, recordId}: Pick<RecordService, 'exerciseId' | 'recordId'>) {
+export async function getRecordById({ exerciseId, recordId }: Pick<RecordService, 'exerciseId' | 'recordId'>) {
     try {
         const url = `exercises/${exerciseId}/records/${recordId}`
-        const {data} = await api<ApiResponse>(url)
+        const { data } = await api<ApiResponse>(url)
         return data.data
     } catch (error) {
         if (isAxiosError(error) && error.response) {
@@ -32,10 +32,10 @@ export async function getRecordById({exerciseId, recordId}: Pick<RecordService, 
     }
 }
 
-export async function updateRecord({exerciseId, recordId, formData}: Pick<RecordService, 'exerciseId' | 'recordId' | 'formData'>) {
+export async function updateRecord({ exerciseId, recordId, formData }: Pick<RecordService, 'exerciseId' | 'recordId' | 'formData'>) {
     try {
         const url = `exercises/${exerciseId}/records/${recordId}`
-        const {data} = await api.put<ApiResponse>(url, formData)
+        const { data } = await api.put<ApiResponse>(url, formData)
         return data
     } catch (error) {
         if (isAxiosError(error) && error.response) {
@@ -44,10 +44,10 @@ export async function updateRecord({exerciseId, recordId, formData}: Pick<Record
     }
 }
 
-export async function deleteRecord({exerciseId, recordId}: Pick<RecordService, 'exerciseId' | 'recordId'>) {
+export async function deleteRecord({ exerciseId, recordId }: Pick<RecordService, 'exerciseId' | 'recordId'>) {
     try {
         const url = `exercises/${exerciseId}/records/${recordId}`
-        const {data} = await api.delete<ApiResponse>(url)
+        const { data } = await api.delete<ApiResponse>(url)
         return data
     } catch (error) {
         if (isAxiosError(error) && error.response) {

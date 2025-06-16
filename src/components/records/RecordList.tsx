@@ -44,7 +44,7 @@ export default function RecordList({ records }: RecordListProps) {
                 <td className="border border-gray-700 px-4 py-2">{record.sets}</td>
                 <td className="border border-gray-700 px-4 py-2">{record.reps}</td>
                 <td className="border border-gray-700 px-4 py-2">{record.weight} kg</td>
-                <td className="border border-gray-700 px-4 py-2">{formatDate(record.createdAt)}</td>
+                <td className="border border-gray-700 px-4 py-2">{formatDate(record.updatedAt)}</td>
                 <td className="border border-gray-700 px-4 py-2">
                   <div className="flex justify-center gap-5">
                     <button

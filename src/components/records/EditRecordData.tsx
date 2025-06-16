@@ -18,6 +18,6 @@ export default function EditRecordData() {
         retry: false
     })
 
-    if(isError) return <Navigate to={'/404'} />
+    if (isError) return <Navigate to={'/404'} />
     if (data) return <EditRecordModal data={data} recordId={recordId} />
 }
