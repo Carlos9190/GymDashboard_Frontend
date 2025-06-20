@@ -44,7 +44,7 @@ export default function EditRoutineForm({ data, routineId }: EditRoutineFormProp
     return (
         <div className="max-w-3xl mx-auto">
             <h1 className="text-5xl font-black text-center">Edit routine</h1>
-            <p className="text-2xl font-light mt-5 text-center">Fill out the following form to <span className="text-red-600">edit the routine</span></p>
+            <p className="text-2xl font-light mt-5 text-center">Fill out the following form to <span className="text-red-600 font-bold">edit the routine</span></p>
 
             <form
                 className="space-y-3 bg-transparent rounded-lg flex flex-col mx-auto w-lg py-10 "

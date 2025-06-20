@@ -1,4 +1,4 @@
-import { FaEdit, FaTrash } from "react-icons/fa"
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid"
 import { Record } from "@/types/index"
 import { formatDate } from "@/utils/datesUtils"
 import { useNavigate, useParams } from "react-router-dom"
@@ -52,14 +52,14 @@ export default function RecordList({ records }: RecordListProps) {
                       className="text-blue-400 hover:text-blue-600"
                       onClick={() => navigate(location.pathname + `?editRecord=${record._id}`)}
                     >
-                      <FaEdit size={18} />
+                      <PencilSquareIcon className="w-5 h-5" />
                     </button>
                     <button
                       type="button"
                       className="text-red-500 hover:text-red-700"
                       onClick={() => mutate({ exerciseId, recordId: record._id })}
                     >
-                      <FaTrash size={18} />
+                      <TrashIcon className="w-5 h-5" />
                     </button>
                   </div>
                 </td>

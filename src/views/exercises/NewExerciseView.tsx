@@ -34,7 +34,7 @@ export default function NewExerciseView() {
     <div className="max-w-3xl mx-auto">
       <h1 className="text-5xl font-black text-center">Register exercise</h1>
       <p className="text-2xl font-light mt-5 text-center">
-        Fill out the following form to <span className="text-red-600">register a new exercise</span>
+        Fill out the following form to <span className="text-red-600 font-bold">register a new exercise</span>
       </p>
 
       <form

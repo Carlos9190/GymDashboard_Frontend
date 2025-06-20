@@ -46,7 +46,7 @@ export default function EditExerciseForm({ data, exerciseId }: EditExerciseFormP
         <div className="max-w-3xl mx-auto">
             <h1 className="text-5xl font-black text-center">Edit exercise</h1>
             <p className="text-2xl font-light mt-5 text-center">
-                Fill out the following form to <span className="text-red-600">edit the exercise</span>
+                Fill out the following form to <span className="text-red-600 font-bold">edit the exercise</span>
             </p>
 
             <form
