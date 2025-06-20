@@ -6,8 +6,10 @@ import {
     RequestConfirmationTokenForm,
     ForgotPasswordForm,
     NewPasswordForm,
+    UpdateCurrentUserPasswordForm,
     ConfirmToken,
-    User
+    User,
+    UserProfileForm
 } from "./authTypes"
 import {
     Exercise,
@@ -26,7 +28,7 @@ import {
 } from "./recordTypes"
 
 export type { ApiResponse }
-export type { Auth, UserLoginForm, UserRegistrationForm, RequestConfirmationTokenForm, ForgotPasswordForm, NewPasswordForm, ConfirmToken, User }
+export type { Auth, UserLoginForm, UserRegistrationForm, RequestConfirmationTokenForm, ForgotPasswordForm, NewPasswordForm, UpdateCurrentUserPasswordForm, ConfirmToken, User, UserProfileForm }
 export type { Exercise, ExerciseFormData, ExerciseById, ExerciseDashboard }
 export type { Routine, RoutineCard, RoutineFormData }
 export type { Record, RecordFormData }

@@ -15,6 +15,10 @@ import EditExerciseView from "./views/exercises/EditExerciseView"
 import ExerciseDetailsView from "./views/exercises/ExerciseDetailsView"
 import EditRoutineView from "./views/routines/EditRoutineView"
 import RoutineDetailsView from "./views/routines/RoutineDetailsView"
+import ProfileView from "./views/profile/ProfileView"
+import ChangePasswordView from "./views/profile/ChangePasswordView"
+import ProfileLayout from "./layouts/ProfileLayout"
+import NotFound from "./views/404/NotFound"
 
 export default function Router() {
 
@@ -31,6 +35,11 @@ export default function Router() {
                 </Route>
 
                 <Route element={<AppLayout />}>
+                    <Route element={<ProfileLayout />}>
+                        <Route path="/profile" element={<ProfileView />} />
+                        <Route path="/profile/change-password" element={<ChangePasswordView />} />
+                    </Route>
+
                     <Route path="/" element={<RoutinesDashboardView />} index />
                     <Route path="/routines/new" element={<NewRoutineView />} />
                     <Route path="/routines/:routineId" element={<RoutineDetailsView />} />
@@ -40,6 +49,10 @@ export default function Router() {
                     <Route path="/exercises/new" element={<NewExerciseView />} />
                     <Route path="/exercises/:exerciseId" element={<ExerciseDetailsView />} />
                     <Route path="/exercises/:exerciseId/edit" element={<EditExerciseView />} />
+                </Route>
+
+                <Route element={<AuthLayout />}>
+                    <Route path="/404" element={<NotFound />} />
                 </Route>
             </Routes>
         </BrowserRouter>
