@@ -11,11 +11,13 @@ import {
     routineByIdSchema
 } from "./routineSchema"
 import {
-    recordSchema
+    recordSchema,
+    paginatedRecordSchema,
+    recordByIdSchema
 } from "./recordSchema"
 
 
 export { authSchema, userSchema }
 export { exerciseSchema, exerciseDashboardSchema, exerciseByIdSchema }
 export { routineSchema, routineExerciseFormSchema, routineDashboardSchema, routineByIdSchema }
-export { recordSchema }
+export { recordSchema, paginatedRecordSchema, recordByIdSchema }

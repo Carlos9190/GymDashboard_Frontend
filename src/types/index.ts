@@ -13,8 +13,8 @@ import {
 } from "./authTypes"
 import {
     Exercise,
-    ExerciseFormData,
     ExerciseById,
+    ExerciseFormData,
     ExerciseDashboard
 } from "./exerciseTypes"
 import {
@@ -24,6 +24,8 @@ import {
 } from "./routineTypes"
 import {
     Record,
+    RecordById,
+    RecordList,
     RecordFormData
 } from "./recordTypes"
 
@@ -31,4 +33,4 @@ export type { ApiResponse }
 export type { Auth, UserLoginForm, UserRegistrationForm, RequestConfirmationTokenForm, ForgotPasswordForm, NewPasswordForm, UpdateCurrentUserPasswordForm, ConfirmToken, User, UserProfileForm }
 export type { Exercise, ExerciseFormData, ExerciseById, ExerciseDashboard }
 export type { Routine, RoutineCard, RoutineFormData }
-export type { Record, RecordFormData }
+export type { Record, RecordById, RecordList, RecordFormData }
