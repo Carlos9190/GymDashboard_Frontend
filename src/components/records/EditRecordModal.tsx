@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Record, RecordFormData } from '@/types/index'
+import { Record, RecordById, RecordFormData } from '@/types/index'
 import { useForm } from 'react-hook-form'
 import RecordForm from './RecordForm'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
@@ -9,7 +9,7 @@ import { toast } from 'react-toastify'
 import { updateRecord } from '@/services/RecordService'
 
 type EditRecordModalProps = {
-    data: Record
+    data: RecordById
     recordId: Record['_id']
 }
 
@@ -34,7 +34,7 @@ export default function EditRecordModal({ data, recordId }: EditRecordModalProps
         onError: (error) => toast.error(error.message),
         onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ['record', recordId] })
-            queryClient.invalidateQueries({ queryKey: ['exercise', exerciseId] })
+            queryClient.invalidateQueries({ queryKey: ['records', exerciseId] })
             toast.success(data?.message)
             reset()
             navigate(location.pathname, { replace: true })

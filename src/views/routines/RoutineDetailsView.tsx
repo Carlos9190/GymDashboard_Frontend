@@ -3,9 +3,11 @@ import Spinner from "@/components/LoadingSpinner"
 import { getRoutineById } from "@/services/RoutineService"
 import { formatDays } from "@/utils/datesUtils"
 import { useQuery } from "@tanstack/react-query"
-import { Link, Navigate, useParams } from "react-router-dom"
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom"
+import ExerciseSelectorModal from "../../components/routines/ExerciseSelectorModal"
 
 export default function RoutineDetailsView() {
+    const navigate = useNavigate()
     const params = useParams()
     const routineId = params.routineId!
     const { data, isLoading, isError } = useQuery({
@@ -18,10 +20,18 @@ export default function RoutineDetailsView() {
     if (isError) return <Navigate to='/404' />
     if (data) return (
         <>
-            <Link
-                className="bg-red-600 hover:bg-red-700 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors rounded-lg"
-                to='/'
-            >&larr; Routines</Link>
+            <nav className="flex gap-3">
+                <Link
+                    className="bg-red-600 hover:bg-red-700 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors rounded-lg"
+                    to='/'
+                >&larr; Routines</Link>
+
+                <button
+                    type="button"
+                    className="bg-purple-600 hover:bg-purple-700 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors rounded-lg"
+                    onClick={() => navigate(location.pathname + '?selectExercises=true')}
+                >Select exercises</button>
+            </nav>
 
             <div className="text-4xl flex items-center gap-5 mt-10 mb-5">
                 <h1 className="font-black">{data.routineName}:</h1>
@@ -30,7 +40,8 @@ export default function RoutineDetailsView() {
                 </p>
             </div>
 
-            <ExerciseList exercises={data.exercises} routineId={routineId} />
+            <ExerciseList exercises={data.exercises} />
+            <ExerciseSelectorModal routineName={data.routineName} routineData={data.exercises} routineId={routineId} />
         </>
     )
 }

@@ -78,6 +78,18 @@ export async function updateRoutine({ formData, routineId }: Pick<RoutineService
     }
 }
 
+export async function addExerciseToRoutine({ routineId, exerciseId }: Pick<RoutineService, 'routineId' | 'exerciseId'>) {
+    try {
+        const url = `/routines/${routineId}/exercise`
+        const { data } = await api.post<ApiResponse>(url, { exerciseId })
+        return data
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.message)
+        }
+    }
+}
+
 export async function removeExerciseFromRoutine({ routineId, exerciseId }: Pick<RoutineService, 'routineId' | 'exerciseId'>) {
     try {
         const url = `/routines/${routineId}/exercise`

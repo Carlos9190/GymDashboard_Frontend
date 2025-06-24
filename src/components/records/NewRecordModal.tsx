@@ -34,7 +34,7 @@ export default function AddRecordModal() {
         mutationFn: createRecord,
         onError: (error) => toast.error(error.message),
         onSuccess: (data) => {
-            queryClient.invalidateQueries({ queryKey: ['exercise', exerciseId] })
+            queryClient.invalidateQueries({ queryKey: ['records', exerciseId] })
             toast.success(data?.message)
             reset()
             navigate(location.pathname, { replace: true })
