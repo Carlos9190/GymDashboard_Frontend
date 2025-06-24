@@ -4,43 +4,42 @@ import { useForm } from "react-hook-form"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { updateExercise } from "@/services/ExerciseService"
 import { toast } from "react-toastify"
-import type { Exercise, ExerciseByIdResponse, ExerciseFormData } from "@/types/index"
+import type { Exercise, ExerciseById, ExerciseFormData } from "@/types/index"
 
 type EditExerciseFormProps = {
-    data: ExerciseByIdResponse
+    data: ExerciseById
     exerciseId: Exercise['_id']
 }
 
 export default function EditExerciseForm({ data, exerciseId }: EditExerciseFormProps) {
-    const initialValues: ExerciseFormData = {
-        exerciseName: data.exerciseName,
-        file: null,
-        routineId: null
-    }
-
-    const { register, watch, handleSubmit, formState: { errors }, setValue } = useForm<ExerciseFormData>({ defaultValues: initialValues })
+    const { register, watch, reset, handleSubmit, formState: { errors }, setValue } = useForm<ExerciseFormData>({
+        defaultValues: {
+            exerciseName: data.exerciseName,
+            file: null,
+            routineId: null
+        }
+    })
 
     const navigate = useNavigate()
     const queryClient = useQueryClient()
-
     const { mutate } = useMutation({
         mutationFn: updateExercise,
         onError: (error) => toast.error(error.message),
         onSuccess: (data) => {
-            queryClient.invalidateQueries({ queryKey: ['exercises'] })
             queryClient.invalidateQueries({ queryKey: ['formRoutines'] })
             queryClient.invalidateQueries({ queryKey: ['editExercise', exerciseId] })
             toast.success(data?.message)
+            reset()
             navigate('/exercises')
         }
     })
 
     const handleForm = (formData: ExerciseFormData) => {
-        const payload = {
+        const data = {
             formData,
             exerciseId
         }
-        mutate(payload)
+        mutate(data)
     }
 
     return (

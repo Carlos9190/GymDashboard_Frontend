@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { deleteExercise } from "@/services/ExerciseService"
 import Spinner from "@/components/LoadingSpinner"
 import { toast } from "react-toastify"
-import { getRoutines } from "@/services/RoutineService"
+import { deleteRoutine, getRoutines } from "@/services/RoutineService"
 import RoutineCard from "@/components/routines/RoutineCard"
 
 export default function RoutineDashboardView() {
@@ -15,7 +14,7 @@ export default function RoutineDashboardView() {
 
   const queryClient = useQueryClient()
   const { mutate } = useMutation({
-    mutationFn: deleteExercise,
+    mutationFn: deleteRoutine,
     onError: (error) => toast.error(error.message),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['routines'] })

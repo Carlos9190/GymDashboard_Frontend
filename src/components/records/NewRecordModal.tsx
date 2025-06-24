@@ -2,7 +2,7 @@ import { Fragment } from 'react'
 import { Dialog, Transition, TransitionChild, DialogPanel, DialogTitle } from '@headlessui/react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import RecordForm from './RecordForm'
-import { RecordFormData } from '@/types/recordTypes'
+import { RecordFormData } from '@/types/index'
 import { useForm } from 'react-hook-form'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createRecord } from '@/services/RecordService'
@@ -34,7 +34,7 @@ export default function AddRecordModal() {
         mutationFn: createRecord,
         onError: (error) => toast.error(error.message),
         onSuccess: (data) => {
-            queryClient.invalidateQueries({queryKey: ['exercise', exerciseId]})
+            queryClient.invalidateQueries({ queryKey: ['exercise', exerciseId] })
             toast.success(data?.message)
             reset()
             navigate(location.pathname, { replace: true })

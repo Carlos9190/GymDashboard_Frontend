@@ -12,7 +12,7 @@ export default function ExerciseDetailsView() {
   const exerciseId = params.exerciseId!
   const { data, isLoading, isError } = useQuery({
     queryKey: ['exercise', exerciseId],
-    queryFn: () => getExerciseById(exerciseId),
+    queryFn: () => getExerciseById({ exerciseId }),
     retry: false
   })
 

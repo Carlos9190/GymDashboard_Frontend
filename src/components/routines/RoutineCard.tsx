@@ -3,20 +3,20 @@ import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
 import { formatDays } from '@/utils/datesUtils'
 import { Fragment } from 'react/jsx-runtime'
 import { Link } from 'react-router-dom'
-import { Routine } from '@/types/routineTypes'
-import { ApiResponse } from '@/types/responseType'
+import type { ApiResponse, RoutineCard } from '@/types/index'
 import { UseMutateFunction } from '@tanstack/react-query'
+import { RoutineService } from '@/services/RoutineService'
 
 type RoutineCardProps = {
-    routine: Routine
-    mutate: UseMutateFunction<ApiResponse | undefined, Error, string, unknown>
+    routine: RoutineCard
+    mutate: UseMutateFunction<ApiResponse | undefined, Error, Pick<RoutineService, "routineId">, unknown>
 }
 
 export default function RoutineCard({ routine, mutate }: RoutineCardProps) {
     return (
         <div className="border border-gray-100 bg-white shadow-lg p-6 rounded-lg flex justify-between">
             <div className="space-y-2">
-                <Link to={``}
+                <Link to={`/routines/${routine._id}`}
                     className="text-gray-600 cursor-pointer hover:underline text-2xl font-bold"
                 >
                     {routine.routineName}
@@ -41,12 +41,12 @@ export default function RoutineCard({ routine, mutate }: RoutineCardProps) {
                     >
                         <MenuItems className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
                             <MenuItem>
-                                <Link to={``} className="block px-3 py-1 text-sm leading-6 text-gray-900">
+                                <Link to={`/routines/${routine._id}`} className="block px-3 py-1 text-sm leading-6 text-gray-900">
                                     View routine
                                 </Link>
                             </MenuItem>
                             <MenuItem>
-                                <Link to={``} className="block px-3 py-1 text-sm leading-6 text-gray-900">
+                                <Link to={`/routines/${routine._id}/edit`} className="block px-3 py-1 text-sm leading-6 text-gray-900">
                                     Edit routine
                                 </Link>
                             </MenuItem>
@@ -54,7 +54,7 @@ export default function RoutineCard({ routine, mutate }: RoutineCardProps) {
                                 <button
                                     type="button"
                                     className="block px-3 py-1 text-sm leading-6 text-red-500"
-                                    onClick={() => mutate(routine._id)}
+                                    onClick={() => mutate({routineId: routine._id})}
                                 >
                                     Delete routine
                                 </button>

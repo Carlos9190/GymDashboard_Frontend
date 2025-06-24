@@ -14,13 +14,7 @@ export default function RegisterView() {
         password_confirmation: ""
     }
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        watch,
-        reset
-    } = useForm<UserRegistrationForm>({ defaultValues: initialValues })
+    const { register, handleSubmit, formState: { errors }, watch, reset } = useForm<UserRegistrationForm>({ defaultValues: initialValues })
 
     const password = watch("password")
 

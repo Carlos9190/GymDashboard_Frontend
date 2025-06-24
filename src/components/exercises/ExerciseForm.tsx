@@ -1,13 +1,13 @@
 import { FieldErrors, UseFormRegister, UseFormWatch, UseFormSetValue } from "react-hook-form"
 import ErrorMessage from "../ErrorMessage"
-import { ExerciseByIdResponse, ExerciseFormData } from "@/types/index"
+import { ExerciseById, ExerciseFormData } from "@/types/index"
 import { useQuery } from "@tanstack/react-query"
-import { getRoutines } from "@/services/RoutineService"
+import { getFormRoutines } from "@/services/RoutineService"
 import Spinner from "../LoadingSpinner"
 import { useEffect } from "react"
 
 type ExerciseFormProps = {
-    exercise?: ExerciseByIdResponse
+    exercise?: ExerciseById
     register: UseFormRegister<ExerciseFormData>
     watch: UseFormWatch<ExerciseFormData>
     setValue: UseFormSetValue<ExerciseFormData>
@@ -17,7 +17,7 @@ type ExerciseFormProps = {
 export default function ExerciseForm({ exercise, register, watch, errors, setValue }: ExerciseFormProps) {
     const { data, isLoading } = useQuery({
         queryKey: ['formRoutines'],
-        queryFn: getRoutines
+        queryFn: getFormRoutines
     })
 
     const routineIdValue = watch("routineId") || ""

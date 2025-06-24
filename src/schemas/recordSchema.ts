@@ -6,5 +6,5 @@ export const recordSchema = z.object({
     reps: z.number(),
     weight: z.number(),
     exercise: z.string(),
-    createdAt: z.string()
+    updatedAt: z.string()
 })

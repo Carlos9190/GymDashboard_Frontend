@@ -10,12 +10,7 @@ export default function RequestNewTokenView() {
         email: ''
     }
 
-    const {
-        register,
-        handleSubmit,
-        reset,
-        formState: { errors }
-    } = useForm({ defaultValues: initialValues })
+    const { register, handleSubmit, reset, formState: { errors } } = useForm({ defaultValues: initialValues })
 
     const { mutate } = useMutation({
         mutationFn: requestNewToken,

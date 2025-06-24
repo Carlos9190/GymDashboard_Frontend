@@ -14,7 +14,7 @@ export default function NavMenu({ name }: NavMenuProps) {
     const queryClient = useQueryClient()
     const logout = () => {
         localStorage.removeItem('AUTH_TOKEN')
-        queryClient.invalidateQueries({queryKey: ['user']})
+        queryClient.invalidateQueries({ queryKey: ['user'] })
     }
 
     return (
@@ -48,8 +48,8 @@ export default function NavMenu({ name }: NavMenuProps) {
                             className='block p-2 hover:text-red-600'
                         >Exercises</Link>
                         <button
-                            className='block p-2 hover:text-red-600'
                             type='button'
+                            className='block p-2 hover:text-red-600'
                             onClick={logout}
                         >
                             Log out
