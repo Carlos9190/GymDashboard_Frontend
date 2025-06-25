@@ -1,11 +1,13 @@
 import { isAxiosError } from "axios"
 import api from "@/lib/axios"
 import type { ApiResponse, Exercise, Record, RecordFormData } from "@/types/index"
+import { recordByIdSchema, paginatedRecordSchema } from "@/schemas/index"
 
 type RecordService = {
     formData: RecordFormData
     exerciseId: Exercise['_id']
     recordId: Record['_id']
+    page: string
 }
 
 export async function createRecord({ formData, exerciseId }: Pick<RecordService, 'formData' | 'exerciseId'>) {
@@ -24,7 +26,25 @@ export async function getRecordById({ exerciseId, recordId }: Pick<RecordService
     try {
         const url = `exercises/${exerciseId}/records/${recordId}`
         const { data } = await api<ApiResponse>(url)
-        return data.data
+        const response = recordByIdSchema.safeParse(data.data)
+        if (response.success) {
+            return response.data
+        }
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.message)
+        }
+    }
+}
+
+export async function getRecords({ exerciseId, page }: Pick<RecordService, 'exerciseId' | 'page'>) {
+    try {
+        const url = `exercises/${exerciseId}/records?page=${page}`
+        const { data } = await api<ApiResponse>(url)
+        const response = paginatedRecordSchema.safeParse(data.data)
+        if (response.success) {
+            return response.data
+        }
     } catch (error) {
         if (isAxiosError(error) && error.response) {
             throw new Error(error.response.data.message)

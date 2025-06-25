@@ -7,5 +7,8 @@ export type UserRegistrationForm = Pick<Auth, 'name' | 'email' | 'password' | 'p
 export type RequestConfirmationTokenForm = Pick<Auth, 'email'>
 export type ForgotPasswordForm = Pick<Auth, 'email'>
 export type NewPasswordForm = Pick<Auth, 'password' | 'password_confirmation'>
+export type UpdateCurrentUserPasswordForm = Pick<Auth, 'current_password' | 'password' | 'password_confirmation'>
 export type ConfirmToken = Pick<Auth, 'token'>
+
 export type User = z.infer<typeof userSchema>
+export type UserProfileForm = Pick<User, 'name'>

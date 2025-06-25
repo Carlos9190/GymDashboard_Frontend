@@ -21,6 +21,5 @@ export const exerciseDashboardSchema = z.array(
 export const exerciseByIdSchema = z.object({
     _id: z.string(),
     exerciseName: z.string(),
-    exerciseImage: z.string(),
-    records: z.array(recordSchema)
+    exerciseImage: z.string()
 })

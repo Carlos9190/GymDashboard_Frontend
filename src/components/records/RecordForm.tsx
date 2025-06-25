@@ -79,7 +79,6 @@ export default function RecordForm({ errors, register }: TaskFormProps) {
                 </label>
                 {errors.weight && <ErrorMessage>{errors.weight.message}</ErrorMessage>}
             </div>
-
         </>
     )
 }

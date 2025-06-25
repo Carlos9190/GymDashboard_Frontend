@@ -14,16 +14,10 @@ export default function NewPasswordForm({ token }: NewPasswordFormProps) {
     const navigate = useNavigate()
     const initialValues: NewPasswordForm = {
         password: '',
-        password_confirmation: '',
+        password_confirmation: ''
     }
 
-    const {
-        register,
-        handleSubmit,
-        watch,
-        reset,
-        formState: { errors }
-    } = useForm({ defaultValues: initialValues })
+    const { register, handleSubmit, watch, reset, formState: { errors } } = useForm({ defaultValues: initialValues })
 
     const { mutate } = useMutation({
         mutationFn: updatePasswordWithToken,

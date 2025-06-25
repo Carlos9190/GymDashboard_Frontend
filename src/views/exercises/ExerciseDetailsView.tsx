@@ -20,20 +20,21 @@ export default function ExerciseDetailsView() {
   if (isError) return <Navigate to='/404' />
   if (data) return (
     <>
-      <Link
-        className="bg-red-600 hover:bg-red-700 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors rounded-lg"
-        to='/exercises'
-      >&larr; Exercises</Link>
+      <nav className="flex gap-3">
+        <Link
+          className="bg-red-600 hover:bg-red-700 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors rounded-lg"
+          to='/exercises'
+        >&larr; Exercises</Link>
 
-      <h1 className="text-4xl font-black mt-10 mb-5">{data.exerciseName}</h1>
-
-      <nav className="flex gap-3 mb-5">
         <button
           type="button"
           className="bg-purple-600 hover:bg-purple-700 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors rounded-lg"
           onClick={() => navigate(location.pathname + '?newRecord=true')}
         >New record</button>
       </nav>
+
+      <h1 className="text-4xl font-black mt-10 mb-5">{data.exerciseName}</h1>
+
 
       <div className="flex items-center space-x-3">
         <div className="max-w-xl bg-transparent rounded-lg">
@@ -44,9 +45,7 @@ export default function ExerciseDetailsView() {
           />
         </div>
 
-        <RecordList
-          records={data.records}
-        />
+        <RecordList exerciseId={exerciseId} />
       </div>
 
       <AddRecordModal />

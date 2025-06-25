@@ -10,8 +10,8 @@ type ExerciseFormProps = {
     exercise?: ExerciseById
     register: UseFormRegister<ExerciseFormData>
     watch: UseFormWatch<ExerciseFormData>
-    setValue: UseFormSetValue<ExerciseFormData>
     errors: FieldErrors<ExerciseFormData>
+    setValue: UseFormSetValue<ExerciseFormData>
 }
 
 export default function ExerciseForm({ exercise, register, watch, errors, setValue }: ExerciseFormProps) {

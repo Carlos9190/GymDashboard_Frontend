@@ -1,25 +1,11 @@
-import { removeExerciseFromRoutine } from "@/services/RoutineService"
-import { ExerciseDashboard, Routine } from "@/types/index"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { ExerciseDashboard } from "@/types/index"
 import { Link } from "react-router-dom"
-import { toast } from "react-toastify"
 
 type ExerciseListProps = {
   exercises: ExerciseDashboard
-  routineId: Routine['_id']
 }
 
-export default function ExerciseList({ exercises, routineId }: ExerciseListProps) {
-  const queryClient = useQueryClient()
-  const { mutate } = useMutation({
-    mutationFn: removeExerciseFromRoutine,
-    onError: (error) => toast.error(error.message),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['routine', routineId] })
-      toast.success(data?.message)
-    }
-  })
-
+export default function ExerciseList({ exercises }: ExerciseListProps) {
   return (
     <>
       {exercises.length ? (
@@ -34,36 +20,21 @@ export default function ExerciseList({ exercises, routineId }: ExerciseListProps
                 alt={exercise.exerciseName}
                 className="w-full h-2/3 object-cover"
               />
+              <div className="w-full text-center mt-2 flex flex-col">
+                <p className="mt-2 text-sm text-black font-semibold mb-2">{exercise.exerciseName}</p>
 
-              <div className="w-full text-center mt-2">
-                <p className="text-sm text-black font-semibold mb-2">{exercise.exerciseName}</p>
-
-                <div className="flex justify-between gap-2">
-                  <Link
-                    to={`/exercises/${exercise._id}`}
-                    className="text-xs bg-blue-100 text-blue-600 px-3 py-1 rounded-sm hover:bg-blue-200 transition w-full"
-                  >
-                    View records
-                  </Link>
-                  <button
-                    type='button'
-                    onClick={() => mutate({ routineId, exerciseId: exercise._id })}
-                    className="text-xs bg-red-100 text-red-600 px-3 py-1 rounded-sm hover:bg-red-200 transition w-full"
-                  >
-                    Remove from routine
-                  </button>
-                </div>
+                <Link
+                  to={`/exercises/${exercise._id}`}
+                  className="w-full text-xs bg-blue-100 text-blue-600 px-3 py-1 rounded-sm hover:bg-blue-200 transition"
+                >
+                  View records
+                </Link>
               </div>
             </li>
           ))}
         </ul>
-      ) : ( //TODO:
-        <p className="text-center py-20">No exercises yet {''}
-          <Link
-            className="text-red-600 hover:underline"
-            to={'/exercises/new'}
-          >Register exercise</Link>
-        </p>
+      ) : (
+        <p className="text-center py-20">No exercises yet for this routine</p>
       )}
     </>
   )
