@@ -20,7 +20,7 @@ export default function RecordList({ exerciseId }: RecordListProps) {
 
   // TODO: Check how to keep data staled
   const { data } = useQuery({
-    queryKey: ['records', exerciseId, page],
+    queryKey: ['records', `${exerciseId}-${page}`],
     queryFn: () => getRecords({ exerciseId, page }),
     retry: false
   })
