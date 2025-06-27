@@ -63,7 +63,7 @@ export default function NewPasswordForm({ token }: NewPasswordFormProps) {
                     htmlFor="password"
                     className={`absolute left-3 transition-all ${errors.password ? "text-red-600" : "text-gray-500"} peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-focus:top-1 peer-focus:text-sm peer-focus:text-red-600`}
                 >
-                    Password
+                    New password
                 </label>
                 {errors.password && (
                     <ErrorMessage>{errors.password.message}</ErrorMessage>

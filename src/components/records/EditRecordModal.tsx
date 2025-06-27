@@ -34,7 +34,7 @@ export default function EditRecordModal({ data, recordId }: EditRecordModalProps
         onError: (error) => toast.error(error.message),
         onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ['record', recordId] })
-            queryClient.invalidateQueries({ queryKey: ['records', exerciseId] })
+            queryClient.invalidateQueries({ queryKey: ['records'], exact: false })
             toast.success(data?.message)
             reset()
             navigate(location.pathname, { replace: true })
