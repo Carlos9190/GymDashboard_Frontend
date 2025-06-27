@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { exerciseDashboardSchema } from "./exerciseSchema"
+import { exerciseDashboardSchema, exerciseOrderSchema } from "./exerciseSchema"
 
 export const routineSchema = z.object({
     _id: z.string(),
@@ -28,5 +28,6 @@ export const routineByIdSchema = z.object({
     _id: z.string(),
     routineName: z.string(),
     routineDays: z.array(z.string()),
-    exercises: exerciseDashboardSchema
+    exercises: exerciseDashboardSchema,
+    exerciseOrder: exerciseOrderSchema
 })

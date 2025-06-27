@@ -1,12 +1,13 @@
 import { isAxiosError } from "axios"
 import api from "@/lib/axios"
-import { ApiResponse, Exercise, Routine, RoutineFormData } from "@/types/index"
+import { ApiResponse, Exercise, ExerciseOrder, Routine, RoutineFormData } from "@/types/index"
 import { routineByIdSchema, routineDashboardSchema, routineExerciseFormSchema } from "@/schemas/index"
 
 export type RoutineService = {
     formData: RoutineFormData
     routineId: Routine['_id']
     exerciseId: Exercise['_id']
+    orderedExerciseIds: ExerciseOrder
 }
 
 export async function createRoutine({ formData }: Pick<RoutineService, 'formData'>) {
@@ -82,6 +83,18 @@ export async function addExerciseToRoutine({ routineId, exerciseId }: Pick<Routi
     try {
         const url = `/routines/${routineId}/exercise`
         const { data } = await api.post<ApiResponse>(url, { exerciseId })
+        return data
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.message)
+        }
+    }
+}
+
+export async function reorderRoutineExercises({ routineId, orderedExerciseIds }: Pick<RoutineService, 'routineId' | 'orderedExerciseIds'>) {
+    try {
+        const url = `/routines/${routineId}/reorderExercises`
+        const { data } = await api.patch<ApiResponse>(url, { orderedExerciseIds })
         return data
     } catch (error) {
         if (isAxiosError(error) && error.response) {

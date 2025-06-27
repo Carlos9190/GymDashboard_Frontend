@@ -10,6 +10,8 @@ export const exerciseSchema = z.object({
     records: z.array(recordSchema)
 })
 
+export const exerciseOrderSchema = z.array(z.string())
+
 export const exerciseDashboardSchema = z.array(
     exerciseSchema.pick({
         _id: true,
