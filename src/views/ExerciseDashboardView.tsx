@@ -1,11 +1,13 @@
+import { useState } from 'react'
 import { Link } from "react-router-dom"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { deleteExercise, getExercises } from "@/services/ExerciseService"
 import Spinner from "@/components/LoadingSpinner"
 import { toast } from "react-toastify"
+import ConfirmDeleteModal from '@/components/ConfirmDeleteModal'
 
 export default function ExercisesDashboardView() {
-
+  const [selectedExercise, setSelectedExercise] = useState<{ _id: string, name: string } | null>(null)
   const { data, isLoading } = useQuery({
     queryKey: ['exercises'],
     queryFn: getExercises
@@ -20,6 +22,13 @@ export default function ExercisesDashboardView() {
       toast.success(data?.message)
     }
   })
+
+  const confirmDelete = () => {
+    if (selectedExercise) {
+      mutate({ exerciseId: selectedExercise._id })
+      setSelectedExercise(null)
+    }
+  }
 
   if (isLoading) return <Spinner />
   if (data) return (
@@ -64,12 +73,20 @@ export default function ExercisesDashboardView() {
                     Edit
                   </Link>
                   <button
-                    type='button'
-                    onClick={() => mutate({ exerciseId: exercise._id })}
+                    type="button"
+                    onClick={() => setSelectedExercise({ _id: exercise._id, name: exercise.exerciseName })}
                     className="text-xs bg-red-100 text-red-600 px-3 py-1 rounded-sm hover:bg-red-200 transition w-full"
                   >
                     Delete
                   </button>
+
+                  <ConfirmDeleteModal
+                    isOpen={!!selectedExercise}
+                    onClose={() => setSelectedExercise(null)}
+                    onConfirm={confirmDelete}
+                    title="Delete exercise"
+                    description={`Are you sure you want to delete "${selectedExercise?.name}"? This action will remove the exercise and all its records permanently.`}
+                  />
                 </div>
               </div>
             </li>
