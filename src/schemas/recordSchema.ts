@@ -6,7 +6,7 @@ export const recordSchema = z.object({
     reps: z.number(),
     weight: z.number(),
     exercise: z.string(),
-    updatedAt: z.string()
+    createdAt: z.string()
 })
 
 const recordListSchema = z.array(
@@ -15,7 +15,7 @@ const recordListSchema = z.array(
         sets: true,
         reps: true,
         weight: true,
-        updatedAt: true
+        createdAt: true
     })
 )
 

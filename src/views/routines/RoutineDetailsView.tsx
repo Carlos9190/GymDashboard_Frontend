@@ -39,8 +39,8 @@ export default function RoutineDetailsView() {
                     {formatDays(data.routineDays)}
                 </p>
             </div>
-
-            <ExerciseList exercises={data.exercises} />
+            
+            <ExerciseList exercises={data.exercises} order={data.exerciseOrder} routineId={routineId}/>
             <ExerciseSelectorModal routineName={data.routineName} routineData={data.exercises} routineId={routineId} />
         </>
     )

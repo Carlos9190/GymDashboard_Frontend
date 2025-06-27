@@ -79,7 +79,7 @@ export default function ChangePasswordView() {
               htmlFor="password"
               className={`absolute left-3 transition-all ${watch("password") ? "top-1 text-sm text-red-600" : "top-3.5 text-gray-500"} peer-focus:top-1 peer-focus:text-sm peer-focus:text-red-600`}
             >
-              Password
+              New password
             </label>
             {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
           </div>

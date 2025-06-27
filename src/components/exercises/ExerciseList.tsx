@@ -1,41 +1,59 @@
-import { ExerciseDashboard } from "@/types/index"
-import { Link } from "react-router-dom"
+import ExerciseCard from "@/components/exercises/ExerciseCard"
+import { reorderRoutineExercises } from "@/services/RoutineService"
+import { ExerciseDashboard, ExerciseOrder, Routine } from "@/types/index"
+import {DndContext, DragEndEvent, closestCenter} from "@dnd-kit/core"
+import {SortableContext, horizontalListSortingStrategy, arrayMove} from "@dnd-kit/sortable"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 type ExerciseListProps = {
   exercises: ExerciseDashboard
+  order: ExerciseOrder
+  routineId: Routine['_id']
 }
 
-export default function ExerciseList({ exercises }: ExerciseListProps) {
+export default function ExerciseList({ exercises, order, routineId }: ExerciseListProps) {
+  const queryClient = useQueryClient()
+      const { mutate } = useMutation({
+          mutationFn: reorderRoutineExercises,
+          onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['routine', routineId] })
+          }
+      })
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event
+
+    if (over && over.id) {
+      const prevIndex = order.findIndex(id => id === active.id)
+      const newIndex = order.findIndex(id => id === over.id)
+
+      const orderedExerciseIds = arrayMove(order, prevIndex, newIndex)
+      mutate({ routineId, orderedExerciseIds })
+    }
+  }
+
   return (
     <>
-      {exercises.length ? (
-        <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10">
-          {exercises.map((exercise) => (
-            <li
-              key={exercise._id}
-              className="bg-white rounded-2xl shadow-md overflow-hidden aspect-square flex flex-col items-center justify-between p-4"
+        {exercises.length ? (
+          <DndContext
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10">
+              <SortableContext
+              items={order}
+              strategy={horizontalListSortingStrategy}
             >
-              <img
-                src={exercise.exerciseImage || "/default-image.webp"}
-                alt={exercise.exerciseName}
-                className="w-full h-2/3 object-cover"
-              />
-              <div className="w-full text-center mt-2 flex flex-col">
-                <p className="mt-2 text-sm text-black font-semibold mb-2">{exercise.exerciseName}</p>
-
-                <Link
-                  to={`/exercises/${exercise._id}`}
-                  className="w-full text-xs bg-blue-100 text-blue-600 px-3 py-1 rounded-sm hover:bg-blue-200 transition"
-                >
-                  View records
-                </Link>
-              </div>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="text-center py-20">No exercises yet for this routine</p>
-      )}
+              {order.map(id => {
+                const exercise = exercises.find(exercise => exercise._id === id)!
+                return <ExerciseCard key={id} exercise={exercise} />
+              })}
+            </SortableContext>
+            </ul>
+          </DndContext>
+        ) : (
+          <p className="text-center py-20">No exercises yet for this routine</p>
+        )}
     </>
   )
 }

@@ -1,6 +1,7 @@
 import { authSchema, userSchema } from "./authSchema"
 import {
     exerciseSchema,
+    exerciseOrderSchema,
     exerciseDashboardSchema,
     exerciseByIdSchema
 } from "./exerciseSchema"
@@ -18,6 +19,6 @@ import {
 
 
 export { authSchema, userSchema }
-export { exerciseSchema, exerciseDashboardSchema, exerciseByIdSchema }
+export { exerciseSchema, exerciseOrderSchema, exerciseDashboardSchema, exerciseByIdSchema }
 export { routineSchema, routineExerciseFormSchema, routineDashboardSchema, routineByIdSchema }
 export { recordSchema, paginatedRecordSchema, recordByIdSchema }

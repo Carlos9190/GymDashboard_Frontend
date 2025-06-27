@@ -6,6 +6,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { deleteRecord, getRecords } from "@/services/RecordService"
 import { toast } from "react-toastify"
 import RecordsPagination from "./RecordsPagination"
+import Spinner from "@/components/LoadingSpinner"
 
 type RecordListProps = {
   exerciseId: Exercise['_id']
@@ -13,13 +14,11 @@ type RecordListProps = {
 
 export default function RecordList({ exerciseId }: RecordListProps) {
   const navigate = useNavigate()
-
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
   const page = queryParams.get('page') || '1'
 
-  // TODO: Check how to keep data staled
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['records', `${exerciseId}-${page}`],
     queryFn: () => getRecords({ exerciseId, page }),
     retry: false
@@ -30,11 +29,12 @@ export default function RecordList({ exerciseId }: RecordListProps) {
     mutationFn: deleteRecord,
     onError: (error) => toast.error(error.message),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['records', exerciseId] })
+      queryClient.invalidateQueries({ queryKey: ['records'], exact: false })
       toast.success(data?.message)
     }
   })
 
+  if (isLoading) return <Spinner />
   if (+page <= 0 || (data && data.totalPages > 0 && data.page > data.totalPages)) return <Navigate to={`/exercises/${exerciseId}`} />
   if (data) return (
     <div className="overflow-x-auto w-full">
@@ -56,7 +56,7 @@ export default function RecordList({ exerciseId }: RecordListProps) {
                   <td className="border border-gray-700 px-4 py-2">{record.sets}</td>
                   <td className="border border-gray-700 px-4 py-2">{record.reps}</td>
                   <td className="border border-gray-700 px-4 py-2">{record.weight} kg</td>
-                  <td className="border border-gray-700 px-4 py-2">{formatDate(record.updatedAt)}</td>
+                  <td className="border border-gray-700 px-4 py-2">{formatDate(record.createdAt)}</td>
                   <td className="border border-gray-700 px-4 py-2">
                     <div className="flex justify-center gap-5">
                       <button
