@@ -28,7 +28,12 @@ export default function ExerciseForm({ exercise, register, watch, errors, setVal
     useEffect(() => {
         if (exercise?._id && data?.length) {
             const defaultRoutineIds = data
-                .filter(routine => routine.exercises.includes(exercise._id))
+                .filter(routine =>
+                    routine.exercises.some(exercises => {
+                        const routineExerciseId = typeof exercises.exercise === "string" ? exercises.exercise : exercises.exercise
+                        return routineExerciseId === exercise._id
+                    })
+                )
                 .map(routine => routine._id)
 
             const currentIds = watch("routineId")

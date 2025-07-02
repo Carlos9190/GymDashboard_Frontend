@@ -22,6 +22,7 @@ import {
 import {
     Routine,
     RoutineCard,
+    RoutineDetails,
     RoutineFormData
 } from "./routineTypes"
 import {
@@ -34,5 +35,5 @@ import {
 export type { ApiResponse }
 export type { Auth, UserLoginForm, UserRegistrationForm, RequestConfirmationTokenForm, ForgotPasswordForm, NewPasswordForm, UpdateCurrentUserPasswordForm, ConfirmToken, User, UserProfileForm }
 export type { Exercise, ExerciseFormData, ExerciseById, ExerciseOrder, ExerciseDashboard, ExerciseCard }
-export type { Routine, RoutineCard, RoutineFormData }
+export type { Routine, RoutineCard, RoutineDetails, RoutineFormData }
 export type { Record, RecordById, RecordList, RecordFormData }
