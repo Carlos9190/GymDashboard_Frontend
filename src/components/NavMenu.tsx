@@ -39,7 +39,7 @@ export default function NavMenu({ name }: NavMenuProps) {
                             className='block p-2 hover:text-red-600'
                         >Profile</Link>
                         <Link
-                            to='/'
+                            to='/routines'
                             className='block p-2 hover:text-red-600'
                         >Routines</Link>
                         <Link
@@ -50,7 +50,7 @@ export default function NavMenu({ name }: NavMenuProps) {
                             type="button"
                             className="block p-2 hover:text-red-600 font-bold cursor-pointer"
                             onClick={logout}
-                            >
+                        >
                             Log out
                         </button>
                     </div>
