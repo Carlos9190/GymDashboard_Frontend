@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createRecord } from '@/services/RecordService'
 import { toast } from 'react-toastify'
+import SubmitButton from '@/components/SubmitButton'
 
 export default function AddRecordModal() {
     const navigate = useNavigate()
@@ -30,7 +31,7 @@ export default function AddRecordModal() {
     const { register, handleSubmit, reset, formState: { errors } } = useForm({ defaultValues: initialValues })
 
     const queryClient = useQueryClient()
-    const { mutate } = useMutation({
+    const { mutate, isPending } = useMutation({
         mutationFn: createRecord,
         onError: (error) => toast.error(error.message),
         onSuccess: (data) => {
@@ -98,11 +99,7 @@ export default function AddRecordModal() {
                                             errors={errors}
                                         />
 
-                                        <input
-                                            type="submit"
-                                            value="Save record"
-                                            className="bg-red-600 hover:bg-red-700 transition-colors w-full p-3 text-white font-black text-xl cursor-pointer rounded-4xl mt-2"
-                                        />
+                                        <SubmitButton value="Register record" isLoading={isPending} />
                                     </form>
 
                                 </DialogPanel>

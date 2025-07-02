@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { updateRoutine } from "@/services/RoutineService"
 import { toast } from "react-toastify"
+import SubmitButton from "@/components/SubmitButton"
 
 type EditRoutineFormProps = {
     data: RoutineFormData
@@ -21,7 +22,7 @@ export default function EditRoutineForm({ data, routineId }: EditRoutineFormProp
 
     const navigate = useNavigate()
     const queryClient = useQueryClient()
-    const { mutate } = useMutation({
+    const { mutate, isPending } = useMutation({
         mutationFn: updateRoutine,
         onError: (error) => toast.error(error.message),
         onSuccess: (data) => {
@@ -29,7 +30,7 @@ export default function EditRoutineForm({ data, routineId }: EditRoutineFormProp
             queryClient.invalidateQueries({ queryKey: ['editRoutine', routineId] })
             toast.success(data?.message)
             reset()
-            navigate('/')
+            navigate('/routines')
         }
     })
 
@@ -58,14 +59,10 @@ export default function EditRoutineForm({ data, routineId }: EditRoutineFormProp
                     errors={errors}
                 />
 
-                <input
-                    type="submit"
-                    value="Save changes"
-                    className="bg-red-600 hover:bg-red-700 transition-colors w-full p-3 text-white font-black text-xl cursor-pointer rounded-4xl mt-2"
-                />
+                <SubmitButton value="Save changes" isLoading={isPending} />
 
                 <Link
-                    to={"/"}
+                    to={"/routines"}
                     className="text-gray-300 font-normal hover:text-red-600 underline text-center"
                 >
                     Back to routines

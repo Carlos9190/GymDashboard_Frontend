@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { updateExercise } from "@/services/ExerciseService"
 import { toast } from "react-toastify"
 import type { Exercise, ExerciseById, ExerciseFormData } from "@/types/index"
+import SubmitButton from "@/components/SubmitButton"
 
 type EditExerciseFormProps = {
     data: ExerciseById
@@ -22,7 +23,7 @@ export default function EditExerciseForm({ data, exerciseId }: EditExerciseFormP
 
     const navigate = useNavigate()
     const queryClient = useQueryClient()
-    const { mutate } = useMutation({
+    const { mutate, isPending } = useMutation({
         mutationFn: updateExercise,
         onError: (error) => toast.error(error.message),
         onSuccess: (data) => {
@@ -62,11 +63,7 @@ export default function EditExerciseForm({ data, exerciseId }: EditExerciseFormP
                     errors={errors}
                 />
 
-                <input
-                    type="submit"
-                    value="Save changes"
-                    className="bg-red-600 hover:bg-red-700 transition-colors w-full p-3 text-white font-black text-xl cursor-pointer rounded-4xl mt-2"
-                />
+                <SubmitButton value="Save changes" isLoading={isPending} />
 
                 <Link
                     to="/exercises"

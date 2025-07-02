@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import ExerciseForm from "@/components/exercises/ExerciseForm"
 import { createExercise } from "@/services/ExerciseService"
 import type { ExerciseFormData } from "@/types/index"
+import SubmitButton from "@/components/SubmitButton"
 
 export default function NewExerciseView() {
   const initialValues: ExerciseFormData = {
@@ -17,12 +18,12 @@ export default function NewExerciseView() {
 
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: createExercise,
     onError: (error) => toast.error(error.message),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['exercises'] })
-        toast.success(data?.message)
+      toast.success(data?.message)
       reset()
       navigate('/exercises')
     }
@@ -49,11 +50,7 @@ export default function NewExerciseView() {
           errors={errors}
         />
 
-        <input
-          type="submit"
-          value="Register exercise"
-          className="bg-red-600 hover:bg-red-700 transition-colors w-full p-3 text-white font-black text-xl cursor-pointer rounded-4xl mt-2"
-        />
+        <SubmitButton value="Register exercise" isLoading={isPending} />
 
         <Link
           to={"/exercises"}

@@ -4,6 +4,7 @@ import { UpdateCurrentUserPasswordForm } from "@/types/index"
 import { useMutation } from "@tanstack/react-query"
 import { changePassword } from "@/services/ProfileService"
 import { toast } from "react-toastify"
+import SubmitButton from "@/components/SubmitButton"
 
 export default function ChangePasswordView() {
   const initialValues: UpdateCurrentUserPasswordForm = {
@@ -14,7 +15,7 @@ export default function ChangePasswordView() {
 
   const { register, reset, handleSubmit, watch, formState: { errors } } = useForm({ defaultValues: initialValues })
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: changePassword,
     onError: (error) => toast.error(error.message),
     onSuccess: (data) => {
@@ -107,11 +108,7 @@ export default function ChangePasswordView() {
             )}
           </div>
 
-          <input
-            type="submit"
-            value="Change password"
-            className="bg-red-600 hover:bg-red-700 transition-colors w-full p-3 text-white font-black text-xl cursor-pointer rounded-4xl mt-2"
-          />
+          <SubmitButton value="Change password" isLoading={isPending} />
         </form>
       </div>
     </>

@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query"
 import ErrorMessage from "@/components/ErrorMessage"
 import { updatePasswordWithToken } from "@/services/AuthService"
 import type { ConfirmToken, NewPasswordForm } from "@/types/index"
+import SubmitButton from "@/components/SubmitButton"
 
 type NewPasswordFormProps = {
     token: ConfirmToken['token']
@@ -19,7 +20,7 @@ export default function NewPasswordForm({ token }: NewPasswordFormProps) {
 
     const { register, handleSubmit, watch, reset, formState: { errors } } = useForm({ defaultValues: initialValues })
 
-    const { mutate } = useMutation({
+    const { mutate, isPending } = useMutation({
         mutationFn: updatePasswordWithToken,
         onError: (error) => toast.error(error.message),
         onSuccess: (data) => {
@@ -92,11 +93,7 @@ export default function NewPasswordForm({ token }: NewPasswordFormProps) {
                 )}
             </div>
 
-            <input
-                type="submit"
-                value="Set new password"
-                className="bg-red-600 hover:bg-red-700 w-full p-3 rounded-4xl text-white font-black text-xl cursor-pointer"
-            />
+            <SubmitButton value="Set new password" isLoading={isPending} />
         </form>
     )
 }

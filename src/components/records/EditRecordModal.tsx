@@ -7,6 +7,7 @@ import RecordForm from './RecordForm'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 import { updateRecord } from '@/services/RecordService'
+import SubmitButton from '@/components/SubmitButton'
 
 type EditRecordModalProps = {
     data: RecordById
@@ -29,7 +30,7 @@ export default function EditRecordModal({ data, recordId }: EditRecordModalProps
     })
 
     const queryClient = useQueryClient()
-    const { mutate } = useMutation({
+    const { mutate, isPending } = useMutation({
         mutationFn: updateRecord,
         onError: (error) => toast.error(error.message),
         onSuccess: (data) => {
@@ -98,11 +99,7 @@ export default function EditRecordModal({ data, recordId }: EditRecordModalProps
                                         errors={errors}
                                     />
 
-                                    <input
-                                        type="submit"
-                                        value="Save changes"
-                                        className="bg-red-600 hover:bg-red-700 transition-colors w-full p-3 text-white font-black text-xl cursor-pointer rounded-4xl mt-2"
-                                    />
+                                    <SubmitButton value="Save changes" isLoading={isPending} />
                                 </form>
 
                             </DialogPanel>

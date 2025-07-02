@@ -5,6 +5,7 @@ import { RoutineFormData } from "@/types/index"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { createRoutine } from "@/services/RoutineService"
 import { toast } from "react-toastify"
+import SubmitButton from "@/components/SubmitButton"
 
 export default function NewRoutineView() {
     const initialValues: RoutineFormData = {
@@ -16,14 +17,14 @@ export default function NewRoutineView() {
 
     const navigate = useNavigate()
     const queryClient = useQueryClient()
-    const { mutate } = useMutation({
+    const { mutate, isPending } = useMutation({
         mutationFn: createRoutine,
         onError: (error) => toast.error(error.message),
         onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ['routines'] })
             toast.success(data?.message)
             reset()
-            navigate('/')
+            navigate('/routines')
         }
     })
 
@@ -46,14 +47,10 @@ export default function NewRoutineView() {
                     errors={errors}
                 />
 
-                <input
-                    type="submit"
-                    value="Register routine"
-                    className="bg-red-600 hover:bg-red-700 transition-colors w-full p-3 text-white font-black text-xl cursor-pointer rounded-4xl mt-2"
-                />
+                <SubmitButton value="Register routine" isLoading={isPending} />
 
                 <Link
-                    to={"/"}
+                    to={"/routines"}
                     className="text-gray-300 font-normal hover:text-red-600 underline text-center"
                 >
                     Back to routines
