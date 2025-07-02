@@ -18,8 +18,8 @@ export default function RoutineCard({ routine, mutate }: RoutineCardProps) {
     const [showModal, setShowModal] = useState(false)
 
     const confirmDelete = () => {
-    mutate({ routineId: routine._id })
-    setShowModal(false)
+        mutate({ routineId: routine._id })
+        setShowModal(false)
     }
 
     return (
@@ -82,6 +82,6 @@ export default function RoutineCard({ routine, mutate }: RoutineCardProps) {
                 title="Delete routine"
                 description={`Are you sure you want to delete "${routine.routineName}"? This action will permanently remove the routine, but the associated exercises and their records will remain intact.`}
             />
-        </>      
+        </>
     )
 }
