@@ -9,6 +9,7 @@ import {
     routineSchema,
     routineExerciseFormSchema,
     routineDashboardSchema,
+    routineDetailsSchema,
     routineByIdSchema
 } from "./routineSchema"
 import {
@@ -20,5 +21,5 @@ import {
 
 export { authSchema, userSchema }
 export { exerciseSchema, exerciseOrderSchema, exerciseDashboardSchema, exerciseByIdSchema }
-export { routineSchema, routineExerciseFormSchema, routineDashboardSchema, routineByIdSchema }
+export { routineSchema, routineExerciseFormSchema, routineDashboardSchema, routineDetailsSchema, routineByIdSchema }
 export { recordSchema, paginatedRecordSchema, recordByIdSchema }

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom"
 import ErrorMessage from "@/components/ErrorMessage"
 import { createAccount } from "@/services/AuthService"
 import type { UserRegistrationForm } from "@/types/index"
+import SubmitButton from "@/components/SubmitButton"
 
 export default function RegisterView() {
     const initialValues: UserRegistrationForm = {
@@ -18,7 +19,7 @@ export default function RegisterView() {
 
     const password = watch("password")
 
-    const { mutate } = useMutation({
+    const { mutate, isPending } = useMutation({
         mutationFn: createAccount,
         onError: (error) => toast.error(error.message),
         onSuccess: (data) => {
@@ -128,15 +129,14 @@ export default function RegisterView() {
                     )}
                 </div>
 
-                <input
-                    type="submit"
-                    value="Register"
-                    className="bg-red-600 hover:bg-red-700 w-full p-3 text-white font-black text-xl cursor-pointer rounded-4xl mt-2"
-                />
+                <SubmitButton value="Register" isLoading={isPending} />
 
                 <p className="text-center text-gray-300 font-normal">
                     Already have an account?{" "}
-                    <Link to="/auth/login" className="hover:text-red-600 underline">
+                    <Link
+                        to="/auth/login"
+                        className="text-gray-300 font-normal hover:text-red-600 underline text-center"
+                    >
                         Log in
                     </Link>
                 </p>

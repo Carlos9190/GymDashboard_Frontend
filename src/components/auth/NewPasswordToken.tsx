@@ -51,7 +51,7 @@ export default function NewPasswordToken({ token, setToken, setIsValidToken }: N
 
                 <Link
                     to={'/auth/forgot-password'}
-                    className="text-center text-gray-300 font-normal hover:text-red-600 underline mt-4"
+                    className="text-gray-300 font-normal hover:text-red-600 underline text-center"
                 >
                     Request new token
                 </Link>

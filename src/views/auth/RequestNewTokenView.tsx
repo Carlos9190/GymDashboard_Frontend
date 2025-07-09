@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query"
 import ErrorMessage from "@/components/ErrorMessage"
 import { requestNewToken } from "@/services/AuthService"
 import type { RequestConfirmationTokenForm } from "@/types/index"
+import SubmitButton from "@/components/SubmitButton"
 
 export default function RequestNewTokenView() {
     const initialValues: RequestConfirmationTokenForm = {
@@ -12,7 +13,7 @@ export default function RequestNewTokenView() {
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm({ defaultValues: initialValues })
 
-    const { mutate } = useMutation({
+    const { mutate, isPending } = useMutation({
         mutationFn: requestNewToken,
         onError: (error) => toast.error(error.message),
         onSuccess: (data) => {
@@ -61,11 +62,7 @@ export default function RequestNewTokenView() {
                     )}
                 </div>
 
-                <input
-                    type="submit"
-                    value='Send token'
-                    className="bg-red-600 hover:bg-red-700 w-full p-3 rounded-4xl text-white font-black text-xl cursor-pointer"
-                />
+                <SubmitButton value="Send token" isLoading={isPending} />
             </form>
         </>
     )

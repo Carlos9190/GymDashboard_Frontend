@@ -1,12 +1,18 @@
 import { z } from "zod"
-import { exerciseDashboardSchema, exerciseOrderSchema } from "./exerciseSchema"
+import { exerciseByIdSchema } from "./exerciseSchema"
 
 export const routineSchema = z.object({
     _id: z.string(),
     routineName: z.string(),
     routineDays: z.array(z.string()),
-    exercises: z.array(z.string())
+    exercises: z.array(
+        z.object({
+            exercise: z.string(),
+            order: z.number()
+        })
+    )
 })
+
 
 export const routineExerciseFormSchema = z.array(
     routineSchema.pick({
@@ -24,10 +30,16 @@ export const routineDashboardSchema = z.array(
     })
 )
 
+const routineExercisePopulatedSchema = z.object({
+    exercise: exerciseByIdSchema,
+    order: z.number()
+})
+
+export const routineDetailsSchema = z.array(routineExercisePopulatedSchema)
+
 export const routineByIdSchema = z.object({
     _id: z.string(),
     routineName: z.string(),
     routineDays: z.array(z.string()),
-    exercises: exerciseDashboardSchema,
-    exerciseOrder: exerciseOrderSchema
+    exercises: z.array(routineExercisePopulatedSchema)
 })

@@ -4,6 +4,7 @@ import { User, UserProfileForm } from "@/types/index"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { updateProfile } from "@/services/ProfileService"
 import { toast } from "react-toastify"
+import SubmitButton from "@/components/SubmitButton"
 
 type ProfileFormProps = {
     data: User
@@ -13,7 +14,7 @@ export default function ProfileForm({ data }: ProfileFormProps) {
     const { register, handleSubmit, formState: { errors } } = useForm<UserProfileForm>({ defaultValues: data })
 
     const queryClient = useQueryClient()
-    const { mutate } = useMutation({
+    const { mutate, isPending } = useMutation({
         mutationFn: updateProfile,
         onError: (error) => toast.error(error.message),
         onSuccess: (data) => {
@@ -57,11 +58,7 @@ export default function ProfileForm({ data }: ProfileFormProps) {
                         {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
                     </div>
 
-                    <input
-                        type="submit"
-                        value="Save changes"
-                        className="bg-red-600 hover:bg-red-700 transition-colors w-full p-3 text-white font-black text-xl cursor-pointer rounded-4xl mt-2"
-                    />
+                    <SubmitButton value="Save changes" isLoading={isPending} />
                 </form>
             </div>
         </>

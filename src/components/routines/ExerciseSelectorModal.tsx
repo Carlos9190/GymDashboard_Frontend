@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import { Dialog, Transition, TransitionChild, DialogPanel, DialogTitle } from '@headlessui/react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { ExerciseDashboard, Routine } from '@/types/index'
+import { Routine, RoutineDetails } from '@/types/index'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { addExerciseToRoutine, removeExerciseFromRoutine } from '@/services/RoutineService'
 import { toast } from 'react-toastify'
@@ -9,7 +9,7 @@ import { getExercises } from '@/services/ExerciseService'
 
 type ExerciseSelectorModalProps = {
     routineName: Routine['routineName']
-    routineData: ExerciseDashboard
+    routineData: RoutineDetails
     routineId: Routine['_id']
 }
 
@@ -82,7 +82,8 @@ export default function ExerciseSelectorModal({ routineName, routineData, routin
                                     {data.length ? (
                                         <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10">
                                             {data.map((exercise) => {
-                                                const isInRoutine = routineData.some(e => e._id === exercise._id)
+                                                const routineExerciseIds = routineData.map(e => e.exercise._id)
+                                                const isInRoutine = routineExerciseIds.includes(exercise._id)
 
                                                 return (
                                                     <li

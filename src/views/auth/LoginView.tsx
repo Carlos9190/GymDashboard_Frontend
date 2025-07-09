@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom"
 import ErrorMessage from "@/components/ErrorMessage"
 import { login } from "@/services/AuthService"
 import type { UserLoginForm } from "@/types/index"
+import SubmitButton from "@/components/SubmitButton"
 
 export default function LoginView() {
   const initialValues: UserLoginForm = {
@@ -16,7 +17,7 @@ export default function LoginView() {
 
   const navigate = useNavigate()
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: login,
     onError: (error) => toast.error(error.message),
     onSuccess: (data) => {
@@ -84,21 +85,18 @@ export default function LoginView() {
 
         <Link
           to={"/auth/forgot-password"}
-          className="text-center text-gray-300 font-normal hover:text-red-600 underline"
+          className="text-gray-300 font-normal hover:text-red-600 underline text-center"
         >
           Forgot password?
         </Link>
 
-        <input
-          type="submit"
-          value="Log in"
-          className="bg-red-600 hover:bg-red-700 w-full p-3 text-white font-black text-xl cursor-pointer rounded-4xl mt-2"
-        />
+        <SubmitButton value="Log in" isLoading={isPending} />
+
         <p className="text-center text-gray-300 font-normal">
           Do not have an account?{" "}
           <Link
             to={"/auth/register"}
-            className="text-gray-300 font-normal hover:text-red-600 underline"
+            className="text-gray-300 font-normal hover:text-red-600 underline text-center"
           >
             Sign up
           </Link>

@@ -1,59 +1,72 @@
+import { useState, useEffect } from "react"
 import ExerciseCard from "@/components/exercises/ExerciseCard"
 import { reorderRoutineExercises } from "@/services/RoutineService"
-import { ExerciseDashboard, ExerciseOrder, Routine } from "@/types/index"
-import {DndContext, DragEndEvent, closestCenter} from "@dnd-kit/core"
-import {SortableContext, horizontalListSortingStrategy, arrayMove} from "@dnd-kit/sortable"
+import { Routine, RoutineDetails } from "@/types/index"
+import { DndContext, DragEndEvent, closestCenter } from "@dnd-kit/core"
+import { SortableContext, horizontalListSortingStrategy, arrayMove } from "@dnd-kit/sortable"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 type ExerciseListProps = {
-  exercises: ExerciseDashboard
-  order: ExerciseOrder
-  routineId: Routine['_id']
+  exercisesData: RoutineDetails
+  routineId: Routine["_id"]
 }
 
-export default function ExerciseList({ exercises, order, routineId }: ExerciseListProps) {
+export default function ExerciseList({ exercisesData, routineId }: ExerciseListProps) {
   const queryClient = useQueryClient()
-      const { mutate } = useMutation({
-          mutationFn: reorderRoutineExercises,
-          onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['routine', routineId] })
-          }
-      })
+  const [localExercises, setLocalExercises] = useState(exercisesData)
+
+  useEffect(() => {
+    setLocalExercises(exercisesData)
+  }, [exercisesData])
+
+  const { mutate } = useMutation({
+    mutationFn: reorderRoutineExercises,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["routine", routineId] })
+    }
+  })
+
+  const exerciseIdsInOrder = localExercises.map(exercises => exercises.exercise._id)
+  const exercisesMap = new Map(localExercises.map(exercises => [exercises.exercise._id, exercises.exercise]))
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event
+    if (!over || active.id === over.id) return
 
-    if (over && over.id) {
-      const prevIndex = order.findIndex(id => id === active.id)
-      const newIndex = order.findIndex(id => id === over.id)
+    const oldIndex = localExercises.findIndex(exercises => exercises.exercise._id === active.id)
+    const newIndex = localExercises.findIndex(exercises => exercises.exercise._id === over.id)
 
-      const orderedExerciseIds = arrayMove(order, prevIndex, newIndex)
-      mutate({ routineId, orderedExerciseIds })
-    }
+    const reordered = arrayMove(localExercises, oldIndex, newIndex).map((exercises, index) => ({
+      ...exercises,
+      order: index + 1,
+    }))
+
+    setLocalExercises(reordered)
+    mutate({
+      routineId,
+      orderedExerciseIds: reordered.map(exercises => exercises.exercise._id),
+    })
   }
 
   return (
     <>
-        {exercises.length ? (
-          <DndContext
-            collisionDetection={closestCenter}
-            onDragEnd={handleDragEnd}
-          >
-            <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10">
-              <SortableContext
-              items={order}
+      {exerciseIdsInOrder.length ? (
+        <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10">
+            <SortableContext
+              items={exerciseIdsInOrder}
               strategy={horizontalListSortingStrategy}
             >
-              {order.map(id => {
-                const exercise = exercises.find(exercise => exercise._id === id)!
-                return <ExerciseCard key={id} exercise={exercise} />
+              {exerciseIdsInOrder.map(id => {
+                const exercise = exercisesMap.get(id)
+                return <ExerciseCard key={id} exercise={exercise!} />
               })}
             </SortableContext>
-            </ul>
-          </DndContext>
-        ) : (
-          <p className="text-center py-20">No exercises yet for this routine</p>
-        )}
+          </ul>
+        </DndContext>
+      ) : (
+        <p className="text-center py-20">No exercises yet for this routine</p>
+      )}
     </>
   )
 }

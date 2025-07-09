@@ -5,6 +5,7 @@ import { Link } from "react-router-dom"
 import ErrorMessage from "@/components/ErrorMessage"
 import { forgotPassword } from "@/services/AuthService"
 import type { ForgotPasswordForm } from "@/types/index"
+import SubmitButton from "@/components/SubmitButton"
 
 export default function ForgotPasswordView() {
     const initialValues: ForgotPasswordForm = {
@@ -13,7 +14,7 @@ export default function ForgotPasswordView() {
 
     const { register, handleSubmit, formState: { errors }, reset, watch } = useForm<ForgotPasswordForm>({ defaultValues: initialValues })
 
-    const { mutate } = useMutation({
+    const { mutate, isPending } = useMutation({
         mutationFn: forgotPassword,
         onError: (error) => toast.error(error.message),
         onSuccess: (data) => {
@@ -60,11 +61,7 @@ export default function ForgotPasswordView() {
                     {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
                 </div>
 
-                <input
-                    type="submit"
-                    value="Send instructions"
-                    className="bg-red-600 hover:bg-red-700 w-full p-3 text-white font-black text-xl cursor-pointer rounded-4xl mt-2"
-                />
+                <SubmitButton value="Send instructions" isLoading={isPending} />
 
                 <Link
                     to={"/auth/login"}

@@ -95,8 +95,8 @@ export default function ExercisesDashboardView() {
       ) : (
         <p className="text-center py-20">No exercises yet {''}
           <Link
-            className="text-red-600 hover:underline"
             to={'/exercises/new'}
+            className="text-red-600 hover:underline"
           >Register exercise</Link>
         </p>
       )}

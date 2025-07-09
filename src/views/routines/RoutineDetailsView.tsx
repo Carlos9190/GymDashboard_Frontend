@@ -23,7 +23,7 @@ export default function RoutineDetailsView() {
             <nav className="flex gap-3">
                 <Link
                     className="bg-red-600 hover:bg-red-700 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors rounded-lg"
-                    to='/'
+                    to='/routines'
                 >&larr; Routines</Link>
 
                 <button
@@ -39,8 +39,8 @@ export default function RoutineDetailsView() {
                     {formatDays(data.routineDays)}
                 </p>
             </div>
-            
-            <ExerciseList exercises={data.exercises} order={data.exerciseOrder} routineId={routineId}/>
+
+            <ExerciseList exercisesData={data.exercises} routineId={routineId} />
             <ExerciseSelectorModal routineName={data.routineName} routineData={data.exercises} routineId={routineId} />
         </>
     )
