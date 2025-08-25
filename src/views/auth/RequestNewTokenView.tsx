@@ -1,35 +1,48 @@
-import { toast } from "react-toastify"
-import { useForm } from "react-hook-form"
-import { useMutation } from "@tanstack/react-query"
-import ErrorMessage from "@/components/ErrorMessage"
-import { requestNewToken } from "@/services/AuthService"
-import type { RequestConfirmationTokenForm } from "@/types/index"
-import SubmitButton from "@/components/SubmitButton"
+import { toast } from "react-toastify";
+import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import ErrorMessage from "@/components/ErrorMessage";
+import { requestNewToken } from "@/services/AuthService";
+import type { RequestConfirmationTokenForm } from "@/types/index";
+import SubmitButton from "@/components/SubmitButton";
+import { useNavigate } from "react-router-dom";
 
 export default function RequestNewTokenView() {
     const initialValues: RequestConfirmationTokenForm = {
-        email: ''
-    }
+        email: "",
+    };
 
-    const { register, handleSubmit, reset, formState: { errors } } = useForm({ defaultValues: initialValues })
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm({ defaultValues: initialValues });
 
+    const navigate = useNavigate();
     const { mutate, isPending } = useMutation({
         mutationFn: requestNewToken,
         onError: (error) => toast.error(error.message),
         onSuccess: (data) => {
-            toast.success(data?.message)
-            reset()
-        }
-    })
+            toast.success(data?.message);
+            reset();
+            navigate("/auth/confirm-account");
+        },
+    });
 
-    const handleRequestCode = (formData: RequestConfirmationTokenForm) => mutate(formData)
+    const handleRequestCode = (formData: RequestConfirmationTokenForm) =>
+        mutate(formData);
 
     return (
         <>
-            <h1 className="text-2xl uppercase font-bold text-white text-center mb-4">Request Token</h1>
+            <h1 className="text-2xl uppercase font-bold text-white text-center mb-4">
+                Request Token
+            </h1>
             <p className="text-xl font-light text-white text-center mb-6">
                 Enter your email to receive{" "}
-                <span className="text-red-600 font-bold">a new confirmation token</span>
+                <span className="text-red-600 font-bold">
+                    a new confirmation token
+                </span>
             </p>
 
             <form
@@ -65,5 +78,5 @@ export default function RequestNewTokenView() {
                 <SubmitButton value="Send token" isLoading={isPending} />
             </form>
         </>
-    )
+    );
 }

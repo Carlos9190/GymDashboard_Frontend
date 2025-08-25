@@ -10,7 +10,8 @@ import {
     routineExerciseFormSchema,
     routineDashboardSchema,
     routineDetailsSchema,
-    routineByIdSchema
+    routineByIdSchema,
+    routineByCurrentDaySchema
 } from "./routineSchema"
 import {
     recordSchema,
@@ -21,5 +22,5 @@ import {
 
 export { authSchema, userSchema }
 export { exerciseSchema, exerciseOrderSchema, exerciseDashboardSchema, exerciseByIdSchema }
-export { routineSchema, routineExerciseFormSchema, routineDashboardSchema, routineDetailsSchema, routineByIdSchema }
+export { routineSchema, routineExerciseFormSchema, routineDashboardSchema, routineDetailsSchema, routineByIdSchema, routineByCurrentDaySchema }
 export { recordSchema, paginatedRecordSchema, recordByIdSchema }

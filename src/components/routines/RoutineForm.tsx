@@ -1,16 +1,28 @@
-import { FieldErrors, UseFormRegister, UseFormWatch } from "react-hook-form"
-import ErrorMessage from "../ErrorMessage"
-import { RoutineFormData } from "@/types/index"
-import { daysOfWeekTranslations } from "@/locales/daysOfWeek"
+import { FieldErrors, UseFormRegister, UseFormWatch } from "react-hook-form";
+import ErrorMessage from "../ErrorMessage";
+import { RoutineFormData } from "@/types/index";
+import { daysOfWeekTranslations } from "@/locales/daysOfWeek";
 
 type RoutineFormProps = {
-    register: UseFormRegister<RoutineFormData>
-    watch: UseFormWatch<RoutineFormData>
-    errors: FieldErrors<RoutineFormData>
-}
+    register: UseFormRegister<RoutineFormData>;
+    watch: UseFormWatch<RoutineFormData>;
+    errors: FieldErrors<RoutineFormData>;
+    occupiedDays?: string[];
+    currentRoutineDays?: string[];
+};
 
-export default function RoutineForm({ errors, watch, register }: RoutineFormProps) {
-    const selectedDays: string[] = watch("routineDays")
+export default function RoutineForm({
+    errors,
+    watch,
+    register,
+    occupiedDays,
+    currentRoutineDays,
+}: RoutineFormProps) {
+    const selectedDays: string[] = watch("routineDays") || [];
+
+    const disabledDays = new Set(
+        (occupiedDays || []).filter((day) => !currentRoutineDays?.includes(day))
+    );
 
     return (
         <>
@@ -30,7 +42,9 @@ export default function RoutineForm({ errors, watch, register }: RoutineFormProp
                 >
                     Routine name
                 </label>
-                {errors.routineName && <ErrorMessage>{errors.routineName.message}</ErrorMessage>}
+                {errors.routineName && (
+                    <ErrorMessage>{errors.routineName.message}</ErrorMessage>
+                )}
             </div>
 
             <div className="w-full mt-2">
@@ -38,26 +52,35 @@ export default function RoutineForm({ errors, watch, register }: RoutineFormProp
                     Routine days
                 </label>
                 <div className="grid grid-cols-2 gap-4">
-                    {Object.entries(daysOfWeekTranslations).map(([key, label]) => (
-                        <label
-                            key={key}
-                            className="flex items-center space-x-3 cursor-pointer rounded-md border border-gray-600 bg-gray-800 px-3 py-2 text-white transition-colors hover:bg-red-600 hover:border-red-500"
-                        >
-                            <input
-                                type="checkbox"
-                                value={key}
-                                className="h-5 w-5 rounded-sm border-gray-400 text-red-500 focus:ring-red-400"
-                                {...register("routineDays", {
-                                    required: "At least one routine day is required",
-                                })}
-                                defaultChecked={selectedDays.includes(key)}
-                            />
-                            <span className="select-none">{label}</span>
-                        </label>
-                    ))}
+                    {Object.entries(daysOfWeekTranslations).map(
+                        ([key, label]) => {
+                            const isDisabled = disabledDays.has(key);
+
+                            return (
+                                <label
+                                    key={key}
+                                    className={`flex items-center space-x-3 rounded-md border px-3 py-2 text-white transition-colors  ${isDisabled ? "bg-gray-700 border-gray-500 opacity-50" : "bg-gray-800 border-gray-600 hover:bg-red-600 hover:border-red-500"}  ${selectedDays.includes(key) || isDisabled ? "cursor-default" : "cursor-pointer"}`}
+                                >
+                                    <input
+                                        type="checkbox"
+                                        value={key}
+                                        disabled={isDisabled}
+                                        className="h-5 w-5 rounded-sm border-gray-400 text-red-500 focus:ring-red-400"
+                                        {...register("routineDays")}
+                                        defaultChecked={selectedDays.includes(
+                                            key
+                                        )}
+                                    />
+                                    <span className="select-none">{label}</span>
+                                </label>
+                            );
+                        }
+                    )}
                 </div>
-                {errors.routineDays && <ErrorMessage>{errors.routineDays.message}</ErrorMessage>}
+                {errors.routineDays && (
+                    <ErrorMessage>{errors.routineDays.message}</ErrorMessage>
+                )}
             </div>
         </>
-    )
+    );
 }

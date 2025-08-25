@@ -1,38 +1,48 @@
-import { useForm } from "react-hook-form"
-import { useMutation } from "@tanstack/react-query"
-import { toast } from "react-toastify"
-import { Link } from "react-router-dom"
-import ErrorMessage from "@/components/ErrorMessage"
-import { createAccount } from "@/services/AuthService"
-import type { UserRegistrationForm } from "@/types/index"
-import SubmitButton from "@/components/SubmitButton"
+import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
+import ErrorMessage from "@/components/ErrorMessage";
+import { createAccount } from "@/services/AuthService";
+import type { UserRegistrationForm } from "@/types/index";
+import SubmitButton from "@/components/SubmitButton";
 
 export default function RegisterView() {
     const initialValues: UserRegistrationForm = {
         name: "",
         email: "",
         password: "",
-        password_confirmation: ""
-    }
+        password_confirmation: "",
+    };
 
-    const { register, handleSubmit, formState: { errors }, watch, reset } = useForm<UserRegistrationForm>({ defaultValues: initialValues })
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        watch,
+        reset,
+    } = useForm<UserRegistrationForm>({ defaultValues: initialValues });
 
-    const password = watch("password")
+    const password = watch("password");
 
+    const navigate = useNavigate();
     const { mutate, isPending } = useMutation({
         mutationFn: createAccount,
         onError: (error) => toast.error(error.message),
         onSuccess: (data) => {
-            toast.success(data?.message)
-            reset()
-        }
-    })
+            toast.success(data?.message);
+            reset();
+            navigate("/auth/confirm-account");
+        },
+    });
 
-    const handleRegister = (formData: UserRegistrationForm) => mutate(formData)
+    const handleRegister = (formData: UserRegistrationForm) => mutate(formData);
 
     return (
         <>
-            <h1 className="text-2xl uppercase font-bold text-white text-center mb-4">Singup</h1>
+            <h1 className="text-2xl uppercase font-bold text-white text-center mb-4">
+                Singup
+            </h1>
             <p className="text-xl font-light text-white text-center mb-6">
                 Create an account and start managing your workouts{" "}
                 <span className="text-red-600 font-bold">today</span>
@@ -57,7 +67,9 @@ export default function RegisterView() {
                     >
                         Name
                     </label>
-                    {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
+                    {errors.name && (
+                        <ErrorMessage>{errors.name.message}</ErrorMessage>
+                    )}
                 </div>
 
                 <div className="relative w-full">
@@ -70,8 +82,8 @@ export default function RegisterView() {
                             required: "Email is required",
                             pattern: {
                                 value: /\S+@\S+\.\S+/,
-                                message: "Invalid email address"
-                            }
+                                message: "Invalid email address",
+                            },
                         })}
                     />
                     <label
@@ -80,7 +92,9 @@ export default function RegisterView() {
                     >
                         Email address
                     </label>
-                    {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
+                    {errors.email && (
+                        <ErrorMessage>{errors.email.message}</ErrorMessage>
+                    )}
                 </div>
 
                 <div className="relative w-full">
@@ -93,8 +107,9 @@ export default function RegisterView() {
                             required: "Password is required",
                             minLength: {
                                 value: 8,
-                                message: "Password should be at least 8 characters"
-                            }
+                                message:
+                                    "Password should be at least 8 characters",
+                            },
                         })}
                     />
                     <label
@@ -103,7 +118,9 @@ export default function RegisterView() {
                     >
                         Password
                     </label>
-                    {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
+                    {errors.password && (
+                        <ErrorMessage>{errors.password.message}</ErrorMessage>
+                    )}
                 </div>
 
                 <div className="relative w-full">
@@ -114,8 +131,8 @@ export default function RegisterView() {
                         className={`peer w-full px-3 pt-6 pb-2 border rounded-lg bg-transparent text-white placeholder-transparent transition-all ${errors.password_confirmation ? "border-red-500" : "border-gray-300"} focus:outline-none focus:border-red-500`}
                         {...register("password_confirmation", {
                             required: "Password confirmation is required",
-                            validate: value =>
-                                value === password || "Passwords do not match"
+                            validate: (value) =>
+                                value === password || "Passwords do not match",
                         })}
                     />
                     <label
@@ -125,7 +142,9 @@ export default function RegisterView() {
                         Confirm password
                     </label>
                     {errors.password_confirmation && (
-                        <ErrorMessage>{errors.password_confirmation.message}</ErrorMessage>
+                        <ErrorMessage>
+                            {errors.password_confirmation.message}
+                        </ErrorMessage>
                     )}
                 </div>
 
@@ -142,5 +161,5 @@ export default function RegisterView() {
                 </p>
             </form>
         </>
-    )
+    );
 }

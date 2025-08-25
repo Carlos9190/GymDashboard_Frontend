@@ -1,36 +1,50 @@
-import { useForm } from "react-hook-form"
-import { useMutation } from "@tanstack/react-query"
-import { toast } from "react-toastify"
-import { Link } from "react-router-dom"
-import ErrorMessage from "@/components/ErrorMessage"
-import { forgotPassword } from "@/services/AuthService"
-import type { ForgotPasswordForm } from "@/types/index"
-import SubmitButton from "@/components/SubmitButton"
+import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
+import ErrorMessage from "@/components/ErrorMessage";
+import { forgotPassword } from "@/services/AuthService";
+import type { ForgotPasswordForm } from "@/types/index";
+import SubmitButton from "@/components/SubmitButton";
 
 export default function ForgotPasswordView() {
     const initialValues: ForgotPasswordForm = {
-        email: ""
-    }
+        email: "",
+    };
 
-    const { register, handleSubmit, formState: { errors }, reset, watch } = useForm<ForgotPasswordForm>({ defaultValues: initialValues })
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset,
+        watch,
+    } = useForm<ForgotPasswordForm>({ defaultValues: initialValues });
 
+    const navigate = useNavigate();
     const { mutate, isPending } = useMutation({
         mutationFn: forgotPassword,
         onError: (error) => toast.error(error.message),
         onSuccess: (data) => {
-            toast.success(data?.message)
-            reset()
-        }
-    })
+            toast.success(data?.message);
+            reset();
+            navigate("/auth/new-password");
+        },
+    });
 
-    const handleForgotPassword = (formData: ForgotPasswordForm) => mutate(formData)
+    const handleForgotPassword = (formData: ForgotPasswordForm) =>
+        mutate(formData);
 
     return (
         <>
-            <h1 className="text-2xl uppercase font-bold text-white text-center mb-4">Forgot your password?</h1>
+            <h1 className="text-2xl uppercase font-bold text-white text-center mb-4">
+                Forgot your password?
+            </h1>
             <p className="text-xl font-light text-white text-center mb-6">
-                No problem. Enter your account email address and we will send you instructions so{" "}
-                <span className="text-red-600 font-bold">you can reset your password</span>
+                No problem. Enter your account email address and we will send
+                you instructions so{" "}
+                <span className="text-red-600 font-bold">
+                    you can reset your password
+                </span>
             </p>
 
             <form
@@ -49,7 +63,7 @@ export default function ForgotPasswordView() {
                             pattern: {
                                 value: /\S+@\S+\.\S+/,
                                 message: "Invalid email address",
-                            }
+                            },
                         })}
                     />
                     <label
@@ -58,7 +72,9 @@ export default function ForgotPasswordView() {
                     >
                         Email address
                     </label>
-                    {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
+                    {errors.email && (
+                        <ErrorMessage>{errors.email.message}</ErrorMessage>
+                    )}
                 </div>
 
                 <SubmitButton value="Send instructions" isLoading={isPending} />
@@ -71,5 +87,5 @@ export default function ForgotPasswordView() {
                 </Link>
             </form>
         </>
-    )
+    );
 }
