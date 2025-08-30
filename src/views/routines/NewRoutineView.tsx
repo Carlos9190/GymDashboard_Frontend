@@ -47,11 +47,11 @@ export default function NewRoutineView() {
         : [];
 
     return (
-        <div className="max-w-3xl mx-auto">
-            <h1 className="text-5xl font-black text-center">
+        <div className="px-4 sm:px-6 lg:px-8 py-8 max-w-4xl mx-auto">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-center">
                 Register routine
             </h1>
-            <p className="text-2xl font-light mt-5 text-center">
+            <p className="text-lg sm:text-xl lg:text-2xl font-light mt-4 text-center">
                 Fill out the following form to{" "}
                 <span className="text-red-600 font-bold">
                     register a new routine
@@ -59,7 +59,7 @@ export default function NewRoutineView() {
             </p>
 
             <form
-                className="space-y-3 bg-transparent rounded-lg flex flex-col mx-auto w-lg py-10 "
+                className="space-y-6 bg-transparent rounded-lg flex flex-col w-full py-10 mt-6"
                 onSubmit={handleSubmit(handleForm)}
                 noValidate
             >
@@ -75,7 +75,7 @@ export default function NewRoutineView() {
 
                 <Link
                     to={"/routines"}
-                    className="text-gray-300 font-normal hover:text-red-600 underline text-center"
+                    className="text-gray-300 font-normal hover:text-red-600 underline text-center text-sm sm:text-base"
                 >
                     Back to routines
                 </Link>

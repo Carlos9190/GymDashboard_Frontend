@@ -1,4 +1,7 @@
 import { Fragment } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
     Dialog,
     Transition,
@@ -6,15 +9,12 @@ import {
     DialogPanel,
     DialogTitle,
 } from "@headlessui/react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Routine, RoutineDetails } from "@/types/index";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
     addExerciseToRoutine,
     removeExerciseFromRoutine,
 } from "@/services/RoutineService";
-import { toast } from "react-toastify";
 import { getExercises } from "@/services/ExerciseService";
+import { Routine, RoutineDetails } from "@/types/index";
 
 type ExerciseSelectorModalProps = {
     routineName: Routine["routineName"];
@@ -91,10 +91,10 @@ export default function ExerciseSelectorModal({
                                     leaveFrom="opacity-100 scale-100"
                                     leaveTo="opacity-0 scale-95"
                                 >
-                                    <DialogPanel className="w-full max-w-7xl transform overflow-hidden rounded-2xl bg-gray-900 text-left align-middle shadow-xl transition-all p-16 border border-gray-300">
+                                    <DialogPanel className="w-full max-w-7xl transform overflow-hidden rounded-2xl bg-gray-900 text-left align-middle shadow-xl transition-all px-4 py-8 sm:px-8 lg:px-16 border border-gray-300 max-h-[90dvh] overflow-y-auto">
                                         <DialogTitle
                                             as="h3"
-                                            className="text-2xl uppercase font-bold text-white text-center mb-4"
+                                            className="text-xl sm:text-2xl uppercase font-bold text-white text-center mb-6"
                                         >
                                             Select exercises for the{" "}
                                             <span className="text-red-600">
@@ -104,7 +104,7 @@ export default function ExerciseSelectorModal({
                                         </DialogTitle>
 
                                         {data.length ? (
-                                            <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10">
+                                            <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
                                                 {data.map((exercise) => {
                                                     const routineExerciseIds =
                                                         routineData.map(
@@ -119,7 +119,7 @@ export default function ExerciseSelectorModal({
                                                     return (
                                                         <li
                                                             key={exercise._id}
-                                                            className="bg-white rounded-2xl shadow-md overflow-hidden aspect-square flex flex-col items-center justify-between p-4"
+                                                            className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col items-center justify-between p-4 aspect-square"
                                                         >
                                                             <img
                                                                 src={
@@ -129,11 +129,11 @@ export default function ExerciseSelectorModal({
                                                                 alt={
                                                                     exercise.exerciseName
                                                                 }
-                                                                className="w-full h-2/3 object-cover"
+                                                                className="w-full h-2/3 object-cover rounded-lg"
                                                             />
 
                                                             <div className="w-full text-center mt-2">
-                                                                <p className="text-sm text-black font-semibold mb-2">
+                                                                <p className="text-sm sm:text-base text-black font-semibold mb-2 truncate">
                                                                     {
                                                                         exercise.exerciseName
                                                                     }
@@ -152,7 +152,7 @@ export default function ExerciseSelectorModal({
                                                                                     }
                                                                                 )
                                                                             }
-                                                                            className="text-xs bg-red-100 text-red-600 px-3 py-1 rounded-sm hover:bg-red-200 transition w-full"
+                                                                            className="text-xs sm:text-sm bg-red-100 text-red-600 px-3 py-1 rounded-sm hover:bg-red-200 transition w-full"
                                                                         >
                                                                             Remove
                                                                             from
@@ -170,7 +170,7 @@ export default function ExerciseSelectorModal({
                                                                                     }
                                                                                 )
                                                                             }
-                                                                            className="text-xs bg-green-100 text-green-600 px-3 py-1 rounded-sm hover:bg-green-200 transition w-full"
+                                                                            className="text-xs sm:text-sm bg-green-100 text-green-600 px-3 py-1 rounded-sm hover:bg-green-200 transition w-full"
                                                                         >
                                                                             Add
                                                                             to

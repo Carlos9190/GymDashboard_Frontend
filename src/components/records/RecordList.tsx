@@ -1,12 +1,12 @@
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
-import { Exercise } from "@/types/index";
-import { formatDate } from "@/utils/datesUtils";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteRecord, getRecords } from "@/services/RecordService";
-import { toast } from "react-toastify";
+import { formatDate } from "@/utils/datesUtils";
 import RecordsPagination from "./RecordsPagination";
 import Spinner from "@/components/LoadingSpinner";
+import { Exercise } from "@/types/index";
 
 type RecordListProps = {
     exerciseId: Exercise["_id"];
@@ -47,23 +47,23 @@ export default function RecordList({ exerciseId }: RecordListProps) {
         return (
             <div className="overflow-x-auto w-full">
                 {data.records.length ? (
-                    <>
-                        <table className="min-w-full table-auto border-collapse border border-gray-700 text-white">
+                    <div className="overflow-x-auto w-full mt-4">
+                        <table className="min-w-full table-auto border-collapse border border-gray-700 text-white text-sm md:text-base">
                             <thead className="bg-gray-800">
                                 <tr>
-                                    <th className="border border-gray-700 px-4 py-2">
+                                    <th className="border border-gray-700 px-3 md:px-4 py-2">
                                         Sets
                                     </th>
-                                    <th className="border border-gray-700 px-4 py-2">
+                                    <th className="border border-gray-700 px-3 md:px-4 py-2">
                                         Reps
                                     </th>
-                                    <th className="border border-gray-700 px-4 py-2">
+                                    <th className="border border-gray-700 px-3 md:px-4 py-2">
                                         Weight
                                     </th>
-                                    <th className="border border-gray-700 px-4 py-2">
+                                    <th className="border border-gray-700 px-3 md:px-4 py-2">
                                         Date
                                     </th>
-                                    <th className="border border-gray-700 px-4 py-2">
+                                    <th className="border border-gray-700 px-3 md:px-4 py-2">
                                         Actions
                                     </th>
                                 </tr>
@@ -74,20 +74,20 @@ export default function RecordList({ exerciseId }: RecordListProps) {
                                         key={record._id}
                                         className="text-center"
                                     >
-                                        <td className="border border-gray-700 px-4 py-2">
+                                        <td className="border border-gray-700 px-3 md:px-4 py-2">
                                             {record.sets}
                                         </td>
-                                        <td className="border border-gray-700 px-4 py-2">
+                                        <td className="border border-gray-700 px-3 md:px-4 py-2">
                                             {record.reps}
                                         </td>
-                                        <td className="border border-gray-700 px-4 py-2">
+                                        <td className="border border-gray-700 px-3 md:px-4 py-2">
                                             {record.weight} kg
                                         </td>
-                                        <td className="border border-gray-700 px-4 py-2">
+                                        <td className="border border-gray-700 px-3 md:px-4 py-2">
                                             {formatDate(record.createdAt)}
                                         </td>
-                                        <td className="border border-gray-700 px-4 py-2">
-                                            <div className="flex justify-center gap-5">
+                                        <td className="border border-gray-700 px-3 md:px-4 py-2">
+                                            <div className="flex justify-center gap-3">
                                                 <button
                                                     type="button"
                                                     className="text-blue-400 hover:text-blue-600"
@@ -125,7 +125,7 @@ export default function RecordList({ exerciseId }: RecordListProps) {
                             page={data.page}
                             totalPages={data.totalPages}
                         />
-                    </>
+                    </div>
                 ) : (
                     <p className="text-center text-gray-300 italic py-20">
                         No records yet for this exercise.

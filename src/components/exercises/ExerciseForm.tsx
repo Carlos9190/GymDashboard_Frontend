@@ -1,15 +1,15 @@
+import { useEffect } from "react";
 import {
     FieldErrors,
     UseFormRegister,
     UseFormWatch,
     UseFormSetValue,
 } from "react-hook-form";
-import ErrorMessage from "../ErrorMessage";
-import { ExerciseById, ExerciseFormData } from "@/types/index";
 import { useQuery } from "@tanstack/react-query";
 import { getFormRoutines } from "@/services/RoutineService";
 import Spinner from "../LoadingSpinner";
-import { useEffect } from "react";
+import ErrorMessage from "../ErrorMessage";
+import { ExerciseById, ExerciseFormData } from "@/types/index";
 
 type ExerciseFormProps = {
     exercise?: ExerciseById;
@@ -69,7 +69,7 @@ export default function ExerciseForm({
                     id="exerciseName"
                     type="text"
                     placeholder=" "
-                    className={`peer w-full px-3 pt-6 pb-2 border rounded-lg bg-transparent text-white placeholder-transparent transition-all ${errors.exerciseName ? "border-red-500" : "border-gray-300"} focus:outline-none focus:border-red-500`}
+                    className={`peer w-full px-3 pt-6 pb-2 border rounded-lg bg-transparent text-white placeholder-transparent transition-all text-sm md:text-base ${errors.exerciseName ? "border-red-500" : "border-gray-300"} focus:outline-none focus:border-red-500`}
                     {...register("exerciseName", {
                         required: "Exercise name is required",
                     })}
@@ -85,16 +85,15 @@ export default function ExerciseForm({
                 )}
             </div>
 
-            <div className="w-full mx-auto mt-2 p-4 bg-transparent rounded-lg shadow-md border border-gray-300">
+            <div className="w-full mt-4 p-4 bg-transparent rounded-lg shadow-md border border-gray-300">
                 <label className="text-sm text-red-600 mb-2 block">
                     Assign to routine(s)
                 </label>
 
                 {data?.length ? (
-                    <div className="grid grid-cols-3 gap-3">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                         {data.map((routine) => {
                             const isChecked = selectedIds.includes(routine._id);
-
                             const toggleId = () => {
                                 const updated = isChecked
                                     ? selectedIds.filter(
@@ -111,7 +110,7 @@ export default function ExerciseForm({
                                 <label
                                     key={routine._id}
                                     htmlFor={`routine-${routine._id}`}
-                                    className={`w-full cursor-pointer rounded-full px-4 py-2 text-center text-sm font-medium transition-colors ${isChecked ? "bg-red-600 text-white" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
+                                    className={`w-full cursor-pointer rounded-full px-3 py-2 text-center text-xs md:text-sm font-medium transition-colors ${isChecked ? "bg-red-600 text-white" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
                                 >
                                     <input
                                         type="checkbox"
@@ -131,43 +130,47 @@ export default function ExerciseForm({
                         })}
                     </div>
                 ) : (
-                    <p className="text-gray-300 italic">No routines found.</p>
+                    <p className="text-gray-300 italic text-sm">
+                        No routines found.
+                    </p>
                 )}
-
                 <input type="hidden" {...register("routineId")} />
             </div>
 
             {exercise?.exerciseImage && (
-                <div className="max-w-xl mx-auto mt-2 p-2 bg-transparent rounded-lg shadow-md border border-gray-300">
+                <div className="w-full mt-4 p-2 bg-transparent rounded-lg shadow-md border border-gray-300">
                     <p className="text-sm text-red-500 mb-2 ml-2">
                         Current image
                     </p>
                     <img
                         src={exercise.exerciseImage}
                         alt={exercise.exerciseName}
-                        className="w-full rounded-xl object-cover"
+                        className="w-full max-h-72 object-cover rounded-xl"
                     />
                 </div>
             )}
 
-            <div className="flex items-center justify-between mt-2">
-                <input
-                    id="file"
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={(e) => {
-                        const file = e.target.files?.[0] ?? null;
-                        setValue("file", file);
-                    }}
-                />
-                <label
-                    htmlFor="file"
-                    className="cursor-pointer bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-xl transition-colors text-center"
-                >
-                    Upload Image
-                </label>
-                <p className="text-sm text-gray-400 pr-3">
+            <div className="flex flex-col md:flex-row items-center md:items-center justify-between gap-3 mt-4">
+                <div className="w-full md:w-auto">
+                    <label
+                        htmlFor="file"
+                        className="cursor-pointer bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-xl transition-colors text-center block"
+                    >
+                        Upload Image
+                    </label>
+                    <input
+                        id="file"
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => {
+                            const file = e.target.files?.[0] ?? null;
+                            setValue("file", file);
+                        }}
+                    />
+                </div>
+
+                <p className="text-sm text-gray-400 pr-3 w-full md:w-auto text-center md:text-left truncate">
                     {fileValue ? fileValue.name : "No file selected"}
                 </p>
             </div>

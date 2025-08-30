@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import ExerciseCard from "@/components/exercises/ExerciseCard";
-import { reorderRoutineExercises } from "@/services/RoutineService";
-import { Routine, RoutineDetails } from "@/types/index";
 import { DndContext, DragEndEvent, closestCenter } from "@dnd-kit/core";
 import {
     SortableContext,
@@ -9,6 +7,8 @@ import {
     arrayMove,
 } from "@dnd-kit/sortable";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { reorderRoutineExercises } from "@/services/RoutineService";
+import { Routine, RoutineDetails } from "@/types/index";
 
 type ExerciseListProps = {
     exercisesData: RoutineDetails;
@@ -77,7 +77,7 @@ export default function ExerciseList({
                     collisionDetection={closestCenter}
                     onDragEnd={handleDragEnd}
                 >
-                    <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-5">
+                    <ul className="w-full max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         <SortableContext
                             items={exerciseIdsInOrder}
                             strategy={horizontalListSortingStrategy}

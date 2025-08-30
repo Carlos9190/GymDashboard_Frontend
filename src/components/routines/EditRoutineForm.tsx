@@ -1,11 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
-import RoutineForm from "./RoutineForm";
-import { Routine, RoutineFormData } from "@/types/index";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateRoutine } from "@/services/RoutineService";
-import { toast } from "react-toastify";
+import RoutineForm from "./RoutineForm";
 import SubmitButton from "@/components/SubmitButton";
+import { Routine, RoutineFormData } from "@/types/index";
 
 type EditRoutineFormProps = {
     data: RoutineFormData;
@@ -56,15 +56,17 @@ export default function EditRoutineForm({
     };
 
     return (
-        <div className="max-w-3xl mx-auto">
-            <h1 className="text-5xl font-black text-center">Edit routine</h1>
-            <p className="text-2xl font-light mt-5 text-center">
+        <div className="px-4 sm:px-6 lg:px-8 py-8 max-w-4xl mx-auto">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-center">
+                Edit routine
+            </h1>
+            <p className="text-lg sm:text-xl lg:text-2xl font-light mt-4 text-center">
                 Fill out the following form to{" "}
                 <span className="text-red-600 font-bold">edit the routine</span>
             </p>
 
             <form
-                className="space-y-3 bg-transparent rounded-lg flex flex-col mx-auto w-lg py-10 "
+                className="space-y-6 bg-transparent rounded-lg flex flex-col w-full py-10 mt-6"
                 onSubmit={handleSubmit(handleForm)}
                 noValidate
             >
@@ -79,8 +81,8 @@ export default function EditRoutineForm({
                 <SubmitButton value="Save changes" isLoading={isPending} />
 
                 <Link
-                    to={"/routines"}
-                    className="text-gray-300 font-normal hover:text-red-600 underline text-center"
+                    to="/routines"
+                    className="text-sm sm:text-base text-gray-300 font-normal hover:text-red-600 underline text-center"
                 >
                     Back to routines
                 </Link>
