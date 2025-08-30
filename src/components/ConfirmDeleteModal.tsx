@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import {
     Dialog,
     DialogPanel,
@@ -5,7 +6,6 @@ import {
     Transition,
     TransitionChild,
 } from "@headlessui/react";
-import { Fragment } from "react";
 
 type ConfirmDeleteModalProps = {
     isOpen: boolean;
