@@ -1,51 +1,66 @@
-import { FieldErrors, UseFormRegister, UseFormWatch, UseFormSetValue } from "react-hook-form"
-import ErrorMessage from "../ErrorMessage"
-import { ExerciseById, ExerciseFormData } from "@/types/index"
-import { useQuery } from "@tanstack/react-query"
-import { getFormRoutines } from "@/services/RoutineService"
-import Spinner from "../LoadingSpinner"
-import { useEffect } from "react"
+import {
+    FieldErrors,
+    UseFormRegister,
+    UseFormWatch,
+    UseFormSetValue,
+} from "react-hook-form";
+import ErrorMessage from "../ErrorMessage";
+import { ExerciseById, ExerciseFormData } from "@/types/index";
+import { useQuery } from "@tanstack/react-query";
+import { getFormRoutines } from "@/services/RoutineService";
+import Spinner from "../LoadingSpinner";
+import { useEffect } from "react";
 
 type ExerciseFormProps = {
-    exercise?: ExerciseById
-    register: UseFormRegister<ExerciseFormData>
-    watch: UseFormWatch<ExerciseFormData>
-    errors: FieldErrors<ExerciseFormData>
-    setValue: UseFormSetValue<ExerciseFormData>
-}
+    exercise?: ExerciseById;
+    register: UseFormRegister<ExerciseFormData>;
+    watch: UseFormWatch<ExerciseFormData>;
+    errors: FieldErrors<ExerciseFormData>;
+    setValue: UseFormSetValue<ExerciseFormData>;
+};
 
-export default function ExerciseForm({ exercise, register, watch, errors, setValue }: ExerciseFormProps) {
+export default function ExerciseForm({
+    exercise,
+    register,
+    watch,
+    errors,
+    setValue,
+}: ExerciseFormProps) {
     const { data, isLoading } = useQuery({
-        queryKey: ['formRoutines'],
-        queryFn: getFormRoutines
-    })
+        queryKey: ["formRoutines"],
+        queryFn: getFormRoutines,
+    });
 
-    const routineIdValue = watch("routineId") || ""
-    const selectedIds = typeof routineIdValue === "string" && routineIdValue !== ""
-        ? routineIdValue.split(",")
-        : []
+    const routineIdValue = watch("routineId") || "";
+    const selectedIds =
+        typeof routineIdValue === "string" && routineIdValue !== ""
+            ? routineIdValue.split(",")
+            : [];
 
     useEffect(() => {
         if (exercise?._id && data?.length) {
             const defaultRoutineIds = data
-                .filter(routine =>
-                    routine.exercises.some(exercises => {
-                        const routineExerciseId = typeof exercises.exercise === "string" ? exercises.exercise : exercises.exercise
-                        return routineExerciseId === exercise._id
+                .filter((routine) =>
+                    routine.exercises.some((exercises) => {
+                        const routineExerciseId =
+                            typeof exercises.exercise === "string"
+                                ? exercises.exercise
+                                : exercises.exercise;
+                        return routineExerciseId === exercise._id;
                     })
                 )
-                .map(routine => routine._id)
+                .map((routine) => routine._id);
 
-            const currentIds = watch("routineId")
+            const currentIds = watch("routineId");
             if (!currentIds || currentIds.trim() === "") {
-                setValue("routineId", defaultRoutineIds.join(","))
+                setValue("routineId", defaultRoutineIds.join(","));
             }
         }
-    }, [exercise, data, setValue, watch])
+    }, [exercise, data, setValue, watch]);
 
-    const fileValue = watch("file") as File | null
+    const fileValue = watch("file") as File | null;
 
-    if (isLoading) return <Spinner />
+    if (isLoading) return <Spinner />;
 
     return (
         <>
@@ -55,7 +70,9 @@ export default function ExerciseForm({ exercise, register, watch, errors, setVal
                     type="text"
                     placeholder=" "
                     className={`peer w-full px-3 pt-6 pb-2 border rounded-lg bg-transparent text-white placeholder-transparent transition-all ${errors.exerciseName ? "border-red-500" : "border-gray-300"} focus:outline-none focus:border-red-500`}
-                    {...register("exerciseName", { required: "Exercise name is required" })}
+                    {...register("exerciseName", {
+                        required: "Exercise name is required",
+                    })}
                 />
                 <label
                     htmlFor="exerciseName"
@@ -63,7 +80,9 @@ export default function ExerciseForm({ exercise, register, watch, errors, setVal
                 >
                     Exercise name
                 </label>
-                {errors.exerciseName && <ErrorMessage>{errors.exerciseName.message}</ErrorMessage>}
+                {errors.exerciseName && (
+                    <ErrorMessage>{errors.exerciseName.message}</ErrorMessage>
+                )}
             </div>
 
             <div className="w-full mx-auto mt-2 p-4 bg-transparent rounded-lg shadow-md border border-gray-300">
@@ -74,22 +93,25 @@ export default function ExerciseForm({ exercise, register, watch, errors, setVal
                 {data?.length ? (
                     <div className="grid grid-cols-3 gap-3">
                         {data.map((routine) => {
-                            const isChecked = selectedIds.includes(routine._id)
+                            const isChecked = selectedIds.includes(routine._id);
 
                             const toggleId = () => {
                                 const updated = isChecked
-                                    ? selectedIds.filter(id => id !== routine._id)
-                                    : [...selectedIds, routine._id]
+                                    ? selectedIds.filter(
+                                          (id) => id !== routine._id
+                                      )
+                                    : [...selectedIds, routine._id];
 
-                                const newValue = updated.length > 0 ? updated.join(",") : ""
-                                setValue("routineId", newValue)
-                            }
+                                const newValue =
+                                    updated.length > 0 ? updated.join(",") : "";
+                                setValue("routineId", newValue);
+                            };
 
                             return (
                                 <label
                                     key={routine._id}
                                     htmlFor={`routine-${routine._id}`}
-                                    className={`w-full cursor-pointer rounded-full px-4 py-2 text-center text-sm font-medium transition-colors ${isChecked ? 'bg-red-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                                    className={`w-full cursor-pointer rounded-full px-4 py-2 text-center text-sm font-medium transition-colors ${isChecked ? "bg-red-600 text-white" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
                                 >
                                     <input
                                         type="checkbox"
@@ -99,15 +121,17 @@ export default function ExerciseForm({ exercise, register, watch, errors, setVal
                                         onChange={toggleId}
                                         readOnly
                                     />
-                                    <div className={`${isChecked ? 'text-white' : 'text-gray-700'}`}>
+                                    <div
+                                        className={`${isChecked ? "text-white" : "text-gray-700"}`}
+                                    >
                                         {routine.routineName}
                                     </div>
                                 </label>
-                            )
+                            );
                         })}
                     </div>
                 ) : (
-                    <p className="text-gray-400 italic">No routines found</p>
+                    <p className="text-gray-300 italic">No routines found.</p>
                 )}
 
                 <input type="hidden" {...register("routineId")} />
@@ -115,7 +139,9 @@ export default function ExerciseForm({ exercise, register, watch, errors, setVal
 
             {exercise?.exerciseImage && (
                 <div className="max-w-xl mx-auto mt-2 p-2 bg-transparent rounded-lg shadow-md border border-gray-300">
-                    <p className="text-sm text-red-500 mb-2 ml-2">Current image</p>
+                    <p className="text-sm text-red-500 mb-2 ml-2">
+                        Current image
+                    </p>
                     <img
                         src={exercise.exerciseImage}
                         alt={exercise.exerciseName}
@@ -131,8 +157,8 @@ export default function ExerciseForm({ exercise, register, watch, errors, setVal
                     accept="image/*"
                     className="hidden"
                     onChange={(e) => {
-                        const file = e.target.files?.[0] ?? null
-                        setValue("file", file)
+                        const file = e.target.files?.[0] ?? null;
+                        setValue("file", file);
                     }}
                 />
                 <label
@@ -146,5 +172,5 @@ export default function ExerciseForm({ exercise, register, watch, errors, setVal
                 </p>
             </div>
         </>
-    )
+    );
 }

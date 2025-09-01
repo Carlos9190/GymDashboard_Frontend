@@ -13,7 +13,6 @@ export const routineSchema = z.object({
     )
 })
 
-
 export const routineExerciseFormSchema = z.array(
     routineSchema.pick({
         _id: true,
@@ -43,3 +42,5 @@ export const routineByIdSchema = z.object({
     routineDays: z.array(z.string()),
     exercises: z.array(routineExercisePopulatedSchema)
 })
+
+export const routineByCurrentDaySchema = z.array(routineByIdSchema)
