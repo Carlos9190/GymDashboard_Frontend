@@ -5,5 +5,5 @@ export const daysOfWeekTranslations: { [key: string]: string } = {
     Thursday: "Thursday",
     Friday: "Friday",
     Saturday: "Saturday",
-    Sunday: "Sunday"
-}
+    Sunday: "Sunday",
+};

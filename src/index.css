@@ -2,6 +2,6 @@
 @plugin "@tailwindcss/forms";
 input:focus,
 select:focus {
-  outline: none;
-  box-shadow: none;
+    outline: none;
+    box-shadow: none;
 }

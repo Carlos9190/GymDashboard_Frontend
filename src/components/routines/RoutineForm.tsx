@@ -1,7 +1,7 @@
 import { FieldErrors, UseFormRegister, UseFormWatch } from "react-hook-form";
+import { daysOfWeekTranslations } from "@/locales/daysOfWeek";
 import ErrorMessage from "../ErrorMessage";
 import { RoutineFormData } from "@/types/index";
-import { daysOfWeekTranslations } from "@/locales/daysOfWeek";
 
 type RoutineFormProps = {
     register: UseFormRegister<RoutineFormData>;
@@ -31,7 +31,7 @@ export default function RoutineForm({
                     id="routineName"
                     type="text"
                     placeholder=" "
-                    className={`peer w-full px-3 pt-6 pb-2 border rounded-lg bg-transparent text-white placeholder-transparent transition-all ${errors.routineName ? "border-red-500" : "border-gray-300"} focus:outline-none focus:border-red-500`}
+                    className={`peer w-full px-3 pt-6 pb-2 border rounded-lg bg-transparent text-white placeholder-transparent transition-all text-base sm:text-lg ${errors.routineName ? "border-red-500" : "border-gray-300"} focus:outline-none focus:border-red-500`}
                     {...register("routineName", {
                         required: "Routine name is required",
                     })}
@@ -47,11 +47,11 @@ export default function RoutineForm({
                 )}
             </div>
 
-            <div className="w-full mt-2">
-                <label className="block mb-2 text-sm text-red-600 select-none">
+            <div className="w-full">
+                <label className="block mb-2 text-sm sm:text-base text-red-600 select-none">
                     Routine days
                 </label>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
                     {Object.entries(daysOfWeekTranslations).map(
                         ([key, label]) => {
                             const isDisabled = disabledDays.has(key);
@@ -59,7 +59,7 @@ export default function RoutineForm({
                             return (
                                 <label
                                     key={key}
-                                    className={`flex items-center space-x-3 rounded-md border px-3 py-2 text-white transition-colors  ${isDisabled ? "bg-gray-700 border-gray-500 opacity-50" : "bg-gray-800 border-gray-600 hover:bg-red-600 hover:border-red-500"}  ${selectedDays.includes(key) || isDisabled ? "cursor-default" : "cursor-pointer"}`}
+                                    className={`flex items-center space-x-2 sm:space-x-3 rounded-md border px-3 py-2 text-sm sm:text-base text-white transition-colors ${isDisabled ? "bg-gray-700 border-gray-500 opacity-50" : "bg-gray-800 border-gray-600 hover:bg-red-600 hover:border-red-500"} ${selectedDays.includes(key) || isDisabled ? "cursor-default" : "cursor-pointer"}`}
                                 >
                                     <input
                                         type="checkbox"

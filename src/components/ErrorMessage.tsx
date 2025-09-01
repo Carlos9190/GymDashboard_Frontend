@@ -1,7 +1,11 @@
-export default function ErrorMessage({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="mt-1 text-red-600 text-sm font-semibold text-left">
-      {children}
-    </div>
-  )
+export default function ErrorMessage({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
+    return (
+        <div className="mt-1 text-red-600 text-sm font-semibold text-left">
+            {children}
+        </div>
+    );
 }

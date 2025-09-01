@@ -11,6 +11,7 @@ export default function ExercisesDashboardView() {
         _id: string;
         name: string;
     } | null>(null);
+
     const { data, isLoading } = useQuery({
         queryKey: ["exercises"],
         queryFn: getExercises,
@@ -34,35 +35,36 @@ export default function ExercisesDashboardView() {
     };
 
     if (isLoading) return <Spinner />;
+
     if (data)
         return (
             <>
-                <h1 className="text-5xl font-black text-center">
+                <h1 className="text-3xl md:text-5xl font-black text-center">
                     My exercises
                 </h1>
-                <p className="text-2xl font-light mt-5 text-center">
+                <p className="text-lg md:text-2xl font-light mt-3 md:mt-5 text-center">
                     Here you can manage your{" "}
                     <span className="text-red-600 font-bold">
                         workout exercises
                     </span>
                 </p>
 
-                <nav className="my-5">
+                <nav className="my-5 flex justify-center">
                     <Link
-                        className="bg-red-600 hover:bg-red-700 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors rounded-lg"
+                        className="bg-red-600 hover:bg-red-700 px-6 md:px-10 py-2 md:py-3 text-white text-base md:text-xl font-bold cursor-pointer transition-colors rounded-lg"
                         to="/exercises/new"
                     >
                         New exercise
                     </Link>
                 </nav>
-                <hr></hr>
+                <hr />
 
                 {data.length ? (
-                    <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-5">
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-5">
                         {data.map((exercise) => (
                             <li
                                 key={exercise._id}
-                                className="bg-white rounded-2xl shadow-md overflow-hidden aspect-square flex flex-col items-center justify-between p-4"
+                                className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col items-center justify-between p-2 md:p-4 aspect-square"
                             >
                                 <img
                                     src={
@@ -70,24 +72,24 @@ export default function ExercisesDashboardView() {
                                         "/default-image.webp"
                                     }
                                     alt={exercise.exerciseName}
-                                    className="w-full h-2/3 object-cover"
+                                    className="w-full h-40 md:h-2/3 object-cover rounded-lg"
                                 />
 
                                 <div className="w-full text-center mt-2">
-                                    <p className="text-sm text-black font-semibold mb-2">
+                                    <p className="text-sm md:text-base text-black font-semibold mb-2">
                                         {exercise.exerciseName}
                                     </p>
 
-                                    <div className="flex justify-between gap-2">
+                                    <div className="flex flex-col sm:flex-row justify-between gap-2">
                                         <Link
                                             to={`/exercises/${exercise._id}`}
-                                            className="text-xs bg-blue-100 text-blue-600 px-3 py-1 rounded-sm hover:bg-blue-200 transition w-full"
+                                            className="text-xs md:text-sm bg-blue-100 text-blue-600 px-3 py-1 rounded-sm hover:bg-blue-200 transition w-full"
                                         >
                                             View
                                         </Link>
                                         <Link
                                             to={`/exercises/${exercise._id}/edit`}
-                                            className="text-xs bg-yellow-100 text-yellow-600 px-3 py-1 rounded-sm hover:bg-yellow-200 transition w-full"
+                                            className="text-xs md:text-sm bg-yellow-100 text-yellow-600 px-3 py-1 rounded-sm hover:bg-yellow-200 transition w-full"
                                         >
                                             Edit
                                         </Link>
@@ -99,7 +101,7 @@ export default function ExercisesDashboardView() {
                                                     name: exercise.exerciseName,
                                                 })
                                             }
-                                            className="text-xs bg-red-100 text-red-600 px-3 py-1 rounded-sm hover:bg-red-200 transition w-full"
+                                            className="text-xs md:text-sm bg-red-100 text-red-600 px-3 py-1 rounded-sm hover:bg-red-200 transition w-full"
                                         >
                                             Delete
                                         </button>
@@ -119,8 +121,8 @@ export default function ExercisesDashboardView() {
                         ))}
                     </ul>
                 ) : (
-                    <p className="text-center text-gray-300 italic py-20">
-                        No exercises yet. {""}
+                    <p className="text-center text-gray-300 italic py-10 sm:py-20 px-4 text-sm sm:text-base">
+                        No exercises yet.{" "}
                         <Link
                             className="text-red-600 hover:underline font-medium"
                             to={"/exercises/new"}

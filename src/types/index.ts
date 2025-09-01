@@ -1,4 +1,4 @@
-import { ApiResponse } from "./responseType"
+import { ApiResponse } from "./responseType";
 import {
     Auth,
     UserLoginForm,
@@ -9,31 +9,44 @@ import {
     UpdateCurrentUserPasswordForm,
     ConfirmToken,
     User,
-    UserProfileForm
-} from "./authTypes"
+    UserProfileForm,
+} from "./authTypes";
 import {
     Exercise,
     ExerciseById,
     ExerciseOrder,
     ExerciseFormData,
     ExerciseDashboard,
-    ExerciseCard
-} from "./exerciseTypes"
+    ExerciseCard,
+} from "./exerciseTypes";
 import {
     Routine,
     RoutineCard,
     RoutineDetails,
-    RoutineFormData
-} from "./routineTypes"
-import {
-    Record,
-    RecordById,
-    RecordList,
-    RecordFormData
-} from "./recordTypes"
+    RoutineFormData,
+} from "./routineTypes";
+import { Record, RecordById, RecordList, RecordFormData } from "./recordTypes";
 
-export type { ApiResponse }
-export type { Auth, UserLoginForm, UserRegistrationForm, RequestConfirmationTokenForm, ForgotPasswordForm, NewPasswordForm, UpdateCurrentUserPasswordForm, ConfirmToken, User, UserProfileForm }
-export type { Exercise, ExerciseFormData, ExerciseById, ExerciseOrder, ExerciseDashboard, ExerciseCard }
-export type { Routine, RoutineCard, RoutineDetails, RoutineFormData }
-export type { Record, RecordById, RecordList, RecordFormData }
+export type { ApiResponse };
+export type {
+    Auth,
+    UserLoginForm,
+    UserRegistrationForm,
+    RequestConfirmationTokenForm,
+    ForgotPasswordForm,
+    NewPasswordForm,
+    UpdateCurrentUserPasswordForm,
+    ConfirmToken,
+    User,
+    UserProfileForm,
+};
+export type {
+    Exercise,
+    ExerciseFormData,
+    ExerciseById,
+    ExerciseOrder,
+    ExerciseDashboard,
+    ExerciseCard,
+};
+export type { Routine, RoutineCard, RoutineDetails, RoutineFormData };
+export type { Record, RecordById, RecordList, RecordFormData };

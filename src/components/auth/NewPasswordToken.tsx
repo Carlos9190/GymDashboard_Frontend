@@ -1,30 +1,33 @@
-import { toast } from 'react-toastify'
-import { Link } from 'react-router-dom'
-import { Dispatch, SetStateAction } from 'react'
-import { useMutation } from '@tanstack/react-query'
-import { PinInput, PinInputField } from '@chakra-ui/pin-input'
-import { validateToken } from '@/services/AuthService'
-import type { ConfirmToken } from '@/types/index'
+import { Dispatch, SetStateAction } from "react";
+import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { PinInput, PinInputField } from "@chakra-ui/pin-input";
+import { validateToken } from "@/services/AuthService";
+import type { ConfirmToken } from "@/types/index";
 
 type NewPasswordTokenProps = {
-    token: ConfirmToken['token']
-    setToken: Dispatch<SetStateAction<string>>
-    setIsValidToken: Dispatch<SetStateAction<boolean>>
-}
+    token: ConfirmToken["token"];
+    setToken: Dispatch<SetStateAction<string>>;
+    setIsValidToken: Dispatch<SetStateAction<boolean>>;
+};
 
-export default function NewPasswordToken({ token, setToken, setIsValidToken }: NewPasswordTokenProps) {
-
+export default function NewPasswordToken({
+    token,
+    setToken,
+    setIsValidToken,
+}: NewPasswordTokenProps) {
     const { mutate } = useMutation({
         mutationFn: validateToken,
         onError: (error) => toast.error(error.message),
         onSuccess: (data) => {
-            toast.success(data?.message)
-            setIsValidToken(true)
-        }
-    })
+            toast.success(data?.message);
+            setIsValidToken(true);
+        },
+    });
 
-    const handleChange = (token: ConfirmToken['token']) => setToken(token)
-    const handleComplete = (token: ConfirmToken['token']) => mutate({ token })
+    const handleChange = (token: ConfirmToken["token"]) => setToken(token);
+    const handleComplete = (token: ConfirmToken["token"]) => mutate({ token });
 
     return (
         <>
@@ -32,7 +35,9 @@ export default function NewPasswordToken({ token, setToken, setIsValidToken }: N
                 className="space-y-6 bg-transparent rounded-lg flex flex-col items-center w-full px-5 mt-6"
                 onSubmit={(e) => e.preventDefault()}
             >
-                <label className="text-white text-lg font-medium text-center">Confirmation token</label>
+                <label className="text-white text-lg font-medium text-center">
+                    Confirmation token
+                </label>
 
                 <div className="flex space-x-3">
                     <PinInput
@@ -43,19 +48,19 @@ export default function NewPasswordToken({ token, setToken, setIsValidToken }: N
                         {[...Array(6)].map((_, index) => (
                             <PinInputField
                                 key={index}
-                                className="w-10 h-12 text-xl text-white text-center bg-transparent border rounded-md border-gray-300 focus:border-red-500 focus:outline-none"
+                                className="w-12 h-12 text-xl text-white text-center bg-transparent border rounded-md border-gray-300 focus:border-red-500 focus:outline-none"
                             />
                         ))}
                     </PinInput>
                 </div>
 
                 <Link
-                    to={'/auth/forgot-password'}
+                    to={"/auth/forgot-password"}
                     className="text-gray-300 font-normal hover:text-red-600 underline text-center"
                 >
                     Request new token
                 </Link>
             </form>
         </>
-    )
+    );
 }

@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from "zod";
 
 export const recordSchema = z.object({
     _id: z.string(),
@@ -6,8 +6,8 @@ export const recordSchema = z.object({
     reps: z.number(),
     weight: z.number(),
     exercise: z.string(),
-    createdAt: z.string()
-})
+    createdAt: z.string(),
+});
 
 const recordListSchema = z.array(
     recordSchema.pick({
@@ -15,19 +15,19 @@ const recordListSchema = z.array(
         sets: true,
         reps: true,
         weight: true,
-        createdAt: true
+        createdAt: true,
     })
-)
+);
 
 export const paginatedRecordSchema = z.object({
     records: recordListSchema,
     page: z.number(),
-    totalPages: z.number()
-})
+    totalPages: z.number(),
+});
 
 export const recordByIdSchema = z.object({
     _id: z.string(),
     sets: z.number(),
     reps: z.number(),
-    weight: z.number()
-})
+    weight: z.number(),
+});
