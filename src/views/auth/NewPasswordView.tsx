@@ -18,13 +18,13 @@ export default function NewPasswordView() {
             </p>
 
             {!isValidToken ? (
-                <NewPasswordForm token={token} />
-            ) : (
                 <NewPasswordToken
                     token={token}
                     setToken={setToken}
                     setIsValidToken={setIsValidToken}
                 />
+            ) : (
+                <NewPasswordForm token={token} />
             )}
         </>
     );
