@@ -1,9 +1,18 @@
 import { useState, useEffect } from "react";
 import ExerciseCard from "@/components/exercises/ExerciseCard";
-import { DndContext, DragEndEvent, closestCenter } from "@dnd-kit/core";
+import {
+    DndContext,
+    DragEndEvent,
+    closestCenter,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors,
+} from "@dnd-kit/core";
 import {
     SortableContext,
-    horizontalListSortingStrategy,
+    rectSortingStrategy,
+    sortableKeyboardCoordinates,
     arrayMove,
 } from "@dnd-kit/sortable";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -21,6 +30,15 @@ export default function ExerciseList({
 }: ExerciseListProps) {
     const queryClient = useQueryClient();
     const [localExercises, setLocalExercises] = useState(exercisesData);
+
+    // Keyboard sensor makes the reorder operable without a pointer (WCAG 2.1.1);
+    // the distance constraint stops a click on the handle from starting a drag.
+    const sensors = useSensors(
+        useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        })
+    );
 
     useEffect(() => {
         setLocalExercises(exercisesData);
@@ -74,13 +92,16 @@ export default function ExerciseList({
         <>
             {exerciseIdsInOrder.length ? (
                 <DndContext
+                    sensors={sensors}
                     collisionDetection={closestCenter}
                     onDragEnd={handleDragEnd}
                 >
-                    <ul className="w-full max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <ul className="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                        {/* rectSortingStrategy, not horizontalListSortingStrategy:
+                            this is a wrapping multi-row grid, not a single row. */}
                         <SortableContext
                             items={exerciseIdsInOrder}
-                            strategy={horizontalListSortingStrategy}
+                            strategy={rectSortingStrategy}
                         >
                             {exerciseIdsInOrder.map((id) => {
                                 const exercise = exercisesMap.get(id);

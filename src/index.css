@@ -1,7 +1,64 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/forms";
+
+@theme {
+    /* Brand — red stays the identity; -400 is the on-dark text variant so
+       small text clears 4.5:1 against the dark shell (red-600 only reaches 3.4:1). */
+    --color-brand-400: #f87171;
+    --color-brand-500: #ef4444;
+    --color-brand-600: #dc2626;
+    --color-brand-700: #b91c1c;
+
+    /* Surfaces */
+    --color-surface: #1f2937;
+    --color-surface-raised: #111827;
+    --color-surface-card: #273244;
+    --color-surface-hover: #323f56;
+
+    /* Content */
+    --color-content: #f8fafc;
+    --color-content-muted: #cbd5e1;
+    --color-content-subtle: #9aa8bd;
+
+    /* Edges */
+    --color-edge: #3a465c;
+    --color-edge-strong: #556074;
+
+    /* Feedback (all ≥4.5:1 on --color-surface) */
+    --color-danger: #fca5a5;
+    --color-success: #86efac;
+    --color-warning: #fcd34d;
+    --color-info: #93c5fd;
+}
+
+:root {
+    color-scheme: dark;
+}
+
+/* Focus indicator.
+   Replaces the previous blanket `outline: none; box-shadow: none`, which left
+   the app with no visible focus state at all (WCAG 2.4.7). The outline is the
+   single indicator; the forms plugin's ring is suppressed so the two don't stack.
+   Unlayered on purpose: must outrank Tailwind's base layer. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+}
+
 input:focus,
-select:focus {
-    outline: none;
+select:focus,
+textarea:focus {
     box-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -6,17 +7,22 @@ import { deleteRecord, getRecords } from "@/services/RecordService";
 import { formatDate } from "@/utils/datesUtils";
 import RecordsPagination from "./RecordsPagination";
 import Spinner from "@/components/LoadingSpinner";
+import ConfirmDeleteModal from "@/components/ConfirmDeleteModal";
 import { Exercise } from "@/types/index";
 
 type RecordListProps = {
     exerciseId: Exercise["_id"];
 };
 
+const cell = "border border-edge px-3 md:px-4 py-2";
+
 export default function RecordList({ exerciseId }: RecordListProps) {
     const navigate = useNavigate();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const page = queryParams.get("page") || "1";
+
+    const [recordToDelete, setRecordToDelete] = useState<string | null>(null);
 
     const { data, isLoading } = useQuery({
         queryKey: ["records", `${exerciseId}-${page}`],
@@ -37,7 +43,7 @@ export default function RecordList({ exerciseId }: RecordListProps) {
         },
     });
 
-    if (isLoading) return <Spinner />;
+    if (isLoading) return <Spinner label="Loading records" />;
     if (
         +page <= 0 ||
         (data && data.totalPages > 0 && data.page > data.totalPages)
@@ -45,25 +51,28 @@ export default function RecordList({ exerciseId }: RecordListProps) {
         return <Navigate to={`/exercises/${exerciseId}`} />;
     if (data)
         return (
-            <div className="overflow-x-auto w-full">
+            <div className="w-full">
                 {data.records.length ? (
                     <div className="overflow-x-auto w-full mt-4">
-                        <table className="min-w-full table-auto border-collapse border border-gray-700 text-white text-sm md:text-base">
-                            <thead className="bg-gray-800">
+                        <table className="min-w-full table-auto border-collapse border border-edge text-content text-sm md:text-base">
+                            <caption className="sr-only">
+                                Logged sets, reps and weight for this exercise
+                            </caption>
+                            <thead className="bg-surface-raised">
                                 <tr>
-                                    <th className="border border-gray-700 px-3 md:px-4 py-2">
+                                    <th scope="col" className={cell}>
                                         Sets
                                     </th>
-                                    <th className="border border-gray-700 px-3 md:px-4 py-2">
+                                    <th scope="col" className={cell}>
                                         Reps
                                     </th>
-                                    <th className="border border-gray-700 px-3 md:px-4 py-2">
+                                    <th scope="col" className={cell}>
                                         Weight
                                     </th>
-                                    <th className="border border-gray-700 px-3 md:px-4 py-2">
+                                    <th scope="col" className={cell}>
                                         Date
                                     </th>
-                                    <th className="border border-gray-700 px-3 md:px-4 py-2">
+                                    <th scope="col" className={cell}>
                                         Actions
                                     </th>
                                 </tr>
@@ -72,25 +81,24 @@ export default function RecordList({ exerciseId }: RecordListProps) {
                                 {data.records.map((record) => (
                                     <tr
                                         key={record._id}
-                                        className="text-center"
+                                        className="text-center odd:bg-surface-card/40"
                                     >
-                                        <td className="border border-gray-700 px-3 md:px-4 py-2">
-                                            {record.sets}
-                                        </td>
-                                        <td className="border border-gray-700 px-3 md:px-4 py-2">
-                                            {record.reps}
-                                        </td>
-                                        <td className="border border-gray-700 px-3 md:px-4 py-2">
+                                        <td className={cell}>{record.sets}</td>
+                                        <td className={cell}>{record.reps}</td>
+                                        <td className={cell}>
                                             {record.weight} kg
                                         </td>
-                                        <td className="border border-gray-700 px-3 md:px-4 py-2">
+                                        <td className={cell}>
                                             {formatDate(record.createdAt)}
                                         </td>
-                                        <td className="border border-gray-700 px-3 md:px-4 py-2">
-                                            <div className="flex justify-center gap-3">
+                                        <td className={cell}>
+                                            <div className="flex justify-center gap-2">
+                                                {/* Icon-only controls previously shipped
+                                                    with no accessible name at all. */}
                                                 <button
                                                     type="button"
-                                                    className="text-blue-400 hover:text-blue-600"
+                                                    aria-label={`Edit record of ${record.sets}x${record.reps} at ${record.weight} kg`}
+                                                    className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-info transition-colors hover:bg-surface-hover"
                                                     onClick={() =>
                                                         navigate(
                                                             location.pathname +
@@ -98,20 +106,25 @@ export default function RecordList({ exerciseId }: RecordListProps) {
                                                         )
                                                     }
                                                 >
-                                                    <PencilSquareIcon className="w-5 h-5" />
+                                                    <PencilSquareIcon
+                                                        className="w-5 h-5"
+                                                        aria-hidden="true"
+                                                    />
                                                 </button>
                                                 <button
                                                     type="button"
-                                                    className="text-red-500 hover:text-red-700"
+                                                    aria-label={`Delete record of ${record.sets}x${record.reps} at ${record.weight} kg`}
+                                                    className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-danger transition-colors hover:bg-surface-hover"
                                                     onClick={() =>
-                                                        mutate({
-                                                            exerciseId,
-                                                            recordId:
-                                                                record._id,
-                                                        })
+                                                        setRecordToDelete(
+                                                            record._id
+                                                        )
                                                     }
                                                 >
-                                                    <TrashIcon className="w-5 h-5" />
+                                                    <TrashIcon
+                                                        className="w-5 h-5"
+                                                        aria-hidden="true"
+                                                    />
                                                 </button>
                                             </div>
                                         </td>
@@ -127,10 +140,25 @@ export default function RecordList({ exerciseId }: RecordListProps) {
                         />
                     </div>
                 ) : (
-                    <p className="text-center text-gray-300 italic py-20">
+                    <p className="text-center text-content-muted italic py-20">
                         No records yet for this exercise.
                     </p>
                 )}
+
+                {/* Deleting a record was the only destructive action in the app
+                    that fired straight from the click, with no confirmation. */}
+                <ConfirmDeleteModal
+                    isOpen={!!recordToDelete}
+                    onClose={() => setRecordToDelete(null)}
+                    onConfirm={() => {
+                        if (recordToDelete) {
+                            mutate({ exerciseId, recordId: recordToDelete });
+                            setRecordToDelete(null);
+                        }
+                    }}
+                    title="Delete record"
+                    description="Are you sure you want to delete this record? This action cannot be undone."
+                />
             </div>
         );
 }

@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
-import ErrorMessage from "@/components/ErrorMessage";
+import FloatingField from "@/components/FloatingField";
 import { login } from "@/services/AuthService";
 import type { UserLoginForm } from "@/types/index";
 import SubmitButton from "@/components/SubmitButton";
@@ -17,7 +17,6 @@ export default function LoginView() {
         register,
         handleSubmit,
         formState: { errors },
-        watch,
     } = useForm<UserLoginForm>({ defaultValues: initialValues });
 
     const navigate = useNavigate();
@@ -46,7 +45,7 @@ export default function LoginView() {
             </h1>
             <p className="text-xl font-light text-white text-center mb-6">
                 Start planning your gym routines{" "}
-                <span className="text-red-600 font-bold">by logging in</span>
+                <span className="text-brand-400 font-bold">by logging in</span>
             </p>
 
             <form
@@ -54,66 +53,46 @@ export default function LoginView() {
                 className="space-y-3 bg-transparent rounded-lg flex flex-col w-full px-5"
                 noValidate
             >
-                <div className="relative w-full">
-                    <input
-                        id="email"
-                        type="email"
-                        placeholder=" "
-                        className={`peer w-full px-3 pt-6 pb-2 border rounded-lg bg-transparent text-white placeholder-transparent transition-all ${errors.email ? "border-red-500" : "border-gray-300"} focus:outline-none focus:border-red-500`}
-                        {...register("email", {
-                            required: "Email is required",
-                            pattern: {
-                                value: /\S+@\S+\.\S+/,
-                                message: "Invalid email address",
-                            },
-                        })}
-                    />
-                    <label
-                        htmlFor="email"
-                        className={`absolute left-3 transition-all ${watch("email") ? "top-1 text-sm text-red-600" : "top-3.5 text-gray-500"} peer-focus:top-1 peer-focus:text-sm peer-focus:text-red-600`}
-                    >
-                        Email address
-                    </label>
-                    {errors.email && (
-                        <ErrorMessage>{errors.email.message}</ErrorMessage>
-                    )}
-                </div>
+                <FloatingField
+                    id="email"
+                    label="Email address"
+                    type="email"
+                    autoComplete="email"
+                    error={errors.email?.message}
+                    registration={register("email", {
+                        required: "Email is required",
+                        pattern: {
+                            value: /\S+@\S+\.\S+/,
+                            message: "Invalid email address",
+                        },
+                    })}
+                />
 
-                <div className="relative w-full">
-                    <input
-                        id="password"
-                        type="password"
-                        placeholder=" "
-                        className={`peer w-full px-3 pt-6 pb-2 border rounded-lg bg-transparent text-white placeholder-transparent transition-all ${errors.password ? "border-red-500" : "border-gray-300"} focus:outline-none focus:border-red-500`}
-                        {...register("password", {
-                            required: "Password is required",
-                        })}
-                    />
-                    <label
-                        htmlFor="password"
-                        className={`absolute left-3 transition-all ${watch("password") ? "top-1 text-sm text-red-600" : "top-3.5 text-gray-500"} peer-focus:top-1 peer-focus:text-sm peer-focus:text-red-600`}
-                    >
-                        Password
-                    </label>
-                    {errors.password && (
-                        <ErrorMessage>{errors.password.message}</ErrorMessage>
-                    )}
-                </div>
+                <FloatingField
+                    id="password"
+                    label="Password"
+                    type="password"
+                    autoComplete="current-password"
+                    error={errors.password?.message}
+                    registration={register("password", {
+                        required: "Password is required",
+                    })}
+                />
 
                 <Link
                     to={"/auth/forgot-password"}
-                    className="text-gray-300 font-normal hover:text-red-600 underline text-center"
+                    className="text-center font-normal text-content-muted underline hover:text-brand-400"
                 >
                     Forgot password?
                 </Link>
 
                 <SubmitButton value="Log in" isLoading={isPending} />
 
-                <p className="text-center text-gray-300 font-normal">
+                <p className="text-center font-normal text-content-muted">
                     Do not have an account?{" "}
                     <Link
                         to={"/auth/register"}
-                        className="text-gray-300 font-normal hover:text-red-600 underline text-center"
+                        className="font-normal underline hover:text-brand-400"
                     >
                         Sign up
                     </Link>

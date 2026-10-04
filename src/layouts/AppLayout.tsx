@@ -16,13 +16,19 @@ export default function AppLayout() {
     if (data)
         return (
             <>
-                <div className="bg-gray-800 w-full min-h-screen text-white flex flex-col">
-                    <header className="bg-gray-900 w-full">
-                        <div className="max-w-screen-2xl mx-auto flex flex-col gap-4 md:flex-row justify-between items-center px-4 sm:px-6 py-4">
-                            <Link
-                                to="/"
-                                className="flex justify-center md:justify-start"
-                            >
+                <div className="bg-surface w-full min-h-screen text-content flex flex-col">
+                    <a
+                        href="#main-content"
+                        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-brand-600 focus:px-4 focus:py-2 focus:font-semibold focus:text-white"
+                    >
+                        Skip to content
+                    </a>
+
+                    <header className="bg-surface-raised w-full">
+                        {/* Was flex-col until md, which pushed the hamburger onto
+                            its own row and ate ~110px above the fold on phones. */}
+                        <div className="max-w-screen-2xl mx-auto flex flex-row justify-between items-center gap-4 px-4 sm:px-6 py-3 sm:py-4">
+                            <Link to="/" aria-label="Gym Dashboard home">
                                 <LogoDashboard />
                             </Link>
 
@@ -30,14 +36,14 @@ export default function AppLayout() {
                         </div>
                     </header>
 
-                    <main className="flex-grow w-full">
-                        <section className="max-w-screen-2xl mx-auto mt-6 sm:mt-10 px-4 sm:px-6">
+                    <main id="main-content" className="grow w-full">
+                        <section className="max-w-screen-2xl mx-auto mt-6 sm:mt-10 px-4 sm:px-6 pb-12">
                             <Outlet />
                         </section>
                     </main>
 
-                    <footer className="py-6 px-4 sm:px-6 bg-gray-900 w-full">
-                        <p className="text-center text-sm sm:text-base text-gray-400">
+                    <footer className="py-6 px-4 sm:px-6 bg-surface-raised w-full">
+                        <p className="text-center text-sm sm:text-base text-content-muted">
                             All rights reserved &copy;{" "}
                             {new Date().getFullYear()} Gym Dashboard
                         </p>

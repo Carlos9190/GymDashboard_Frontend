@@ -11,7 +11,6 @@ import {
 } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import { RoutineService } from "@/services/RoutineService";
-import { formatDays } from "@/utils/datesUtils";
 import ConfirmDeleteModal from "@/components/ConfirmDeleteModal";
 import type { ApiResponse, RoutineCard } from "@/types/index";
 
@@ -25,6 +24,9 @@ type RoutineCardProps = {
     >;
 };
 
+const item =
+    "flex min-h-11 items-center px-3 text-sm text-gray-900 data-focus:bg-gray-100";
+
 export default function RoutineCard({ routine, mutate }: RoutineCardProps) {
     const [showModal, setShowModal] = useState(false);
 
@@ -35,66 +37,85 @@ export default function RoutineCard({ routine, mutate }: RoutineCardProps) {
 
     return (
         <>
-            <div className="border border-gray-100 bg-white shadow-lg p-6 rounded-lg flex justify-between">
-                <div className="space-y-2">
+            {/* Card was white on the dark shell, with text-gray-400 metadata
+                sitting at ~2.9:1. Now it uses the surface tokens and clears AA. */}
+            <div className="flex justify-between gap-3 rounded-2xl border border-edge bg-surface-card p-5 shadow-lg transition-colors hover:border-edge-strong">
+                <div className="min-w-0 space-y-2">
                     <Link
                         to={`/routines/${routine._id}`}
-                        className="text-gray-600 cursor-pointer hover:underline text-2xl font-bold"
+                        className="block truncate text-xl font-bold text-content hover:text-brand-400 hover:underline"
                     >
                         {routine.routineName}
                     </Link>
-                    <p className="text-sm text-gray-400">
-                        Day{"(s)"}: {formatDays(routine.routineDays)}
-                    </p>
+
+                    {routine.routineDays.length ? (
+                        <ul className="flex flex-wrap gap-1.5">
+                            {routine.routineDays.map((day) => (
+                                <li
+                                    key={day}
+                                    className="rounded-full bg-surface-hover px-2.5 py-1 text-xs font-semibold text-content-muted"
+                                >
+                                    {day}
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        // formatDays([]) returns "", which rendered a bare
+                        // "Day(s):" label with nothing after it.
+                        <p className="text-sm italic text-content-subtle">
+                            No days assigned yet
+                        </p>
+                    )}
                 </div>
-                <div className="flex justify-end mt-4">
-                    <Menu as="div" className="relative">
-                        <MenuButton className="-m-2.5 block p-2.5 text-gray-500 hover:text-gray-900">
-                            <span className="sr-only">options</span>
-                            <EllipsisVerticalIcon
-                                className="h-6 w-6"
-                                aria-hidden="true"
-                            />
-                        </MenuButton>
-                        <Transition
-                            as={Fragment}
-                            enter="transition ease-out duration-100"
-                            enterFrom="transform opacity-0 scale-95"
-                            enterTo="transform opacity-100 scale-100"
-                            leave="transition ease-in duration-75"
-                            leaveFrom="transform opacity-100 scale-100"
-                            leaveTo="transform opacity-0 scale-95"
-                        >
-                            <MenuItems className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
-                                <MenuItem>
-                                    <Link
-                                        to={`/routines/${routine._id}`}
-                                        className="block px-3 py-1 text-sm leading-6 text-gray-900"
-                                    >
-                                        View routine
-                                    </Link>
-                                </MenuItem>
-                                <MenuItem>
-                                    <Link
-                                        to={`/routines/${routine._id}/edit`}
-                                        className="block px-3 py-1 text-sm leading-6 text-gray-900"
-                                    >
-                                        Edit routine
-                                    </Link>
-                                </MenuItem>
-                                <MenuItem>
-                                    <button
-                                        type="button"
-                                        className="block px-3 py-1 text-sm leading-6 text-red-500 cursor-pointer"
-                                        onClick={() => setShowModal(true)}
-                                    >
-                                        Delete routine
-                                    </button>
-                                </MenuItem>
-                            </MenuItems>
-                        </Transition>
-                    </Menu>
-                </div>
+
+                <Menu as="div" className="relative shrink-0">
+                    <MenuButton className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-content-muted transition-colors hover:bg-surface-hover hover:text-content">
+                        <span className="sr-only">
+                            Options for {routine.routineName}
+                        </span>
+                        <EllipsisVerticalIcon
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                        />
+                    </MenuButton>
+                    <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                    >
+                        <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right overflow-hidden rounded-xl bg-white py-1 shadow-lg ring-1 ring-gray-900/10">
+                            <MenuItem>
+                                <Link
+                                    to={`/routines/${routine._id}`}
+                                    className={item}
+                                >
+                                    View routine
+                                </Link>
+                            </MenuItem>
+                            <MenuItem>
+                                <Link
+                                    to={`/routines/${routine._id}/edit`}
+                                    className={item}
+                                >
+                                    Edit routine
+                                </Link>
+                            </MenuItem>
+                            <MenuItem>
+                                <button
+                                    type="button"
+                                    className={`${item} w-full cursor-pointer text-left font-semibold text-red-600`}
+                                    onClick={() => setShowModal(true)}
+                                >
+                                    Delete routine
+                                </button>
+                            </MenuItem>
+                        </MenuItems>
+                    </Transition>
+                </Menu>
             </div>
 
             <ConfirmDeleteModal

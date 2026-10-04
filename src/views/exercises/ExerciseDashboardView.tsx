@@ -1,16 +1,19 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { deleteExercise, getExercises } from "@/services/ExerciseService";
 import Spinner from "@/components/LoadingSpinner";
 import { toast } from "react-toastify";
 import ConfirmDeleteModal from "@/components/ConfirmDeleteModal";
+import ExerciseThumb from "@/components/exercises/ExerciseThumb";
 
 export default function ExercisesDashboardView() {
     const [selectedExercise, setSelectedExercise] = useState<{
         _id: string;
         name: string;
     } | null>(null);
+    const [query, setQuery] = useState("");
 
     const { data, isLoading } = useQuery({
         queryKey: ["exercises"],
@@ -34,6 +37,15 @@ export default function ExercisesDashboardView() {
         }
     };
 
+    const visibleExercises = useMemo(() => {
+        if (!data) return [];
+        const term = query.trim().toLowerCase();
+        if (!term) return data;
+        return data.filter((exercise) =>
+            exercise.exerciseName.toLowerCase().includes(term)
+        );
+    }, [data, query]);
+
     if (isLoading) return <Spinner />;
 
     if (data)
@@ -44,93 +56,131 @@ export default function ExercisesDashboardView() {
                 </h1>
                 <p className="text-lg md:text-2xl font-light mt-3 md:mt-5 text-center">
                     Here you can manage your{" "}
-                    <span className="text-red-600 font-bold">
+                    <span className="text-brand-400 font-bold">
                         workout exercises
                     </span>
                 </p>
 
-                <nav className="my-5 flex justify-center">
+                <div className="my-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <div className="relative w-full sm:max-w-xs">
+                        <MagnifyingGlassIcon
+                            className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-content-subtle"
+                            aria-hidden="true"
+                        />
+                        <label htmlFor="exercise-search" className="sr-only">
+                            Search exercises
+                        </label>
+                        <input
+                            id="exercise-search"
+                            type="search"
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            placeholder="Search exercises"
+                            className="w-full rounded-lg border border-edge bg-surface-raised py-2.5 pl-10 pr-3 text-content placeholder:text-content-subtle"
+                        />
+                    </div>
+
                     <Link
-                        className="bg-red-600 hover:bg-red-700 px-6 md:px-10 py-2 md:py-3 text-white text-base md:text-xl font-bold cursor-pointer transition-colors rounded-lg"
+                        className="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-600 px-6 md:px-10 font-bold text-white transition-colors hover:bg-brand-700"
                         to="/exercises/new"
                     >
                         New exercise
                     </Link>
-                </nav>
-                <hr />
+                </div>
+
+                <hr className="border-edge" />
+
+                <p aria-live="polite" className="sr-only">
+                    {visibleExercises.length} exercises shown
+                </p>
 
                 {data.length ? (
-                    <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-5">
-                        {data.map((exercise) => (
-                            <li
-                                key={exercise._id}
-                                className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col items-center justify-between p-2 md:p-4 aspect-square"
-                            >
-                                <img
-                                    src={
-                                        exercise.exerciseImage ||
-                                        "/default-image.webp"
-                                    }
-                                    alt={exercise.exerciseName}
-                                    className="w-full h-40 md:h-2/3 object-cover rounded-lg"
-                                />
+                    visibleExercises.length ? (
+                        <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 my-5">
+                            {visibleExercises.map((exercise) => (
+                                <li
+                                    key={exercise._id}
+                                    className="flex flex-col overflow-hidden rounded-2xl border border-edge bg-surface-card shadow-md transition-colors hover:border-edge-strong"
+                                >
+                                    <ExerciseThumb
+                                        src={exercise.exerciseImage}
+                                        name={exercise.exerciseName}
+                                    />
 
-                                <div className="w-full text-center mt-2">
-                                    <p className="text-sm md:text-base text-black font-semibold mb-2">
-                                        {exercise.exerciseName}
-                                    </p>
+                                    <div className="flex flex-1 flex-col gap-3 p-3">
+                                        <p className="text-sm md:text-base font-semibold text-content line-clamp-2">
+                                            {exercise.exerciseName}
+                                        </p>
 
-                                    <div className="flex flex-col sm:flex-row justify-between gap-2">
-                                        <Link
-                                            to={`/exercises/${exercise._id}`}
-                                            className="text-xs md:text-sm bg-blue-100 text-blue-600 px-3 py-1 rounded-sm hover:bg-blue-200 transition w-full"
-                                        >
-                                            View
-                                        </Link>
-                                        <Link
-                                            to={`/exercises/${exercise._id}/edit`}
-                                            className="text-xs md:text-sm bg-yellow-100 text-yellow-600 px-3 py-1 rounded-sm hover:bg-yellow-200 transition w-full"
-                                        >
-                                            Edit
-                                        </Link>
-                                        <button
-                                            type="button"
-                                            onClick={() =>
-                                                setSelectedExercise({
-                                                    _id: exercise._id,
-                                                    name: exercise.exerciseName,
-                                                })
-                                            }
-                                            className="text-xs md:text-sm bg-red-100 text-red-600 px-3 py-1 rounded-sm hover:bg-red-200 transition w-full"
-                                        >
-                                            Delete
-                                        </button>
-
-                                        <ConfirmDeleteModal
-                                            isOpen={!!selectedExercise}
-                                            onClose={() =>
-                                                setSelectedExercise(null)
-                                            }
-                                            onConfirm={confirmDelete}
-                                            title="Delete exercise"
-                                            description={`Are you sure you want to delete "${selectedExercise?.name}"? This action will remove the exercise and all its records permanently.`}
-                                        />
+                                        <div className="mt-auto grid grid-cols-3 gap-1.5">
+                                            <Link
+                                                to={`/exercises/${exercise._id}`}
+                                                className="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-600 px-2 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
+                                            >
+                                                View
+                                            </Link>
+                                            <Link
+                                                to={`/exercises/${exercise._id}/edit`}
+                                                className="inline-flex min-h-11 items-center justify-center rounded-lg border border-edge-strong px-2 text-sm font-semibold text-content-muted transition-colors hover:bg-surface-hover hover:text-content"
+                                            >
+                                                Edit
+                                            </Link>
+                                            <button
+                                                type="button"
+                                                onClick={() =>
+                                                    setSelectedExercise({
+                                                        _id: exercise._id,
+                                                        name: exercise.exerciseName,
+                                                    })
+                                                }
+                                                className="inline-flex min-h-11 items-center justify-center rounded-lg border border-transparent px-2 text-sm font-semibold text-danger transition-colors hover:bg-danger/10"
+                                            >
+                                                <span className="sr-only">
+                                                    Delete {exercise.exerciseName}
+                                                </span>
+                                                <span aria-hidden="true">
+                                                    Delete
+                                                </span>
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p className="text-center text-content-muted italic py-16">
+                            No exercises match your search.{" "}
+                            <button
+                                type="button"
+                                onClick={() => setQuery("")}
+                                className="text-brand-400 underline hover:text-brand-500"
+                            >
+                                Clear search
+                            </button>
+                        </p>
+                    )
                 ) : (
-                    <p className="text-center text-gray-300 italic py-10 sm:py-20 px-4 text-sm sm:text-base">
+                    <p className="text-center text-content-muted italic py-10 sm:py-20 px-4 text-sm sm:text-base">
                         No exercises yet.{" "}
                         <Link
-                            className="text-red-600 hover:underline font-medium"
+                            className="text-brand-400 hover:underline font-medium"
                             to={"/exercises/new"}
                         >
                             Register exercise
                         </Link>
                     </p>
                 )}
+
+                {/* Single instance. This previously sat inside the .map(), which
+                    mounted one Dialog per exercise — a single Delete click opened
+                    36 dialogs, 72 backdrops and 39 aria-hidden nodes at once. */}
+                <ConfirmDeleteModal
+                    isOpen={!!selectedExercise}
+                    onClose={() => setSelectedExercise(null)}
+                    onConfirm={confirmDelete}
+                    title="Delete exercise"
+                    description={`Are you sure you want to delete "${selectedExercise?.name}"? This action will remove the exercise and all its records permanently.`}
+                />
             </>
         );
 }

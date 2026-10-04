@@ -62,7 +62,7 @@ export async function updateExercise({
     formData,
     exerciseId,
 }: Pick<ExerciseService, "formData" | "exerciseId">) {
-    let formDataToSend = new FormData();
+    const formDataToSend = new FormData();
     formDataToSend.append("exerciseName", formData.exerciseName);
     formDataToSend.append("file", formData.file as File);
     formDataToSend.append("routineId", formData.routineId as string);

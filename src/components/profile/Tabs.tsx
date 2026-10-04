@@ -17,8 +17,10 @@ function classNames(...classes: string[]) {
 export default function Tabs() {
     const navigate = useNavigate();
     const location = useLocation();
-    const currentTab = tabs.filter((tab) => tab.href === location.pathname)[0]
-        .href;
+    // `tabs.filter(...)[0].href` threw on any /profile/* route not listed here,
+    // taking the whole layout down instead of just rendering no active tab.
+    const currentTab =
+        tabs.find((tab) => tab.href === location.pathname)?.href ?? tabs[0].href;
 
     return (
         <div className="mb-10 px-4 sm:px-0">

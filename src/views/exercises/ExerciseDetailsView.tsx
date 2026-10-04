@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getExerciseById } from "@/services/ExerciseService";
 import Spinner from "@/components/LoadingSpinner";
 import RecordList from "@/components/records/RecordList";
+import ExerciseThumb from "@/components/exercises/ExerciseThumb";
 import AddRecordModal from "@/components/records/NewRecordModal";
 import EditRecordData from "@/components/records/EditRecordData";
 import { getFormRoutines } from "@/services/RoutineService";
@@ -72,10 +73,10 @@ export default function ExerciseDetailsView() {
 
                 <div className="flex flex-col lg:flex-row items-center lg:items-start gap-6 mt-6">
                     <div className="w-full lg:max-w-sm mb-6">
-                        <img
-                            src={data.exerciseImage || "/default-image.webp"}
-                            alt={data.exerciseName}
-                            className="w-full h-auto rounded-xl object-cover"
+                        <ExerciseThumb
+                            src={data.exerciseImage}
+                            name={data.exerciseName}
+                            className="rounded-xl"
                         />
                     </div>
 

@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import ExerciseThumb from "@/components/exercises/ExerciseThumb";
 import {
     Dialog,
     Transition,
@@ -121,15 +122,15 @@ export default function ExerciseSelectorModal({
                                                             key={exercise._id}
                                                             className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col items-center justify-between p-4 aspect-square"
                                                         >
-                                                            <img
+                                                            <ExerciseThumb
                                                                 src={
-                                                                    exercise.exerciseImage ||
-                                                                    "/default-image.webp"
+                                                                    exercise.exerciseImage
                                                                 }
-                                                                alt={
+                                                                name={
                                                                     exercise.exerciseName
                                                                 }
-                                                                className="w-full h-2/3 object-cover rounded-lg"
+                                                                width={300}
+                                                                className="rounded-lg"
                                                             />
 
                                                             <div className="w-full text-center mt-2">

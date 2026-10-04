@@ -1,7 +1,16 @@
-export default function Spinner() {
+type SpinnerProps = {
+    label?: string;
+};
+
+export default function Spinner({ label = "Loading" }: SpinnerProps) {
     return (
-        <div className="flex justify-center items-center w-full">
-            <div className="w-10 h-10 border-4 border-gray-300 border-t-red-600 rounded-full animate-spin"></div>
+        <div
+            role="status"
+            aria-live="polite"
+            className="flex justify-center items-center w-full py-10"
+        >
+            <div className="w-10 h-10 border-4 border-edge border-t-brand-500 rounded-full animate-spin motion-reduce:animate-none" />
+            <span className="sr-only">{label}</span>
         </div>
     );
 }

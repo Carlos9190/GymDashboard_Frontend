@@ -13,11 +13,15 @@ export default function SubmitButton({
         <button
             type="submit"
             disabled={isLoading}
-            className={`bg-red-600 hover:bg-red-700 transition-colors w-full p-3 text-white font-black text-xl rounded-4xl mt-2 ${isLoading ? "opacity-70 cursor-not-allowed" : ""} `}
+            aria-busy={isLoading}
+            className="mt-2 inline-flex min-h-12 w-full items-center justify-center rounded-full bg-brand-600 p-3 text-xl font-black text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:bg-brand-600"
         >
             {isLoading ? (
                 <span className="flex items-center justify-center gap-2">
-                    <ArrowPathIcon className="h-5 w-5 animate-spin" />
+                    <ArrowPathIcon
+                        className="h-5 w-5 animate-spin motion-reduce:animate-none"
+                        aria-hidden="true"
+                    />
                     Loading...
                 </span>
             ) : (
